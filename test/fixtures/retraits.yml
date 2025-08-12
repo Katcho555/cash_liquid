@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  methode: MyString
+  numero_retrait: MyString
+  nom_percepteur: MyString
+  numero_percepteur: MyString
+  montant: 9.99
+  statut: MyString
+
+two:
+  user: two
+  methode: MyString
+  numero_retrait: MyString
+  nom_percepteur: MyString
+  numero_percepteur: MyString
+  montant: 9.99
+  statut: MyString

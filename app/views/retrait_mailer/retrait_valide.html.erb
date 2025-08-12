@@ -1,0 +1,4 @@
+<h2>Bonjour <%= @retrait.user.prenom %>,</h2>
+<p>Votre demande de retrait <strong>##<%= @retrait.id %></strong> a été validée.</p>
+<p>Montant : <%= number_to_currency(@retrait.montant, unit: "XOF", delimiter: " ") %></p>
+<p>Merci pour votre confiance.</p>

@@ -1,0 +1,184 @@
+<style>
+    .referral-card {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        border-radius: 15px;
+        padding: 2rem;
+        color: white;
+        box-shadow: 0 10px 30px rgba(106, 17, 203, 0.2);
+    }
+    .referral-code {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-align: center;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .social-share {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-share .btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: white;
+            color: #6a11cb;
+            transition: all 0.3s ease;
+        }
+        
+        .social-share .btn:hover {
+            transform: translateY(-5px);
+        }
+        
+        .floating-animation {
+            animation: floating 3s ease-in-out infinite;
+        }
+</style>
+<div class="row gy-4">
+    <div class="col-lg-6">
+        <div class="bg-neutral-10 tw-pt-11 rounded-3 w-100 h-100">
+
+            <div class=" w-100 h-100">
+                <div class="text-center ">
+                    <span class="text-base-two-600 tw-text-15 tw-mb-5">
+                        <i class="ph-fill ph-wallet"></i>
+                    </span>
+                    <div>
+                        <h2 class="fw-normal text-dark-600">
+                            <%if current_user.admin?%>
+                                <%=@total_gain %> Fcfa
+                            <%else%>
+                            <%=current_user.balance%> Fcfa
+                            <%end%>
+                        </h2>
+                        <span class="text-dark-500 fw-normal tw-text-lg">
+                            BALANCE TOTAL
+                        </span>
+                    </div>
+                </div>
+                <span class="border-bottom-neutral-05 w-100 tw-mb-8 tw-mt-8"></span>
+                <div class="tw-px-3 tw-pb-3 d-flex align-items-center flex-wrap">
+                    <a href="javascript:void(0)" class="tw-px-10 tw-py-3 fw-semibold text-primary-600 hover-bg-white rounded-3 text-center">
+                        Gestion Dépot
+                    </a>
+                    <a href="javascript:void(0)" class="tw-px-10 tw-py-3 fw-semibold text-primary-600 hover-bg-white rounded-3 text-center">
+                        Gestion Retrait
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--<div class="col-lg-6">
+        <div class="bg-neutral-10 tw-pt-11 w-100 rounded-3 w-100 h-100">
+
+            <div>
+                <div class="text-center ">
+                    <span class="text-base-two-600 tw-text-15 tw-mb-5">
+                        <i class="ph-fill ph-headset"></i>
+                    </span>
+                    <div>
+                        <h4 class="fw-normal text-dark-600 tw-mb-2">Lien de parrainage</h4>
+                        <p class="text-dark-500 fw-normal tw-text-lg">
+                            <%= root_url %>inscription?ref=<%= current_user.referral_code %>
+                        </p>
+                    </div>
+                </div>
+                <span class="border-bottom-neutral-05 w-100 tw-mb-6 tw-mt-6"></span>
+                <div class="tw-px-3 tw-pb-3 d-flex align-items-center">
+                    <a href="javascript:void(0)" class="tw-py-3 fw-semibold text-white bg-base-two-600 rounded-3 w-100 text-center">
+                        Copier
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>-->
+
+    <div class="col-lg-6">
+        <div class="referral-card">
+            <p class="mb-3">Partagez ce code avec vos contacts pour gagner des récompenses à chaque nouvelle inscription</p>
+            <div class="referral-code" id="referralCode"><%= root_url %>inscription?ref=<%= current_user.referral_code %></div>
+            <p>Pour chaque filleul qui s'inscrit avec votre code, vous gagnez <span class="fw-bold">10%</span> de ses transactions</p>
+            
+            <div class="social-share">
+                <button class="btn" title="Copier le code" id="copyBtn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <button class="btn" title="Partager sur WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </button>
+                <button class="btn" title="Partager sur Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </button>
+                <button class="btn" title="Partager par email">
+                    <i class="fas fa-envelope"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script>
+        $(document).ready(function() {
+            // Copier le code de parrainage
+            $('#copyBtn').click(function() {
+                const code = $('#referralCode').text();
+                navigator.clipboard.writeText(code)
+                    .then(() => {
+                        $(this).html('<i class="fas fa-check"></i>');
+                        $(this).addClass('btn-success').removeClass('btn-light');
+                        setTimeout(() => {
+                            $(this).html('<i class="fas fa-copy"></i>');
+                            $(this).addClass('btn-light').removeClass('btn-success');
+                        }, 2000);
+                    });
+            });
+            
+            // Soumission du formulaire de paiement
+            $('#paymentForm').submit(function(e) {
+                e.preventDefault();
+                
+                const btn = $(this).find('button[type="submit"]');
+                btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Traitement...');
+                
+                // Simulation de traitement de paiement
+                setTimeout(() => {
+                    // Animation de succès
+                    $('.premium-header').css('background', 'linear-gradient(135deg, #20bf6b 0%, #01baef 100%)');
+                    $('.premium-badge').css('background', 'linear-gradient(135deg, #20bf6b 0%, #01baef 100%)');
+                    $('.premium-badge').html('<i class="fas fa-check me-2"></i>ABONNEMENT ACTIVÉ');
+                    
+                    // Message de succès
+                    const successHTML = `
+                        <div class="text-center py-5">
+                            <i class="fas fa-check-circle display-1 text-success mb-4"></i>
+                            <h2 class="fw-bold mb-3">Votre compte premium est activé !</h2>
+                            <p class="lead mb-4">Félicitations ! Vous avez maintenant accès à toutes les fonctionnalités premium.</p>
+                            <a href="dashboard.html" class="btn btn-primary btn-lg px-5">
+                                <i class="fas fa-tachometer-alt me-2"></i>Accéder à votre tableau de bord
+                            </a>
+                        </div>
+                    `;
+                    
+                    $('.premium-content').html(successHTML);
+                }, 2000);
+            });
+        });
+    </script>

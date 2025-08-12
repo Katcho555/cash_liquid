@@ -1,0 +1,15 @@
+# Exported from Render on 2024-11-04T17:52:09Z
+services:
+- type: web
+  name: cash_liquid
+  runtime: ruby
+  repo: https://github.com/matinou-github/cash_liquid.git
+  branch: develop
+  plan: free
+  envVars:
+  - key: RAILS_MASTER_KEY
+    sync: false
+  region: oregon
+  buildCommand: bundle install; bundle exec rails assets:precompile; bundle exec rails assets:clean; ./bin/render-build.sh; ./bin/rails db:migrate; /bin/rails db:seed
+  startCommand: ./bin/rails server
+version: "1"

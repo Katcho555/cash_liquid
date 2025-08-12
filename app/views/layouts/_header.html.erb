@@ -1,0 +1,104 @@
+ <div class="header bg-white tw-py-505">
+    <div class="container">
+        <div class="d-flex align-items-center tw-gap-6 justify-content-between">
+            <div class="d-flex align-items-center w-100 tw-gap-6 max-w-885-px">
+                <a href="/">
+                    <%= image_tag 'logo/logo2.png', style: "width:60px;" %>
+                </a>
+                    <form action="#" class="position-relative max-w-664px w-100 d-lg-block d-none" style="margin: auto;">
+                        <input type="text" placeholder="Recherche" class="tw-pe-10 tw-ps-6 tw-py-4 bg-neutral-10 w-100 focus-visible-border-main-600 border-0 tw-text-4 text-dark-500 fw-normal rounded-pill">
+                        <button class="tw-text-6 text-dark-600 position-absolute tw-end-1 tw-block-start-50 top-50 translate-middle">
+                            <i class="ph ph-magnifying-glass"></i>
+                        </button>
+                    </form>
+            </div>
+            <div class="d-flex align-items-center tw-gap-6 ">
+                <!-- Notification Start -->
+                <div class="dropdown">
+                    <button class="dropdown-btn shaking-animation text-gray-500 bg-neutral-10 hover-bg-neutral-10 transition-2 rounded-circle tw-text-7 flex-center tw-w-15 tw-h-15" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="position-relative ">
+                            <i class="ph ph-bell"></i>
+                            <span class="alarm-notify position-absolute end-0"></span>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu tw-w-360-px border-0 bg-transparent p-0">
+                        <div class="card border border-gray-100 tw-rounded-xl box-shadow-custom p-0 overflow-hidden">
+                            <div class="card-body p-0">
+                                <div class="tw-py-2 tw-px-6 bg-primary-400">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h5 class="text-xl fw-normal text-white mb-0">Notifications</h5>
+                                        <div class="d-flex align-items-center tw-gap-3">
+                                            <button type="button" class="bg-white tw-rounded-xl text-sm tw-px-2 tw-py-1 hover-text-primary-600"> Nouvelle </button>
+                                            <button type="button" class="close-dropdown hover-scale-1 text-xl text-white"><i class="ph ph-x"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tw-px-5 tw-py-5 max-h-270 overflow-y-auto scroll-sm">
+                                    <div class="d-flex align-items-start tw-gap-2">
+                                        <%= image_tag 'logo/logo2.png', class:"tw-w-12 tw-h-12 rounded-circle object-fit-cover" %>
+                                        <div class="border-bottom border-neutral-300 tw-mb-6 tw-pb-6">
+                                            <div class="d-flex align-items-center tw-gap-2">
+                                                <a href="javascript:void(0)" class="fw-semibold tw-text-4 mb-0 text-neutral-300 hover-text-main-600 line-clamp-2">CASH LIQUID </a>
+                                                <!-- Three Dot Dropdown Start -->
+                                                <div class="dropdown flex-shrink-0">
+                                                    <button class="text-neutral-200 rounded-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="ph-fill ph-dots-three-outline"></i>
+                                                    </button>
+                                                   <!--  <div class="dropdown-menu dropdown-menu--md border-0 bg-transparent p-0">
+                                                        <div class="card border border-neutral-100 rounded-12 box-shadow-custom">
+                                                            <div class="card-body p-12">
+                                                                <div class="max-h-200 overflow-y-auto scroll-sm pe-8">
+                                                                    <ul>
+                                                                        <li class="mb-0">
+                                                                            <a href="javascript:void(0)" class="tw-py-2 tw-text-4 tw-px-205 hover-bg-neutral-50 text-neutral-300 tw-rounded-md fw-normal text-xs d-block">
+                                                                                <span class="text">Mark as read</span>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="mb-0">
+                                                                            <a href="javascript:void(0)" class="tw-py-2 tw-text-4 tw-px-205 hover-bg-neutral-50 text-neutral-300 tw-rounded-md fw-normal text-xs d-block">
+                                                                                <span class="text">Delete Notification</span>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="mb-0">
+                                                                            <a href="javascript:void(0)" class="tw-py-2 tw-text-4 tw-px-205 hover-bg-neutral-50 text-neutral-300 tw-rounded-md fw-normal text-xs d-block">
+                                                                                <span class="text">Report</span>
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>-->
+                                                </div>
+                                                <!-- Three Dot Dropdown End -->
+                                            </div>
+                                            <div class="d-flex align-items-center tw-gap-2 tw-mt-2">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <p class="text-gray-900 text-sm text-line-1">Cash Liquid vous souhaite la bienvenu</p>
+                                                </div>
+                                            </div>
+                                            <span class="text-gray-200 text-13 tw-mt-2">A l'instant</span>
+                                        </div>
+                                    </div>
+                                 <div class="d-flex align-items-start tw-gap-1">
+                                        <%= image_tag 'logo/logo2.png', class:"tw-w-12 tw-h-12 rounded-circle object-fit-cover" %>
+                                        <div class="">
+                                            <a href="javascript:void(0)" class="fw-semibold tw-text-4 mb-0 text-neutral-300 hover-text-main-600 line-clamp-2">CASH LIQUID</a>
+                                            <p class="text-gray-900 text-sm text-line-1">Cliquez sur le <a href="#"> lien</a> pour intégrer le groupe whatsapp</p>
+                                            <span class="text-gray-200 text-13 tw-mt-2">A l'instant</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<a href="javascript:void(0)" class="tw-py-3 tw-px-6 fw-bold text-center d-block text-primary-600 border-top border-neutral-100 hover-underline tw-duration-500"> View All </a>-->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Notification Start -->
+
+
+            </div>
+        </div>
+    </div>
+ </div>

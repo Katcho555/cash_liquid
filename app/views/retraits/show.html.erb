@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @retrait %>
+
+<div>
+  <%= link_to "Edit this retrait", edit_retrait_path(@retrait) %> |
+  <%= link_to "Back to retraits", retraits_path %>
+
+  <%= button_to "Destroy this retrait", @retrait, method: :delete %>
+</div>

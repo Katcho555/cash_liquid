@@ -1,0 +1,13 @@
+<h1>Nouvelle demande de retrait</h1>
+
+<p>Un utilisateur a fait une demande de retrait :</p>
+
+<ul>
+  <li><strong>Nom :</strong> <%= @user.nom %> <%= @user.prenom %></li>
+  <li><strong>Email :</strong> <%= @user.email %></li>
+  <li><strong>Méthode :</strong> <%= @retrait.methode %></li>
+  <li><strong>Numéro de retrait :</strong> <%= @retrait.numero_retrait %></li>
+  <li><strong>Montant :</strong> <%= number_to_currency(@retrait.montant, unit: "XOF") %></li>
+</ul>
+
+<p>Connectez-vous à l’administration pour valider ou rejeter cette demande.</p>

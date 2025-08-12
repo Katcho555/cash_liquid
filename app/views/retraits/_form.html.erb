@@ -1,0 +1,47 @@
+<%= form_with(model: retrait) do |form| %>
+  <% if retrait.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(retrait.errors.count, "error") %> prohibited this retrait from being saved:</h2>
+
+      <ul>
+        <% retrait.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :user_id, style: "display: block" %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div>
+    <%= form.label :methode, style: "display: block" %>
+    <%= form.text_field :methode %>
+  </div>
+
+  <div>
+    <%= form.label :numero_retrait, style: "display: block" %>
+    <%= form.text_field :numero_retrait %>
+  </div>
+
+  <div>
+    <%= form.label :nom_percepteur, style: "display: block" %>
+    <%= form.text_field :nom_percepteur %>
+  </div>
+
+  <div>
+    <%= form.label :montant, style: "display: block" %>
+    <%= form.text_field :montant %>
+  </div>
+
+  <div>
+    <%= form.label :statut, style: "display: block" %>
+    <%= form.text_field :statut %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

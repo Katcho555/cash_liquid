@@ -1,0 +1,901 @@
+
+
+<!-- Custom Toast Message start -->
+<div id="toast-container"></div>
+<!-- Custom Toast Message End -->
+
+<!-- ==================== Scroll to Top End Here ==================== -->
+<div class="progress-wrap cursor-big">
+  <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+      <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+  </svg>
+</div>
+<!-- ==================== Scroll to Top End Here ==================== -->
+
+<!-- Custom Cursor Start -->
+  <div class="cursor"></div>
+  <span class="dot"></span>
+<!-- Custom Cursor End -->
+
+<!-- ==================== Mobile Menu Start Here ==================== -->
+<div class="mobile-menu d-lg-none d-block scroll-sm position-fixed bg-base-two-600 tw-w-300-px tw-h-screen overflow-y-auto tw-p-6 tw-z-999 tw--translate-x-full tw-pb-68 ">
+
+    <button type="button" class="close-button position-absolute tw-end-0 top-0 tw-me-2 tw-mt-2 tw-w-605 tw-h-605 rounded-circle d-flex justify-content-center align-items-center text-white bg-neutral-200 hover-bg-neutral-900 hover-text-white"> 
+        <i class="ph ph-x"></i>
+    </button>
+
+    <div class="mobile-menu__inner">
+        <a href="index.html" class="mobile-menu__logo">
+            <%= image_tag 'logo3.png' %>
+        </a>
+        <div class="mobile-menu__menu">
+            <!-- Nav menu Start -->
+<ul class="nav-menu d-lg-flex align-items-center nav-menu--mobile d-block tw-mt-8">
+    <li class="nav-menu__item has-submenu position-relative activePage">
+        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 text-white tw-py-9 fw-semibold w-100">HOME</a>
+        <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
+            <li class="nav-menu__item activePage">
+                <a href="index.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home One</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="index-2.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home Two</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="index-3.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home Three</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="index-4.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home Four</a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-menu__item has-submenu position-relative">
+        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">BLOG</a>
+         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="blog-details.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog Details</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="blog-grid.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog Grid</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="blog-list.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog List</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="blog-standerd.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog Standerd</a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-menu__item has-submenu position-relative">
+        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">Dashboard</a>
+         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="dashboard.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Dashboard</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="transactions.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Transaction</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="send-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Send Money</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="request-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Request Money</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="deposit-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Deposit Money</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="withdraw-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Withdraw Money</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="notifications.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Notifications</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="my-profile.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Account</a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-menu__item has-submenu position-relative">
+        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">ABOUT</a>
+         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="about-us-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">About Us</a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-menu__item has-submenu position-relative">
+        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">PAGES</a>
+         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="fees-others.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Fees</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="our-services-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Our Services</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="services-details-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Services Details</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="our-team-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Our Team</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="pricing-plan-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Pricing Plan</a>
+            </li>
+            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                <a href="faq-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">FAQ</a>
+            </li>  
+        </ul>
+    </li>
+    <li class="nav-menu__item">
+        <a href="contact-us-other.html" class="nav-menu__link text-heading tw-py-9 fw-semibold w-100 text-white">CONTACT</a>
+    </li>
+</ul>
+<!-- Nav menu End  -->
+
+        </div>
+    </div>
+</div>
+<!-- ==================== Mobile Menu End Here ==================== -->
+
+
+<!-- ============ Top Header Section Start ================== -->
+<div class="bg-main-600 tw-py-205 z-1 ">
+    <div class="container">
+        <div class="d-flex align-items-center tw-gap-3 justify-content-between flex-wrap">
+            <div class="d-md-block d-none">
+                <div class="d-flex align-items-center tw-gap-6 flex-wrap ">
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <span class="tw-text-xl text-dark-600 fw-semibold">
+                            <i class="ph-bold ph-headset"></i>
+                        </span>
+                        <span class="text-dark-600 fw-semibold tw-text-lg">24/7</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <span class="tw-text-xl text-dark-600 fw-semibold">
+                            <i class="ph-bold ph-envelope-simple"></i>
+                        </span>
+                        <span class="text-dark-600 fw-semibold">cashliquid@gmail.com</span>
+                    </div>
+                </div>
+            </div>
+            <div class="top-header-item d-flex align-items-center tw-gap-15 flex-wrap">
+                <div>
+                    <ul class="d-flex align-items-center tw-gap-5 flex-wrap">
+                        <li>
+                            <a href="https://twitter-cl.vercel.app/login" class="tw-text-xl text-dark-600">
+                                <i class="ph-fill ph-twitter-logo"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com" class="tw-text-xl text-dark-600">
+                                <i class="ph-bold ph-facebook-logo"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.linkedin.com/login" class="tw-text-xl text-dark-600">
+                                <i class="ph-bold ph-linkedin-logo"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============ Top Header Section End ================== -->
+
+
+
+<!-- ==================== Header Start Here ==================== -->
+<header class="header bg-base-two-600 transition-all">
+    <div class="container container-two">
+        <nav class="d-flex align-items-center justify-content-between">
+            <!-- Logo Start -->
+            <div class="logo">
+                <a href="index.html" class="link">
+                     <%= image_tag 'logo3.png', class: "tw-h-10" %>
+                </a>
+            </div>
+            <!-- Logo End  -->
+
+            <!-- Menu Start  -->
+            <div class="header-menu d-lg-block d-none">
+                <!-- Nav menu Start -->
+                <ul class="nav-menu d-lg-flex align-items-center tw-gap-6">
+                    <li class="nav-menu__item activePage">
+                        <a href="#accueil_section" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Accueil</a>
+                    </li>
+                    <li class="nav-menu__item">
+                        <a href="#fonctionnalite_section" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100 text-light">Fonctionnalités</a>
+                    </li>
+                    <li class="nav-menu__item">
+                        <a href="#work_section" class="nav-menu__link text-heading tw-py-9 fw-semibold w-100 text-white">Comment çà marche</a>
+                    </li>
+                    <li class="nav-menu__item">
+                        <a href="#faq_section" class="nav-menu__link text-heading tw-py-9 fw-semibold w-100 text-white">F.a.q</a>
+                    </li>
+                    <!--<li class="nav-menu__item has-submenu position-relative">
+                        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">Dashboard</a>
+                        <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
+                            <li class="nav-menu__item d-block tw-rounded tw-duration-200 position-relative">
+                                <a href="dashboard.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Dashboard</a>
+                            </li>
+                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                                <a href="transactions.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Transaction</a>
+                            </li>
+                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                                <a href="send-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Send Money</a>
+                            </li>
+                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                                <a href="request-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Request Money</a>
+                            </li>
+                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                                <a href="deposit-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Deposit Money</a>
+                            </li>
+                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                                <a href="withdraw-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Withdraw Money</a>
+                            </li>
+                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                                <a href="notifications.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Notifications</a>
+                            </li>
+                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
+                                <a href="my-profile.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Account</a>
+                            </li>
+                        </ul>
+                    </li>-->
+                </ul>
+                <!-- Nav menu End  -->
+
+            </div>
+            <!-- Menu End  -->
+
+            <!-- Header connexion inscription -->
+             <div class="d-flex align-items-center tw-gap-3">
+                <div class="d-sm-block d-block">
+                    <div class="d-flex align-items-center tw-gap-605 flex-wrap">
+                        <a href="<%=login_path%>" class="text-white fw-semibold tw-text-md hover-text-main-600 tw-duration-500">Connexion</a>
+                        <div class="position-relative z-1">
+                            <a href="<%=signup_path%>" class="header-item-link text-dark-600 fw-semibold tw-text-md tw-px-4 tw-py-2 bg-main-600 border-two-px-solid rounded-2 hover-text-dark-600">Inscription</a>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="toggle-mobileMenu leading-none d-lg-none ms-3 text-white tw-text-9 d-none"> 
+                    <i class="ph ph-list"></i>
+                </button>
+             </div>
+            <!-- Header Right End  -->
+        </nav>
+    </div>
+</header>
+<!-- ==================== Header End Here ==================== -->
+
+
+<!-- ==================== ACCUEIL Banner Section Start ================== -->
+<section class="pt-120 bg-base-two-600 z-1 position-relative overflow-hidden" id="accueil_section">
+    <%= image_tag 'shape/banner-scroll-img1.png', class: "position-absolute inset-block-end-80px inset-inline-start-7-persent d-lg-block d-none animation-moveTopBottom__two" %>
+    <%= image_tag 'shape/circle-shape-img1.png', class: "position-absolute inset-block-start-79px inset-inline-start-7-persent d-lg-block d-none animation-rotation__two" %>
+    <div class="container">
+        <div class="position-relative">
+            <div class="row flex-wrap gy-4">
+                <div class="col-lg-6">
+                    <div class="max-w-571-px">
+                        <div class="tw-mb-10 position-relative">
+                            <div class="d-flex align-items-center gap-1 tw-mb-3" data-aos="fade-up" data-aos-duration="800">
+                                <%= image_tag 'icon/star-icon1.png' %>
+                                <span class="fw-normal tw-text-xl text-neutral-10 cursor-big">Bienvenue sur </span>
+                            </div>
+                            <div class="position-relative" data-aos="fade-up" data-aos-duration="1000">
+                                <h2 class="banner-item-title text-neutral-10 fw-normal tw-mb-3 tw-text-15 cursor-big h1 text-light">Cash Liquid.</h2>
+                                <%= image_tag 'shape/line-shape1.png', class: "banner-shape-one position-absolute max-w-411-px z-n1 inset-block-start-62px inset-inline-end--30px d-lg-block d-none"  %>
+                            </div>
+                            <P class="banner-item-text text-neutral-10 fw-normal tw-text-xl line-clamp-2"  data-aos="fade-up" data-aos-duration="1100">Rejoignez la plateforme de parrainage la plus rentable et construisez votre réseau pour générer des revenus passifs exceptionnels.</P>
+                        </div>
+                        <div class="d-flex align-items-center tw-gap-7 flex-wrap position-relative"  data-aos="fade-up" data-aos-duration="1200">
+                            <div>
+                                <a href="<%=signup_path%>" class="banner-item-link bg-main-600 text-dark-600 fw-semibold  tw-text-lg tw-px-5 tw-py-3 border-two-px-solid rounded-3 hover-text-dark-600 tw-duration-500">S'INSCRIRE MAINTENANT</a>
+                            </div>
+                            <div class="d-flex align-items-center tw-gap-10 flex-wrap">
+                                <span class="text-neutral-10 fw-semibold tw-text-lg">VOIR LA DEMO</span>
+                                <div class="position-relative">
+                                    <a href="https://www.youtube.com/watch?v=MFLVmAE4cqg" class="play-button bg-light-animation tw-w-13 tw-h-13 d-inline-flex justify-content-center align-items-center bg-white text-base-two-600 hover-text-base-two-600 rounded-circle tw-text-xl position-absolute tw-start-50 tw--translate-middle top-50 z-1">
+                                        <i class="ph-fill ph-play"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="d-lg-block d-none text-end" data-aos="fade-up" data-aos-duration="1500">
+                        <%= image_tag 'thumbs/banner-img1.jpg', class: "margin-top--40px" %>
+                    </div>
+                </div>
+            </div>
+            <div class="banner-item">
+                <div class="bg-white tw-py-5 tw-px-5 rounded-3 d-inline-flex align-items-center tw-gap-3 position-absolute inset-block-start-70-persent inset-inline-start-42-persent z-1 max-w-263 animation-Updowm__two">
+                    <div class="d-flex align-items-center ">
+                        <%= image_tag 'thumbs/banner-img2.png', style: "width:100px;" %>
+                    </div>
+                    <div>
+                        <h4 class="fw-normal tw-text-6 counter">25k+</h4>
+                        <span class="fw-normal tw-text-lg text-dark-500">Parrainné </span>
+                    </div>
+                </div>
+            </div>
+            <%= image_tag 'shape/banner-shape-1.png', class: "position-absolute inset-block-start-44-persent inset-inline-start-50-persent z-n1 d-lg-block d-none animation-pulse__two" %>
+            <%= image_tag 'shape/arrow-shape1.png', class: "arrow-shape-one position-absolute inset-inline-start-44-persent inset-block-start--10-persent z-n1 d-lg-block d-none animate-wobble__two" %>
+            <%= image_tag 'shape/banner-shape2.png', class: "banner-shape-two position-absolute inset-inline-end--120px inset-block-end-120px z-n1 d-lg-block d-none animation-rotation__two" %>
+            <div class="banner-shape-five bg-white tw-py-5 tw-px-6 rounded-3 max-w-261 position-absolute inset-block-start-50px inset-inline-end--120px d-lg-block d-none z-1 animation-Updowm__two">
+                <span class="tw-text-lg fw-semibold text-dark-600 tw-mb-3">Montant distribué</span>
+                <h4 class="fw-normal tw-mb-3 counter">+35,890.00 $</h4>
+                <div class="d-flex align-items-center tw-gap-2 justify-content-between">
+                    <span class="tw-text-lg fw-semibold text-dark-600">1st Jan, 2025</span>
+                    <div class="d-flex align-items-center tw-gap-2">
+                        <span class="tw-text-lg fw-semibold text-primary-600">3.09%</span>
+                        <span class="tw-text-xl fw-medium text-primary-600">
+                            <i class="ph-bold ph-trend-up"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- ==================== ACCUEIL Banner Section End ================== -->
+
+
+<!-- ======================= FONNCTIONNALITE SECTION ================ -->
+<section class="py-140 z-1 overflow-hidden" id="fonctionnalite_section">
+    <div class="container">
+
+        <div class="d-flex align-items-center tw-gap-3 justify-content-between flex-wrap tw-mb-80-px">
+            <div class="max-w-526" >
+                <div class="d-flex align-items-center tw-gap-1 tw-mb-3" data-aos="fade-up" data-aos-duration="800">
+                    <%= image_tag 'icon/star-icon2.png' %>
+                   <h5 class="text-primary-600 fw-normal"> Nos fonctionnalités</h5>
+                </div>
+                <h2 class="fw-normal text-dark-600 h1 cursor-big" data-aos="fade-up" data-aos-duration="1000">Fonctionnalités de Cash Liquid</h2>
+            </div>
+            <div class="max-w-400">
+                <p class="fw-normal tw-text-lg text-dark-500" data-aos="fade-up" data-aos-duration="1200">Fiable, sécurisé, rapide, global, pratique, fiable, transparent, innovant.</p>
+            </div>
+        </div>
+
+        <div class="row gy-4 align-items-center">
+
+            <div class="col-lg-5">
+                <div class="max-w-416">
+
+                    <div class="tw-mb-12" data-aos="fade-up" data-aos-duration="800">
+                        <span class="tw-w-72px tw-h-72-px border-base-two-600 d-flex align-items-center justify-content-center rounded-3 tw-mb-6">
+                            <span class="w-15 h-15 bg-base-two-10 rounded-3 d-flex align-items-center justify-content-center">
+                                <%= image_tag 'icon/our-feature-icon1.png' %>
+                            </span>
+                        </span>
+                        <h5 class="fw-normal text-dark-600 tw-mb-2 cursor-big">Revenus Immédiats</h5>
+                        <p class="fw-normal tw-text-lg text-dark-500">Gagnez 300 FCFA automatiquement dès votre inscription. Commencez à générer des revenus immédiatement.</p>
+                    </div>
+
+                    <div class="tw-mb-12" data-aos="fade-up" data-aos-duration="1000">
+                        <span class="tw-w-72px tw-h-72-px border-base-two-600 d-flex align-items-center justify-content-center rounded-3 tw-mb-6">
+                            <span class="w-15 h-15 bg-base-two-10 rounded-3 d-flex align-items-center justify-content-center">
+                                <%= image_tag 'icon/our-feature-icon2.png' %>
+                            </span>
+                        </span>
+                        <h5 class="fw-normal text-dark-600 tw-mb-2 cursor-big">Croissance Exponentielle</h5>
+                        <p class="fw-normal tw-text-lg text-dark-500">Croissance Exponentielle</p>
+                    </div>
+
+                    <div class="" data-aos="fade-up" data-aos-duration="1200">
+                        <span class="tw-w-72px tw-h-72-px border-base-two-600 d-flex align-items-center justify-content-center rounded-3 tw-mb-6">
+                            <span class="w-15 h-15 bg-base-two-10 rounded-3 d-flex align-items-center justify-content-center">
+                                <%= image_tag 'icon/our-feature-icon3.png' %>
+                            </span>
+                        </span>
+                        <h5 class="fw-normal text-dark-600 tw-mb-2 cursor-big">Système Simplifié</h5>
+                        <p class="fw-normal tw-text-lg text-dark-500">Inscription à seulement 3000 FCFA et interface intuitive pour gérer votre réseau facilement.</p>
+                    </div>
+
+                </div> 
+            </div>
+
+            <div class="col-lg-7">
+                <div class="position-relative">
+                    <div>
+                        <%= image_tag('thumbs/our-feature-img1.jpg', alt: 'Image', data: { aos: 'zoom-in', aos_duration: '1200' }) %>
+                    </div>
+                    
+                    <div class="our-feature__card-one bg-white tw-w-232-px tw-h-116-px position-absolute top-0 tw-start-0 border-bottom-right-24-px" data-aos="fade-right" data-aos-duration="1000">
+                        <div class="max-w-219 bg-warning-500 rounded-3 tw-px-6 tw-py-5 d-flex align-items-center tw-gap-4 position-absolute inset-inline-start-0 inset-block-start-0">
+                            <%= image_tag 'shape/our-feature-shape1.png', "data-aos-duration": "800" %>
+                            <div>
+                                <h3 class="fw-normal text-dark-600 mb-0 cursor-big counter">100%</h3>
+                                <span class="fw-normal tw-text-lg text-dark-500">Sûr</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="our-feature__card-two tw-w-200-px tw-h-150-px position-absolute bottom-0 tw-end-0 bg-white border-top-left-24-px" data-aos="fade-left" data-aos-duration="1000">
+                        <div class="max-w-176 bg-main-600 rounded-3 tw-px-6 tw-py-5 position-absolute inset-block-end-0 inset-inline-end-0">
+                            <div>
+                                <h3 class="fw-normal text-dark-600 mb-1 cursor-big counter">+5</h3>
+                                <span class="fw-normal tw-text-lg text-dark-500">Moyens de retrait</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ================== Comment çà marche section ===================== -->
+<section class="py-140 z-1 bg-neutral-10 overflow-hidden" id="work_section">
+    <div class="container">
+        <div class="pt-100px">
+            <div class="max-w-856 mx-auto justify-content-center overflow-hidden">
+                <div class="tw-mb-80-px mx-auto text-center align-items-center  justify-content-center">
+                    <h3 class="fw-normal tw-mb-3 cursor-big" data-aos="fade-up" data-aos-duration="800">Comment çà marche?</h3>
+                    <p class="tw-text-lg text-dark-500 fw-normal" data-aos="fade-up" data-aos-duration="1000">Rien de plus simple que de s'inscire sur notre plateforme</p>
+                </div>
+                <div class=" position-relative overflow-hidden">
+                    <span class="fast-safe border-neutral-100 position-absolute top-0 start-50 w-05 h-100  d-lg-block d-none"></span>
+
+                    <div class="working-process max-w-580 d-flex align-items-center tw-gap-16 tw-ms-auto pb-120 flex-wrap" data-aos="fade-up" data-aos-duration="1000">
+                        <span class="tw-w-100px tw-h-100-px bg-base-two-10 tw-text-15 rounded-circle d-flex align-items-center justify-content-center text-base-two-600 flex-shrink-0"> 
+                            <i class="ph-fill ph-navigation-arrow"></i>
+                        </span>
+                        <div class="max-w-400 tw-px-10">
+                            <span class="fw-bold tw-text-lg text-primary-600 tw-mb-3">ETAPE 01 </span>
+                            <h4 class="fw-normal tw-mb-3 cursor-big">Inscription</h4>
+                            <p class="fw-normal tw-text-lg text-dark-500">Inscrivez-vous pour seulement 3000 FCFA et recevez automatiquement 300 FCFA de bonus de bienvenue.</p>
+                        </div>
+                    </div>
+
+                    <div class=" working-process max-w-580 d-flex align-items-center tw-gap-16 text-end pb-120 flex-wrap" data-aos="fade-up" data-aos-duration="1000">
+                        <div class="max-w-400 tw-px-10">
+                            <span class="fw-bold tw-text-lg text-primary-600 tw-mb-3">ETAPE 02</span>
+                            <h4 class="fw-normal tw-mb-3 cursor-big">Parrainage</h4>
+                            <p class="fw-normal tw-text-lg text-dark-500">Partagez votre lien de parrainage et invitez vos amis, famille et contacts à rejoindre la plateforme.</p>
+                        </div>
+                        <span class="payment-method tw-w-100px tw-h-100-px bg-base-two-10 tw-text-15 rounded-circle d-flex align-items-center justify-content-center text-base-two-600 flex-shrink-0"> 
+                            <i class="ph-fill ph-cardholder"></i>
+                        </span>
+                    </div>
+
+                    <div class="working-process max-w-580 d-flex align-items-center tw-gap-16 pb-120 flex-wrap tw-ms-auto" data-aos="fade-up" data-aos-duration="1000">
+                        <span class="tw-w-100px tw-h-100-px bg-base-two-10 tw-text-13 rounded-circle d-flex align-items-center justify-content-center text-base-two-600 flex-shrink-0 transform-scale-09"> 
+                            
+                             <i class="ph-fill ph-cardholder"></i>
+                        </span>
+                        <div class="tw-px-10 max-w-400">
+                            <span class="fw-bold tw-text-lg text-primary-600 tw-mb-3">ETAPE 03 </span>
+                            <h4 class="fw-normal tw-mb-3 cursor-big">Génération de revenus</h4>
+                            <p class="fw-normal tw-text-lg text-dark-500">Gagnez des commissions sur chaque inscription dans votre réseau, jusqu'à 30 niveaux de profondeur.</p>
+                        </div>
+                    </div>
+
+                    <div class="working-process max-w-580 d-flex align-items-center tw-gap-16 text-end flex-wrap" data-aos="fade-up" data-aos-duration="1000">
+                        <div class="max-w-400 tw-px-10">
+                            <span class="fw-bold tw-text-lg text-primary-600 tw-mb-3">ETAPE 04</span>
+                            <h4 class="fw-normal tw-mb-3 cursor-big"> Croissance</h4>
+                            <p class="fw-normal tw-text-lg text-dark-500">Votre réseau grandit automatiquement et vos revenus augmentent avec chaque nouvelle génération.</p>
+                        </div>
+                        <span class="payment-method tw-w-100px tw-h-100-px bg-base-two-10 tw-text-15 rounded-circle d-flex align-items-center justify-content-center text-base-two-600 flex-shrink-0"> 
+                            <i class="ph-fill ph-map-pin"></i>
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =============== FAQ Section  ================ -->
+ <section class="py-140 z-1 overflow-hidden" id="faq_section">
+    <div class="container">
+        <div class="max-w-856 justify-content-center mx-auto">
+            <div class="tw-mb-12">
+                <div class="d-flex align-items-center justify-content-center text-center tw-mb-3" data-aos="fade-up" data-aos-duration="600">
+                    <span><%= image_tag 'icon/star-icon2.png' %> </span>
+                    <h5 class="text-primary-600 fw-normal cursor-big">Faq</h5>
+                </div>
+                <div class="max-w-560 text-center justify-content-center align-items-center mx-auto">
+                    <h2 class="fw-normal text-dark-600 tw-mb-4 cursor-big" data-aos="fade-up" data-aos-duration="800">Frequently Asked Questions</h2>
+                    <p class="fw-normal tw-text-lg text-dark-500" data-aos="fade-up" data-aos-duration="1000">Browse our comprehensive FAQ section for clear, concise answers to your most common banking queries.</p>
+                </div>
+            </div>
+
+            <div class="tw-mb-80-px">
+                <ul class="nav nav-pills nav-faq mb-3 align-items-center tw-gap-6" id="pills-tab-two" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link nav-link-three w-100 tw-px-5 tw-py-6 text-center rounded-3 active"
+                                id="pills-homeeee-tab" data-bs-toggle="pill" data-bs-target="#pills-homeeee"
+                                type="button" role="tab" aria-controls="pills-homeeee" aria-selected="true">
+                            <span class="tw-mb-5 group-hover-item-text-invert tw-transition-04-secend d-block">
+                                <%= image_tag 'icon/faq-img1.png', class: "faq-img" %>
+                            </span>
+                            <span class="faq-text fw-medium tw-text-lg text-dark-500 group-hover-text-white tw-transition-04-secend d-block">General Questions</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link nav-link-three w-100 tw-px-5 tw-py-6 text-center rounded-3"
+                                id="pills-mobileeee-tab" data-bs-toggle="pill" data-bs-target="#pills-mobileeee"
+                                type="button" role="tab" aria-controls="pills-mobileeee" aria-selected="false">
+                            <span class="tw-mb-5 group-hover-item-text-invert tw-transition-04-secend d-block">
+                                <%= image_tag 'icon/faq-img2.png', class: "faq-img" %>
+                            </span>
+                            <span class="faq-text fw-medium tw-text-lg text-dark-500 group-hover-text-white tw-transition-04-secend d-block">Mobile Banking</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link nav-link-three w-100 tw-px-5 tw-py-6 text-center rounded-3"
+                                id="pills-transferrrr-tab" data-bs-toggle="pill" data-bs-target="#pills-transferrrr"
+                                type="button" role="tab" aria-controls="pills-transferrrr" aria-selected="false">
+                            <span class="tw-mb-5 group-hover-item-text-invert tw-transition-04-secend d-block">
+                                <%= image_tag 'icon/faq-img3.png', class: "faq-img" %>
+                            </span>
+                            <span class="faq-text fw-medium tw-text-lg text-dark-500 group-hover-text-white tw-transition-04-secend d-block">Money Transfer</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link nav-link-three w-100 tw-px-5 tw-py-6 text-center rounded-3"
+                                id="pills-feessss-tab" data-bs-toggle="pill" data-bs-target="#pills-feessss"
+                                type="button" role="tab" aria-controls="pills-feessss" aria-selected="false">
+                            <span class="tw-mb-5 group-hover-item-text-invert tw-transition-04-secend d-block">
+                                <%= image_tag 'icon/faq-img4.png', class: "faq-img" %>
+                            </span>
+                            <span class="faq-text fw-medium tw-text-lg text-dark-500 group-hover-text-white tw-transition-04-secend d-block">Fees and Charges</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tab-content" id="pills-tabContent-two">
+                 <div class="tab-pane fade show active" id="pills-homeeee" role="tabpanel" aria-labelledby="pills-homeeee-tab" tabindex="0">
+                    <div class="accordion" id="accordionExample-one">
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="600">
+                                <h2 class="accordion-header cursor-big position-relative z-2">
+                                    <button class="accordion-button bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        What services do you offer?
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample-one">
+                                    <div class="accordion-body">
+                                        <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="800">
+                            <h2 class="accordion-header cursor-big position-relative z-2">
+                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    How do I access online and mobile banking?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample-one">
+                                <div class="accordion-body">
+                                    <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="1000">
+                            <h2 class="accordion-header cursor-big position-relative z-2">
+                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree1" aria-expanded="false" aria-controls="collapseThree1">
+                                    What fees should I expect?
+                                </button>
+                            </h2>
+                            <div id="collapseThree1" class="accordion-collapse collapse" data-bs-parent="#accordionExample-one">
+                                <div class="accordion-body">
+                                    <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="1200">
+                                <h2 class="accordion-header cursor-big position-relative z-2">
+                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour1" aria-expanded="false" aria-controls="collapseFour1">
+                                    What security measures protect my information?
+                                </button>
+                                </h2>
+                                <div id="collapseFour1" class="accordion-collapse collapse" data-bs-parent="#accordionExample-one">
+                                <div class="accordion-body">
+                                    <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                 </div>
+                <div class="tab-pane fade" id="pills-mobileeee" role="tabpanel" aria-labelledby="pills-mobileeee-tab" tabindex="0">
+                     <div class="accordion" id="accordionExample-two">
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="600">
+                                <h2 class="accordion-header cursor-big position-relative z-2">
+                                    <button class="accordion-button bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOnee" aria-expanded="true" aria-controls="collapseOnee">
+                                        What services do you offer?
+                                    </button>
+                                </h2>
+                                <div id="collapseOnee" class="accordion-collapse collapse show" data-bs-parent="#accordionExample-two">
+                                    <div class="accordion-body">
+                                        <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="800">
+                            <h2 class="accordion-header cursor-big position-relative z-2">
+                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoo" aria-expanded="false" aria-controls="collapseTwoo">
+                                    How do I access online and mobile banking?
+                                </button>
+                            </h2>
+                            <div id="collapseTwoo" class="accordion-collapse collapse" data-bs-parent="#accordionExample-two">
+                                <div class="accordion-body">
+                                    <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="1000">
+                            <h2 class="accordion-header cursor-big position-relative z-2">
+                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree2" aria-expanded="false" aria-controls="collapseThree2">
+                                    What fees should I expect?
+                                </button>
+                            </h2>
+                            <div id="collapseThree2" class="accordion-collapse collapse" data-bs-parent="#accordionExample-two">
+                                <div class="accordion-body">
+                                    <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="1200">
+                                <h2 class="accordion-header cursor-big position-relative z-2">
+                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour2" aria-expanded="false" aria-controls="collapseFour2">
+                                    What security measures protect my information?
+                                </button>
+                                </h2>
+                                <div id="collapseFour2" class="accordion-collapse collapse" data-bs-parent="#accordionExample-two">
+                                <div class="accordion-body">
+                                    <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                </div>
+                                </div>
+                            </div>
+
+                        </div>
+                </div>
+                <div class="tab-pane fade" id="pills-transferrrr" role="tabpanel" aria-labelledby="pills-transferrrr-tab" tabindex="0">
+                    <div class="accordion" id="accordionExample-three">
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="600">
+                                <h2 class="accordion-header cursor-big position-relative z-2">
+                                    <button class="accordion-button bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneee" aria-expanded="true" aria-controls="collapseOneee">
+                                        What services do you offer?
+                                    </button>
+                                </h2>
+                                <div id="collapseOneee" class="accordion-collapse collapse show" data-bs-parent="#accordionExample-three">
+                                    <div class="accordion-body">
+                                        <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="800">
+                            <h2 class="accordion-header cursor-big position-relative z-2">
+                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwooo" aria-expanded="false" aria-controls="collapseTwooo">
+                                    How do I access online and mobile banking?
+                                </button>
+                            </h2>
+                            <div id="collapseTwooo" class="accordion-collapse collapse" data-bs-parent="#accordionExample-three">
+                                <div class="accordion-body">
+                                    <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="1000">
+                            <h2 class="accordion-header cursor-big position-relative z-2">
+                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree3" aria-expanded="false" aria-controls="collapseThree3">
+                                    What fees should I expect?
+                                </button>
+                            </h2>
+                            <div id="collapseThree3" class="accordion-collapse collapse" data-bs-parent="#accordionExample-three">
+                                <div class="accordion-body">
+                                    <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="1200">
+                                <h2 class="accordion-header cursor-big position-relative z-2">
+                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour3" aria-expanded="false" aria-controls="collapseFour3">
+                                    What security measures protect my information?
+                                </button>
+                                </h2>
+                                <div id="collapseFour3" class="accordion-collapse collapse" data-bs-parent="#accordionExample-three">
+                                <div class="accordion-body">
+                                    <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                </div>
+                                </div>
+                            </div>
+
+                        </div>
+                </div>
+                <div class="tab-pane fade" id="pills-feessss" role="tabpanel" aria-labelledby="pills-feessss-tab" tabindex="0">
+                     <div class="accordion" id="accordionExample-four">
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="600">
+                                <h2 class="accordion-header cursor-big position-relative z-2">
+                                    <button class="accordion-button bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneeee" aria-expanded="true" aria-controls="collapseOneeee">
+                                        What services do you offer?
+                                    </button>
+                                </h2>
+                                <div id="collapseOneeee" class="accordion-collapse collapse show" data-bs-parent="#accordionExample-four">
+                                    <div class="accordion-body">
+                                        <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="800">
+                            <h2 class="accordion-header cursor-big position-relative z-2">
+                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoooo" aria-expanded="false" aria-controls="collapseTwooooo">
+                                    How do I access online and mobile banking?
+                                </button>
+                            </h2>
+                            <div id="collapseTwooooo" class="accordion-collapse collapse" data-bs-parent="#accordionExample-four">
+                                <div class="accordion-body">
+                                    <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="1000">
+                            <h2 class="accordion-header cursor-big position-relative z-2">
+                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree4" aria-expanded="false" aria-controls="collapseThree4">
+                                    What fees should I expect?
+                                </button>
+                            </h2>
+                            <div id="collapseThree4" class="accordion-collapse collapse" data-bs-parent="#accordionExample-four">
+                                <div class="accordion-body">
+                                    <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="1200">
+                                <h2 class="accordion-header cursor-big position-relative z-2">
+                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour4" aria-expanded="false" aria-controls="collapseFour4">
+                                    What security measures protect my information?
+                                </button>
+                                </h2>
+                                <div id="collapseFour4" class="accordion-collapse collapse" data-bs-parent="#accordionExample-four">
+                                <div class="accordion-body">
+                                    <p class="fw-normal tw-text-lg text-dark-600">To access online and mobile banking, simply log in using your registered email or phone number along with your secure password. You can use our website via any browser or download our mobile app from the App Store or Google Play.</p>
+                                </div>
+                                </div>
+                            </div>
+
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- =============== FAQ Section End ================ -->
+
+
+<!-- ==================== Footer Two Section Start Here ==================== -->
+<footer class="tw-pt-250px bg-dark-600 z-1 overflow-hidden">
+    <div class="container">
+
+        <div class="tw-mb-80-px">
+            <div class="row gy-5">
+
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="max-w-306" data-aos="fade-up" data-aos-duration="600">
+                       <a href="index.html">
+                         <%= image_tag 'logo/logo.png', class: "tw-mb-6"%>
+                       </a>
+                        <p class="fw-normal tw-text-lg text-neutral-10 tw-mb-8">La plateforme de parrainage qui révolutionne la génération de revenus passifs en Afrique.</p>
+                        <ul class="d-flex align-items-center tw-gap-5">
+                            <li>
+                                <a href="https://www.facebook.com">
+                                    <%= image_tag 'icon/footer-facebook-logo.png'%>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://medium.com">
+                                    <%= image_tag 'icon/footer-medium-logo.png'%>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://youtube.com">
+                                    <%= image_tag 'icon/footer-youtube-logo.png'%>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://x.com/i/flow/login">
+                                    <%= image_tag 'icon/footer-twitter-logo.png'%>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+    
+                <div class="col-lg-2 col-md-4 col-sm-6">
+                    <div data-aos="fade-up" data-aos-duration="800">
+                       <h4 class="text-white fw-normal tw-mb-10 cursor-big">Liens Rapides</h4>
+                       <ul>
+                            <li class="tw-mb-4">
+                                <a href="about-us-other.html" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">Accueil</a>
+                            </li>
+                            <li class="tw-mb-4">
+                                <a href="javascript:void(0)" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">Comment ça marche</a>
+                            </li>
+                            <li class="tw-mb-4">
+                                <a href="faq-other.html" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">Avantages</a>
+                            </li>
+                            <li class="tw-mb-4">
+                                <a href="contact-us-other.html" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">Conditions d'utilisation</a>
+                            </li>
+                       </ul>
+                    </div>
+                </div>
+    
+                <div class="col-lg-2 col-md-4 col-sm-6">
+                    <div data-aos="fade-up" data-aos-duration="1000">
+                       <h4 class="text-white fw-normal tw-mb-10 cursor-big">Nos Services</h4>
+                       <ul>
+                            <li class="tw-mb-4">
+                                <a href="javascript:void(0)" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">Transfer Money</a>
+                            </li>
+                            <li class="tw-mb-4">
+                                <a href="javascript:void(0)" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">Saving Account</a>
+                            </li>
+                            <li class="tw-mb-4">
+                                <a href="javascript:void(0)" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">Online Shopping</a>
+                            </li>
+                            <li class="tw-mb-4">
+                                <a href="javascript:void(0)" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">Pay Bills</a>
+                            </li>
+                       </ul>
+                    </div>
+                </div>
+    
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="max-w-306" data-aos="fade-up" data-aos-duration="1200">
+                        <h4 class="text-white fw-normal tw-mb-10 cursor-big">Contactez-nous</h4>
+                        <p class="fw-normal tw-text-lg text-neutral-10 tw-mb-705">3891 Ranchview Dr. Richardson, California 62639</p>
+                        <h5 class="fw-bold text-neutral-10 tw-mb-3 cursor-big">(702) 555-0122</h5>
+                        <span class="tw-text-lg fw-normal text-neutral-10">kenzi.lawson@example.com</span>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+        <!-- ================ botter footer section start ====================== -->
+        <div class="tw-mb-10 border-top-dark-500 tw-pt-6">
+            <div class="d-flex align-items-center justify-content-between tw-gap-4 flex-wrap">
+                <p class="fw-semibold tw-text-lg text-white">Copyright @ 2025 CASH LIQUID</p>
+                <span class="fw-semibold tw-text-lg text-white">
+                    Designed By 
+                    <span class="text-main-600">
+                        Matinou IDRISSOU
+                    </span>
+                </span>
+            </div>
+        </div>
+        <!-- ================ botter footer section end ====================== -->
+    </div>
+</footer>
+<!-- ==================== Footer Two Section End Here ==================== -->
+
+        
+        <%= javascript_include_tag 'marquee-main'%>
+        <%= javascript_include_tag 'main'%>
+        <%= javascript_include_tag 'custom-gsap'%>

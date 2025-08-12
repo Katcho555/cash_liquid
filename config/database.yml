@@ -1,0 +1,21 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: cash_liquid  # Remplacez par votre nom d'utilisateur PostgreSQL
+  password: 123456  # Remplacez par votre mot de passe PostgreSQL
+  host: localhost
+
+development:
+  <<: *default
+  database: cash_liquid_db  # Nom de la base de données de développement
+
+test:
+  <<: *default
+  database: cash_liquid_test  # Nom de la base de données de test
+
+production:
+  <<: *default
+  database: clinico_production  # Nom de la base de données de production
+  username: <%= ENV['PRODUCTION_DB_USERNAME'] %>  # Utilisez une variable d'environnement pour le nom d'utilisateur en production
+  password: <%= ENV['PRODUCTION_DB_PASSWORD'] %>  # Utilisez une variable d'environnement pour le mot de passe en production

@@ -1,0 +1,665 @@
+
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff6b6b;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #20bf6b;
+            --premium: #ff9d00;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3e8ff 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            padding-top: 20px;
+        }
+        
+        .premium-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            background: white;
+        }
+        
+        .premium-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .premium-header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .premium-header::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -30px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+        }
+        
+        .premium-badge {
+            background: linear-gradient(135deg, var(--premium) 0%, #ff6b00 100%);
+            display: inline-block;
+            padding: 8px 25px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(255, 157, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .benefit-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(106, 17, 203, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(106, 17, 203, 0.15);
+        }
+        
+        .benefit-card.premium {
+            border-top: 4px solid var(--premium);
+        }
+        
+        .pricing-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(106, 17, 203, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-card.popular {
+            border: 2px solid var(--premium);
+            transform: scale(1.03);
+        }
+        
+        .pricing-card.popular::before {
+            content: 'POPULAIRE';
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background: var(--premium);
+            color: white;
+            font-weight: 700;
+            padding: 5px 30px;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(106, 17, 203, 0.2);
+        }
+        
+        .pricing-card.popular:hover {
+            transform: translateY(-10px) scale(1.03);
+        }
+        
+        .form-control {
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 2px solid #e1e5ee;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
+        }
+        
+        .btn-premium {
+            background: linear-gradient(to right, var(--premium), #ff6b00);
+            border: none;
+            border-radius: 10px;
+            padding: 15px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 157, 0, 0.3);
+            color: white;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-premium:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 157, 0, 0.4);
+            color: white;
+        }
+        
+        .btn-premium:active {
+            transform: translateY(1px);
+        }
+        
+        .referral-card {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            color: white;
+            box-shadow: 0 10px 30px rgba(106, 17, 203, 0.2);
+        }
+        
+        .referral-code {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-align: center;
+            margin: 20px 0;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            filter: blur(0.5rem);
+        }
+        
+        .social-share {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-share .btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: white;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .social-share .btn:hover {
+            transform: translateY(-5px);
+        }
+        
+        .floating-animation {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 157, 0, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 157, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 157, 0, 0); }
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            height: 100%;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin: 0 auto 20px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 991.98px) {
+            .premium-header {
+                padding: 2rem;
+            }
+            
+            .premium-container {
+                margin: 1rem;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .premium-header, .premium-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+
+    <div class="container">
+        <div class="premium-container">
+            <!-- Header -->
+            <div class="premium-header">
+                <div class="premium-badge floating-animation">
+                    <i class="fas fa-crown me-2"></i>ABONNEMENT PREMIUM
+                </div>
+                <h1 class="fw-bold display-4">Félicitations pour votre inscription !</h1>
+                <p class="lead fs-3">Activez votre compte premium pour débloquer votre code de parrainage et accéder à tous les avantages</p>
+            </div>
+            
+            <!-- Content -->
+            <div class="premium-content p-4 p-md-5">
+                <div class="row mb-5">
+                    <div class="col-lg-8">
+                        <h2 class="fw-bold mb-4">Votre code de parrainage exclusif</h2>
+                        
+                        <div class="referral-card">
+                            <p class="mb-3">Partagez ce code avec vos contacts pour gagner des récompenses à chaque nouvelle inscription</p>
+                            <div class="referral-code" id="referralCode">PARRAIN-XXXXXXX</div>
+                            <p>Pour chaque filleul qui s'inscrit avec votre code, vous gagnez <span class="fw-bold">10%</span> de ses transactions</p>
+                            
+                            <div class="social-share">
+                                <button class="btn" title="Copier le code" id="copyBtn">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button class="btn" title="Partager sur WhatsApp">
+                                    <i class="fab fa-whatsapp"></i>
+                                </button>
+                                <button class="btn" title="Partager sur Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </button>
+                                <button class="btn" title="Partager par email">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5">
+                            <h3 class="fw-bold mb-4">Comment fonctionne le parrainage ?</h3>
+                            <div class="row">
+                                <div class="col-md-4 mb-4">
+                                    <div class="step-card">
+                                        <div class="step-number">1</div>
+                                        <h5>Partagez votre code</h5>
+                                        <p class="mb-0">Envoyez votre code unique à vos contacts</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="step-card">
+                                        <div class="step-number">2</div>
+                                        <h5>Ils s'inscrivent</h5>
+                                        <p class="mb-0">Vos filleuls utilisent votre code à l'inscription</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="step-card">
+                                        <div class="step-number">3</div>
+                                        <h5>Gagnez des récompenses</h5>
+                                        <p class="mb-0">Recevez 15% de chaque transaction de vos filleuls</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="sticky-top" style="top: 20px;">
+                            <div class="pricing-card popular">
+                                <h3 class="fw-bold text-center mb-4">Abonnement Premium</h3>
+                                
+                                <div class="text-center mb-4">
+                                    <span class="display-3 fw-bold">3,000f</span>
+                                   <!-- <span class="text-muted">/mois</span>-->
+                                </div>
+                                
+                                <ul class="list-unstyled mb-4">
+                                    <li class="mb-3 d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        <span>Accès complet à la plateforme</span>
+                                    </li>
+                                    <li class="mb-3 d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        <span>Code de parrainage personnel</span>
+                                    </li>
+                                    <li class="mb-3 d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        <span>Jusqu'à 10% de commission sur chaque filleul</span>
+                                    </li>
+                                    <li class="mb-3 d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        <span>Tableau de bord analytique avancé</span>
+                                    </li>
+                                    <li class="mb-3 d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        <span>Support prioritaire 24/7</span>
+                                    </li>
+                                    <li class="mb-3 d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        <span>Formations exclusives</span>
+                                    </li>
+                                </ul>
+                                
+                                <h5 class="fw-bold mb-3">Méthode de paiement</h5>
+                                
+                                <div class="mb-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" checked>
+                                        <label class="form-check-label" for="creditCard">
+                                            <i class="fab fa-cc-visa me-1"></i>
+                                            <i class="fab fa-cc-mastercard me-1"></i>
+                                            Fedapay
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline d-none">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="paypal">
+                                        <label class="form-check-label" for="paypal">
+                                            <i class="fab fa-cc-paypal me-1"></i>
+                                            PayPal
+                                        </label>
+                                    </div>
+                                </div>
+                                
+             
+                                    <%= form_with url: subscriptions_path, method: :post, data: {turbo:"false"} do %>
+                                    <button type="submit" class="btn-premium mt-3">
+                                        <i class="fas fa-lock me-2"></i> Activer mon compte premium
+                                    </button>
+                                    <% end %>
+
+
+                                
+                                <div class="text-center mt-3 small text-muted">
+                                    <p class="mb-0">Votre code de parrainage sera debloqué une fois l'abonnement fait.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-5">
+                    <h3 class="fw-bold mb-4">Pourquoi passer Premium ?</h3>
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="benefit-card premium">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-primary text-white rounded-circle p-2 me-3">
+                                        <i class="fas fa-chart-line fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">Revenus garantis</h5>
+                                        <p class="mb-0">Gagnez jusqu'à 500€/mois avec notre programme de parrainage</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="benefit-card premium">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-primary text-white rounded-circle p-2 me-3">
+                                        <i class="fas fa-gift fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">Bonus exclusifs</h5>
+                                        <p class="mb-0">Accédez à des cadeaux et récompenses mensuelles</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="benefit-card premium">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-primary text-white rounded-circle p-2 me-3">
+                                        <i class="fas fa-headset fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">Support prioritaire</h5>
+                                        <p class="mb-0">Notre équipe vous accompagne 24h/24 et 7j/7</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-5">
+                    <div class="alert alert-warning d-inline-block">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        Votre compte est actuellement inactif. Activez votre abonnement premium pour l'activer.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <% if @show_payment_modal %>
+  
+  <%if session[:souscription_amount]
+    @current_souscription_amount = session[:souscription_amount]
+    # converted_amount contient maintenant votre valeur en XOF
+  end%>
+  <div class="payment-modal-overlay" style="display: flex;">
+    <div class="payment-modal-container">
+      <div class="text-center">
+        <!-- Loader et message -->
+        <div id="payment-loader" style="display: block;">
+          <div class="spinner mb-3"></div>
+          <p id="loader-message">Chargement du widget de paiement...</p>
+        </div>
+
+        <!-- Widget FedaPay -->
+        <div id="embed" style="display: none; width: 100%; height: 420px"></div>
+
+        <!-- Formulaire caché pour soumettre l'ID -->
+        <%= form_tag process_payment_subscription_path(@subscription), method: :post, id: 'payment-form', class: 'w-100' do %>
+          <%= hidden_field_tag 'amount', @current_souscription_amount.to_i %>
+          <%= hidden_field_tag 'id', @subscription.id %>
+          <%= hidden_field_tag 'transaction-id', '', id: 'transaction-id' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .payment-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .payment-modal-container {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto;
+      border: 5px solid #e2e8f0;
+      border-top: 5px solid #0d6efd;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+
+  <script type="text/javascript">
+    // Simule un petit délai pour montrer le loader avant le chargement du widget
+    setTimeout(() => {
+      FedaPay.init({
+        public_key: 'pk_sandbox_ywrlaTQdbqll7iBWVEkbrCZe',
+        transaction: {
+          amount: <%= @current_souscription_amount.to_i %>,
+          description: "Souscription <%= @subscription.id %>"
+        },
+        customer: {
+          email: '<%= current_user.email %>',
+          firstname: '<%= current_user.prenom %>',
+          lastname: '<%= current_user.nom %>'
+        },
+         // Paiement réussi
+        onComplete: function (response) {
+          console.log(response);
+          if (response && response.transaction && response.transaction.status === 'approved') {
+            document.getElementById('embed').style.display = 'none';
+             document.getElementById('payment-loader').style.display = 'block';
+            document.getElementById('loader-message').innerText = "Paiement reçu. Traitement en cours...";
+            document.getElementById('loader-message').style.color = "green";
+
+            const transactionId = response.transaction.id;
+            document.getElementById('transaction-id').value = transactionId;
+            console.log("Transaction ID :", transactionId);
+
+            // Attendre une micro pause pour soumettre correctement
+            setTimeout(() => {
+              console.log("Soumission du formulaire");
+              document.getElementById('payment-form').submit();
+            }, 100);
+          } else {
+             document.getElementById('embed').style.display = 'none';
+             document.getElementById('payment-loader').style.display = 'block';
+            document.getElementById('loader-message').innerText = "Paiement annulé ou refusé.";
+            document.getElementById('loader-message').style.color = "red";
+            setTimeout(() => {
+              // Ferme le modal (tu peux le cacher ou le supprimer)
+              const modal = document.querySelector('.payment-modal-overlay');
+              if (modal) modal.remove();
+
+              // Redirige vers une page sécurisée
+              window.location.href = "<%= souscriptions_path %>"; // Ou autre route
+            }, 2000);
+          }
+        },
+
+        // Paiement annulé sans retour (fermeture manuelle du widget)
+        onClose: function () {
+          document.getElementById('loader-message').innerText = "Paiement annulé.";
+          setTimeout(() => {
+        // Ferme le modal (tu peux le cacher ou le supprimer)
+        const modal = document.querySelector('.payment-modal-overlay');
+        if (modal) modal.remove();
+
+        // Redirige vers une page sécurisée
+        window.location.href = "<%= souscriptions_path %>"; // Ou autre route
+      }, 2000);;
+        },
+        onError: function () {
+          document.getElementById('loader-message').innerText = "Erreur de chargement du widget. Veuillez réessayer.";
+          document.getElementById('embed').style.display = 'none';
+          document.getElementById('payment-loader').style.display = 'block';
+        },
+        container: '#embed'
+      });
+
+      // Affiche le widget, masque le loader
+      document.getElementById('payment-loader').style.display = 'none';
+      document.getElementById('embed').style.display = 'block';
+    }, 1200);
+  </script>
+
+<% end %>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Copier le code de parrainage
+            $('#copyBtn').click(function() {
+                const code = $('#referralCode').text();
+                navigator.clipboard.writeText(code)
+                    .then(() => {
+                        $(this).html('<i class="fas fa-check"></i>');
+                        $(this).addClass('btn-success').removeClass('btn-light');
+                        setTimeout(() => {
+                            $(this).html('<i class="fas fa-copy"></i>');
+                            $(this).addClass('btn-light').removeClass('btn-success');
+                        }, 2000);
+                    });
+            });
+            
+            // Soumission du formulaire de paiement
+            $('#paymentForm').submit(function(e) {
+                e.preventDefault();
+                
+                const btn = $(this).find('button[type="submit"]');
+                btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Traitement...');
+                
+                // Simulation de traitement de paiement
+                setTimeout(() => {
+                    // Animation de succès
+                    $('.premium-header').css('background', 'linear-gradient(135deg, #20bf6b 0%, #01baef 100%)');
+                    $('.premium-badge').css('background', 'linear-gradient(135deg, #20bf6b 0%, #01baef 100%)');
+                    $('.premium-badge').html('<i class="fas fa-check me-2"></i>ABONNEMENT ACTIVÉ');
+                    
+                    // Message de succès
+                    const successHTML = `
+                        <div class="text-center py-5">
+                            <i class="fas fa-check-circle display-1 text-success mb-4"></i>
+                            <h2 class="fw-bold mb-3">Votre compte premium est activé !</h2>
+                            <p class="lead mb-4">Félicitations ! Vous avez maintenant accès à toutes les fonctionnalités premium.</p>
+                            <a href="dashboard.html" class="btn btn-primary btn-lg px-5">
+                                <i class="fas fa-tachometer-alt me-2"></i>Accéder à votre tableau de bord
+                            </a>
+                        </div>
+                    `;
+                    
+                    $('.premium-content').html(successHTML);
+                }, 2000);
+            });
+        });
+    </script>
+    <% if @show_payment_modal %>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const modal = new bootstrap.Modal(document.getElementById("premiumModal"));
+        modal.show();
+        });
+    </script>
+    <% end %>
