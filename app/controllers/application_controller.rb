@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
 
     def balance_admin
          # Somme brute des souscriptions
-        @total_montant = Subscription.sum(:amount).where(status: "payé")
+        @total_montant = Subscription.where(status: "payé").sum(:amount)
 
   
         @total_commission = User.sum(:balance)
