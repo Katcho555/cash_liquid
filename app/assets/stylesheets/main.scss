@@ -408,17 +408,6 @@
     position: relative;
 }
 
-// .common-file[type=file]::file-selector-button {
-//     border: unquote("1px solid hsl(var(--black) / 0.08)");
-//     padding: 4px 6px;
-//     border-radius: 0.2em;
-//     background-color: unquote("hsl(var(--))") !important;
-//     transition: 0.2s linear;
-//     line-height: 25px;
-//     position: relative;
-//     margin-inline-start: 15px;
-//     color: unquote("hsl(var(--body-color))") !important;
-// }
 
 .common-file[type=file]::file-selector-button:hover {
     background-color: var(--main-600);
@@ -588,12 +577,7 @@ input[type=number] {
 }
 
 /* Switch Css End */
-/* ================================= Form Css End =========================== */
-/* ================================= Tab Css Start =========================== */
-// .common-tab .nav-item .nav-link.active {
-//     color: unquote("hsl(var(--white))") !important;
-//     border-color: unquote("hsl(var(--))") !important;
-// }
+
 
 .common-tab .nav-item .nav-link:hover {
     color: var(--main-600);
@@ -8684,25 +8668,6 @@ input:focus, input:focus-visible {
     transform: scale(1.06);
 }
 
-// .progress-wrap::after {
-//     position: absolute;
-//     font-family: "Phosphor";
-//     font-weight: 900;
-//     content: "\e08e";
-//     text-align: center;
-//     height: 46px;
-//     width: 46px;
-//     line-height: 46px;
-//     font-size: 18px;
-//     inset-inline-start: 0;
-//     inset-block-start: 0;
-//     cursor: pointer;
-//     display: block;
-//     z-index: 1;
-//     -webkit-transition: all 200ms linear;
-//     transition: all 200ms linear;
-//     color: unquote("hsl(var(--))") !important;
-// }
 
 @media screen and (max-width: 991px) {
     .progress-wrap::after {
