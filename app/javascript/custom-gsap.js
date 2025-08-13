@@ -86,7 +86,7 @@ cursorBigs.forEach(cursorBig => {
 
 
 // **************************** Mobile Menu js Start ****************************
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('turbo:load', function () {
   var mmm = gsap.matchMedia(); 
   var mtl = gsap.timeline({ paused: true }); 
 

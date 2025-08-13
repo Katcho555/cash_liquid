@@ -7,7 +7,6 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <link href="https://cdn.jsdelivr.net/npm/magnific-popup@1.2.0/dist/magnific-popup.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
@@ -23,10 +22,13 @@
         <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
     
     <%= javascript_importmap_tags %>
+
+    
   </head>
 
     <body class="position-relative">
     <%= yield %>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
@@ -38,6 +40,22 @@
     <script src="https://unpkg.com/phosphor-icons"></script>
 
 
+  <script>
+    document.addEventListener("turbo:load", function () {
+      const toggleButton = document.querySelector(".dashboard-toggle-button");
+      const closeButton = document.querySelector(".dashboard-close-button");
+      const sidebar = document.querySelector(".dashboard-slidebar");
 
+      if (!toggleButton || !closeButton || !sidebar) return;
+
+      toggleButton.addEventListener("click", function () {
+        sidebar.classList.toggle("active");
+      });
+
+      closeButton.addEventListener("click", function () {
+        sidebar.classList.remove("active");
+      });
+    });
+  </script>
   </body>
 </html>

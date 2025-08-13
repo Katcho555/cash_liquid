@@ -288,21 +288,6 @@
                             <p class="mb-3">Partagez ce code avec vos contacts pour gagner des récompenses à chaque nouvelle inscription</p>
                             <div class="referral-code" id="referralCode">PARRAIN-XXXXXXX</div>
                             <p>Pour chaque filleul qui s'inscrit avec votre code, vous gagnez <span class="fw-bold">10%</span> de ses transactions</p>
-                            
-                            <div class="social-share">
-                                <button class="btn" title="Copier le code" id="copyBtn">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                                <button class="btn" title="Partager sur WhatsApp">
-                                    <i class="fab fa-whatsapp"></i>
-                                </button>
-                                <button class="btn" title="Partager sur Facebook">
-                                    <i class="fab fa-facebook-f"></i>
-                                </button>
-                                <button class="btn" title="Partager par email">
-                                    <i class="fas fa-envelope"></i>
-                                </button>
-                            </div>
                         </div>
                         
                         <div class="mt-5">
@@ -657,7 +642,7 @@
     </script>
     <% if @show_payment_modal %>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("turbo:load", function () {
         const modal = new bootstrap.Modal(document.getElementById("premiumModal"));
         modal.show();
         });
