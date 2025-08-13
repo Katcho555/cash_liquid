@@ -232,6 +232,16 @@
 .gap-24px {
     gap: 24px !important;
 }
+.table-responsive table {
+  min-width: 600px; /* largeur minimale pour forcer le scroll si la table est trop large */
+}
+
+@media (max-width: 768px) {
+  .table-responsive td,
+  .table-responsive th {
+    white-space: nowrap; /* éviter le wrapping du texte */
+  }
+}
 
 /*===================== Gap Csss End========================*/
 /* ========================= Variable Css End ======================== */
