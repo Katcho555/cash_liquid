@@ -50,33 +50,25 @@
     <div class="col-lg-6">
         <div class="bg-neutral-10 tw-pt-11 rounded-3 w-100 h-100">
 
-            <div class=" w-100 h-100">
+            <div class=" w-100 h-100 tw-pb-3">
                 <div class="text-center ">
                     <span class="text-base-two-600 tw-text-15 tw-mb-5">
-                        <i class="ph-fill ph-wallet"></i>
+                        <i class="ph-fill ph-wallet text-success"></i>
                     </span>
                     <div>
-                        <h2 class="fw-normal text-dark-600">
+                        <h2 class="fw-normal text-dark-600 text-success">
                             <%if current_user.admin?%>
                                 <%=@total_gain %> Fcfa
                             <%else%>
                             <%=current_user.balance%> Fcfa
                             <%end%>
                         </h2>
-                        <span class="text-dark-500 fw-normal tw-text-lg">
+                        <span class="text-dark-500 fw-bold tw-text-lg">
                             BALANCE TOTAL
                         </span>
                     </div>
                 </div>
-                <span class="border-bottom-neutral-05 w-100 tw-mb-8 tw-mt-8"></span>
-                <div class="tw-px-3 tw-pb-3 d-flex align-items-center flex-wrap">
-                    <a href="javascript:void(0)" class="tw-px-10 tw-py-3 fw-semibold text-primary-600 hover-bg-white rounded-3 text-center">
-                        Gestion Dépot
-                    </a>
-                    <a href="javascript:void(0)" class="tw-px-10 tw-py-3 fw-semibold text-primary-600 hover-bg-white rounded-3 text-center">
-                        Gestion Retrait
-                    </a>
-                </div>
+
             </div>
 
         </div>
