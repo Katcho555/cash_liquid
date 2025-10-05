@@ -324,7 +324,7 @@
                                 <h3 class="fw-bold text-center mb-4">Abonnement Premium</h3>
                                 
                                 <div class="text-center mb-4">
-                                    <span class="display-3 fw-bold">3,000f</span>
+                                    <span class="display-3 fw-bold"><%=@frais_souscription%> $</span>
                                    <!-- <span class="text-muted">/mois</span>-->
                                 </div>
                                 
@@ -450,8 +450,10 @@
    <% if @show_payment_modal %>
   
   <%if session[:souscription_amount]
-    @current_souscription_amount = session[:souscription_amount]
+    #@current_souscription_amount = session[:souscription_amount]
     # converted_amount contient maintenant votre valeur en XOF
+
+    @current_souscription_amount = @frais_souscription * @taux_dollar
   end%>
   <div class="payment-modal-overlay" style="display: flex;">
     <div class="payment-modal-container">

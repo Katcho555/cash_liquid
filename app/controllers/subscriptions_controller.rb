@@ -2,6 +2,8 @@ class SubscriptionsController < ApplicationController
     before_action :authenticate_user!
 
   def index
+    @taux_dollar = Parametre.find_by(cle: 'taux_dollar')&.valeur.to_i
+    @frais_souscription = Parametre.find_by(cle: 'frais_souscription')&.valeur.to_i
     if params[:id]
         @subscription = Subscription.find_by(id: params[:id])
     end

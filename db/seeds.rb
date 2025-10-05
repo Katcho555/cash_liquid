@@ -19,3 +19,20 @@ end
 puts "Admin racine créé : #{admin.email}"
 
 
+Parametre.find_or_create_by!(cle: 'frais_souscription') do |p|
+  p.valeur = '6'
+end
+
+
+Parametre.find_or_create_by!(cle: 'taux_dollar') do |p|
+  p.valeur = '650'
+end
+
+Parametre.find_or_create_by!(cle: 'email_admin') do |p|
+  p.valeur = 'admin@cashliquid.com'
+end
+
+
+puts "Paramètres créés avec succès ✅"
+
+
