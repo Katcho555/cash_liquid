@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_10_05_183758) do
+ActiveRecord::Schema[7.0].define(version: 2025_10_15_023252) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -63,6 +63,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_05_183758) do
     t.boolean "compte_status", default: false
     t.boolean "blocked"
     t.string "telephone"
+    t.string "current_vip", default: "VIP1", null: false
+    t.string "vip_status", default: "new", null: false
+    t.integer "current_vip_generation_count", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

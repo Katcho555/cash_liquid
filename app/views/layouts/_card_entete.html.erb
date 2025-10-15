@@ -58,7 +58,7 @@
                     <div>
                         <h2 class="fw-normal text-dark-600 text-success">
                             <%if current_user.admin?%>
-                                <%=@total_gain - User.first.balance%> Fcfa
+                                <%=@total_gain + User.first.balance%> Fcfa
                             <%else%>
                             <%=current_user.balance%> Fcfa
                             <%end%>

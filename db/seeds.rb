@@ -7,6 +7,11 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 # Création ou mise à jour de l'admin racine
+# -----------------------------------
+# Test complet : 8 générations de filleuls
+# -----------------------------------
+
+# Création ou mise à jour de l'admin racine
 admin = User.find_or_create_by!(email: "admin@cashliquid.com") do |u|
   u.nom = "Admin"
   u.prenom = "Super"
@@ -14,9 +19,12 @@ admin = User.find_or_create_by!(email: "admin@cashliquid.com") do |u|
   u.password_confirmation = "123456"
   u.role = "admin"
   u.compte_status = true
+  u.current_vip = "VIP1"
+  u.vip_status = "open"
 end
 
 puts "Admin racine créé : #{admin.email}"
+
 
 
 Parametre.find_or_create_by!(cle: 'frais_souscription') do |p|

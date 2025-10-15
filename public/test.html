@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Félicitations VIP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .main-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .main-content h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .main-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .modal-content {
+            background: linear-gradient(to bottom, #fff9e6, #fff);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: scaleIn 0.5s ease-out;
+            overflow: hidden;
+        }
+        
+        .modal-content::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700, #ffed4e);
+            z-index: -1;
+            border-radius: 25px;
+            animation: borderGlow 3s infinite linear;
+        }
+        
+        .garland {
+            position: absolute;
+            top: -15px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+        
+        .garland-bulb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            animation: bulbGlow 2s infinite alternate;
+        }
+        
+        .garland-bulb:nth-child(1) { background-color: #ff3e3e; animation-delay: 0s; }
+        .garland-bulb:nth-child(2) { background-color: #3eff5c; animation-delay: 0.2s; }
+        .garland-bulb:nth-child(3) { background-color: #3e8cff; animation-delay: 0.4s; }
+        .garland-bulb:nth-child(4) { background-color: #ff3ed4; animation-delay: 0.6s; }
+        .garland-bulb:nth-child(5) { background-color: #ffb13e; animation-delay: 0.8s; }
+        .garland-bulb:nth-child(6) { background-color: #3efff9; animation-delay: 1s; }
+        .garland-bulb:nth-child(7) { background-color: #b13eff; animation-delay: 1.2s; }
+        .garland-bulb:nth-child(8) { background-color: #ff3e3e; animation-delay: 1.4s; }
+        
+        .trophy-icon {
+            font-size: 80px;
+            color: gold;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            animation: bounce 2s infinite;
+        }
+        
+        h1 {
+            color: #d4af37;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+        
+        .vip-text {
+            font-size: 22px;
+            font-weight: bold;
+            color: #b8860b;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .message {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        
+        .benefits {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        .benefits h3 {
+            color: #b8860b;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .benefits ul {
+            list-style-type: none;
+            padding-left: 10px;
+        }
+        
+        .benefits li {
+            padding: 5px 0;
+            color: #666;
+        }
+        
+        .benefits li:before {
+            content: "★";
+            color: gold;
+            margin-right: 10px;
+        }
+        
+        .continue-btn {
+            background: linear-gradient(to right, #d4af37, #f5d76e);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+        
+        .continue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes borderGlow {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        @keyframes bulbGlow {
+            from { opacity: 0.5; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1.1); box-shadow: 0 0 10px currentColor; }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes confettiFall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <h1>Bienvenue sur notre plateforme</h1>
+        <p>Ceci est le contenu principal de la page. Le modal de félicitations s'affiche automatiquement au chargement.</p>
+        <p>Vous pouvez naviguer sur le site normalement une fois le modal fermé.</p>
+    </div>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <div class="garland">
+                <div class="garland-bulb"></div>
+                <div class="garland-bulb"></div>
+                <div class="garland-bulb"></div>
+                <div class="garland-bulb"></div>
+                <div class="garland-bulb"></div>
+                <div class="garland-bulb"></div>
+                <div class="garland-bulb"></div>
+                <div class="garland-bulb"></div>
+            </div>
+            
+            <div class="trophy-icon">🏆</div>
+            
+            <h1>FÉLICITATIONS !</h1>
+            
+            <div class="vip-text">Vous êtes désormais VIP Niveau 1 !</div>
+            
+            <p class="message">
+                Votre engagement et votre fidélité sont récompensés. 
+                Bienvenue dans le cercle privilégié des membres VIP.
+            </p>
+            
+            <div class="benefits">
+                <h3>Vos avantages exclusifs :</h3>
+                <ul>
+                    <li>Accès prioritaire aux nouveaux contenus</li>
+                    <li>Support client dédié 24/7</li>
+                    <li>Offres et promotions exclusives</li>
+                    <li>Badge VIP visible par tous</li>
+                </ul>
+            </div>
+            
+            <button class="continue-btn" id="closeModal">Découvrir mes avantages</button>
+        </div>
+    </div>
+
+    <script>
+        // Le modal s'affiche automatiquement au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Créer l'effet de confetti
+            createConfetti();
+            
+            // Fermer le modal quand on clique sur le bouton
+            document.getElementById('closeModal').addEventListener('click', function() {
+                document.getElementById('modal').style.display = 'none';
+            });
+            
+            // Optionnel: fermer le modal en cliquant en dehors
+            document.getElementById('modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+        });
+        
+        function createConfetti() {
+            const colors = ['#ff3e3e', '#3eff5c', '#3e8cff', '#ff3ed4', '#ffb13e', '#3efff9', '#b13eff'];
+            const modal = document.getElementById('modal');
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animation = `confettiFall ${Math.random() * 3 + 2}s linear forwards`;
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                modal.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>

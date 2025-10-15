@@ -5,8 +5,9 @@ class ApplicationMailer < ActionMailer::Base
   def demande_retrait(retrait)
     @retrait = retrait
     @user = retrait.user
+    @email_admin = Parametre.find_by(cle: 'email_admin')&.valeur
     mail(
-      to: "hadilouidrissou@gmail.com",
+      to: @email_admin,
       subject: "Nouvelle demande de retrait"
     )
   end

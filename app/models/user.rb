@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :retraits
   before_create :generate_referral_code
 
+  
  
 
   def set_default_role

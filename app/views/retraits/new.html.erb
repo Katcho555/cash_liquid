@@ -201,8 +201,8 @@
                       </div>
 
                       <div class="mb-3">
-                        <%= form.label :montant, "Montant du retrait (XOF)" %>
-                        <%= form.number_field :montant, step: 100, min: 100, class: "form-control", placeholder: "Votre solde : #{number_with_delimiter(current_user.balance || 0)} XOF" %>
+                        <%= form.label :montant, "Montant du retrait (XOF)" %> <small>Min: 1000 Francs</small>
+                        <%= form.number_field :montant, step: 100, min: 300, class: "form-control", placeholder: "Votre solde : #{number_with_delimiter(current_user.balance || 0)} XOF" %>
                       </div>
 
                       <div class="d-grid">

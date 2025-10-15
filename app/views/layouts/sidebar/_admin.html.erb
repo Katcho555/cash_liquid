@@ -1,3 +1,40 @@
+<style>
+    /* Design 2 - Moderne avec Icône */
+        .vip-badge-2 {
+            background: linear-gradient(135deg, #2c3e50, #4a69bd);
+            color: white;
+            border-radius: 15px;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            min-width: 250px;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .vip-badge-2::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #ffd700, #ffed4e, #ffd700);
+            bottom: 0;
+            left: 0;
+        }
+        
+        .vip-badge-2 .crown-icon {
+            font-size: 28px;
+            color: #ffd700;
+            animation: bounce 2s infinite;
+        }
+</style>
+
 <div class="dashboard-slidebar tw-w-306-px bg-white tw-rounded-xl">
                 <div class="tw-pt-12 tw-px-12 position-relative">
                     <a href="<%=edit_user_registration_path%>" type="button" class="tw-text-7 text-dark-600 position-absolute tw-block-start-22-px tw-end-22-px">
@@ -36,8 +73,11 @@
                 </div>
                 <div class="tw-px-6 tw-pb-6">
                     <span class="border-bottom-neutral-05 w-100 tw-mb-8 tw-mt-8"></span>
+                    <div class="vip-badge-2 text-center">
+                        <span class="crown-icon">👑</span>
+                        <%= current_user.current_vip %>
+                    </div>
                     <ul class="header-nav-menu__item">
-
                         <li class="header-nav-submenu__item tw-mb-4 activePage">
                             <a href="<%=dashboard_admin_path%>" class="header-nav-submenu__link fw-normal tw-text-lg text-dark-600 d-flex align-items-center tw-gap-2 hover-text-white bg-neutral-10 tw-px-3 tw-py-3 rounded-3 hover-bg-base-two-600 tw-duration-400">
                                 <span class="tw-text-6">
