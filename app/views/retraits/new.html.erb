@@ -192,22 +192,34 @@
 
                       <div class="mb-3">
                         <%= form.label :numero_retrait, "Numéro de retrait" %>
-                        <%= form.text_field :numero_retrait, class: "form-control", placeholder: "Ex : 1234567890" %>
+                        <%= form.text_field :numero_retrait, class: "form-control", placeholder: "Ex : 1234567890", required: true %>
                       </div>
 
                       <div class="mb-3">
                         <%= form.label :nom_percepteur, "Nom du percepteur" %>
-                        <%= form.text_field :nom_percepteur, class: "form-control", readonly: true %>
+                        <%= form.text_field :nom_percepteur, class: "form-control" %>
                       </div>
 
                       <div class="mb-3">
                         <%= form.label :montant, "Montant du retrait (XOF)" %> <small>Min: 1000 Francs</small>
-                        <%= form.number_field :montant, step: 100, min: 300, class: "form-control", placeholder: "Votre solde : #{number_with_delimiter(current_user.balance || 0)} XOF" %>
+                        <%= form.number_field :montant, step: 100, min: 1000, id: "montant_retrait", class: "form-control", placeholder: "Votre solde : #{number_with_delimiter(current_user.balance || 0)} XOF" %>
                       </div>
+                        <p class="text-muted small mt-2">
+                            Taux de retrait : <%= @taux_retrait || 10 %>%  
+                            | Montant net estimé : <span id="montant_net_affiche">0</span> XOF
+                        </p>
+
 
                       <div class="d-grid">
-                        <%= form.submit "Envoyer la demande", class: "send-details-button text-center fw-semibold tw-text-lg text-white bg-base-two-600 rounded-3 border-two-px-solid w-100 tw-py-3" %>
-                      </div>
+                            <% if current_user.compte_status == true %>
+                                <%= form.submit "Envoyer la demande", class: "send-details-button text-center fw-semibold tw-text-lg text-white bg-base-two-600 rounded-3 border-two-px-solid w-100 tw-py-3" %>
+                            <% else %>
+                                <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#inactifModal">
+                                ⚠️ Vous devez souscrire pour effectuer un retrait
+                                </button>
+                            <% end %>
+                        </div>
+
                     <% end %>
 
                 </div>
@@ -218,6 +230,26 @@
         </div>
     </div>
  </section>
+
+ 
+<!-- Modal -->
+<div class="modal fade" id="inactifModal" tabindex="-1" aria-labelledby="inactifModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inactifModalLabel">Souscription requise</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        Pour effectuer un retrait, vous devez d'abord souscrire. Cliquez ci-dessous pour accéder à la souscription.
+      </div>
+      <div class="modal-footer">
+        <a href="<%= souscriptions_path %>" class="btn btn-primary">Souscrire maintenant</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- ===================== account my profile section end ====================== -->
 
 <!-- =========================== my profile footer section start ============================= -->
@@ -242,3 +274,19 @@
   });
 </script>
 
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    const inputMontant = document.getElementById("montant_retrait");
+    const affichageNet = document.getElementById("montant_net_affiche");
+    const taux = <%= @taux_retrait || 10 %>; // taux dynamique depuis Ruby
+
+    if (inputMontant && affichageNet) {
+      inputMontant.addEventListener("input", function() {
+        const montant = parseFloat(this.value) || 0;
+        const montantNet = montant - (montant * taux / 100);
+        affichageNet.textContent = montantNet.toLocaleString("fr-FR", { minimumFractionDigits: 0 });
+      });
+    }
+  });
+</script>

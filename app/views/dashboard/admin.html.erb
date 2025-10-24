@@ -241,7 +241,7 @@
                   <i class="fas fa-wallet text-success fa-2x float-left"></i>
                 </div>
                 <div class="media-body text-right">
-                  <h3><%=@total_balance%></h3>
+                  <h3><%=@balance_admin_reelle%></h3>
                   <span>Total Commission</span>
                 </div>
               </div>
@@ -275,7 +275,7 @@
                    <i class="fas fa-credit-card text-danger fa-2x float-left"></i>
                 </div>
                 <div class="media-body text-right">
-                  <h3><%=@retrait_sum%></h3>
+                  <h3><%=@total_retraits_nets%></h3>
                   <span>Retrait total</span>
                 </div>
               </div>
@@ -369,9 +369,9 @@
             </table>
         </div>
         
-        <ul class="d-flex align-items-center tw-gap-1 justify-content-center flex-wrap">
+        <ul class="d-flex align-items-center tw-gap-1 justify-content-center flex-wrap pt-5">
             <li>
-                <a type="button" class="tw-text-lg hover-bg-base-two-600 hover-text-white tw-duration-500 text-dark-600 d-flex align-items-center justify-content-center" style="border-radius: 10px;">
+                <a href="<%=dashboard_list_utilisateur_path%>" class="btn btn-primary">
                     Voir la liste complet
                 </a>
             </li>

@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resource :parametrage, only: [:show, :update]
+  resource :parametrage
+
+post  '/parametrage/add_generation', to: 'parametrages#create_generation', as: 'add_generation'
+delete '/parametrage/delete_generation/:id', to: 'parametrages#destroy_generation', as: 'delete_generation'
+get   '/parametrage/edit_generation/:id', to: 'parametrages#edit_generation', as: 'edit_generation'
+patch '/parametrage/update_generation/:id', to: 'parametrages#update_generation', as: 'update_generation'
 
 
   

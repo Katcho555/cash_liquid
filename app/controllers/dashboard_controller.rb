@@ -8,13 +8,11 @@ class DashboardController < ApplicationController
 
     def admin 
         @generations = User.all
-        if current_user.admin?
-        @total_balance = User.sum(:balance)
-        else
+        if current_user.utilisateur?
          @total_balance = current_user.balance
         end
         @total_utilisateur_nombre = User.count
-        @total_utilisateur_liste = User.all
+        @total_utilisateur_liste = User.limit(15)
 
         @retrait_sum = Retrait.where(statut: "Validé").sum(:montant)
     end

@@ -79,6 +79,32 @@ end
     blocked? ? :blocked : super
   end
 
+  # Somme brute actuelle
+    def self.total_balance_brute
+      sum(:balance)
+    end
+
+    # Total des retraits validés (montant net)
+    def self.total_retraits_nets
+      Retrait.where(statut: "Validé").sum(:montant_net)
+    end
+
+    # Total des retraits validés (montant brut)
+    def self.total_retraits_bruts
+      Retrait.where(statut: "Validé").sum(:montant)
+    end
+
+    # Montant total des frais système
+    def self.total_frais_systeme
+      total_retraits_bruts - total_retraits_nets
+    end
+
+    # Vision comptable ajustée pour l’admin
+    def self.balance_admin_reelle
+      total_balance_brute + total_frais_systeme
+    end
+
+
 
   
 

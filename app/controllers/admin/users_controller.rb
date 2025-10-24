@@ -2,6 +2,7 @@ class Admin::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :check_admin
   before_action :set_user, only: [:show, :edit, :update, :block, :unblock]
+  before_action :balance_admin
 
   def index
     @users = User.all

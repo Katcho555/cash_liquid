@@ -72,11 +72,16 @@
                 </div>
                 <div class="tw-px-6 tw-pb-6">
                     <span class="border-bottom-neutral-05 w-100 tw-mb-8 tw-mt-8"></span>
-                    <div class="vip-badge-2 text-center">
-                        <span class="crown-icon">👑</span>
-                        <%= current_user.current_vip %>
-                    </div>
-                    <ul class="header-nav-menu__item">
+                    <ul class="header-nav-menu__item"> 
+                        <% if current_user.compte_status == false %>
+                            <li class="header-nav-submenu__item tw-mb-4">
+                                <a href="<%= subscriptions_path %>" 
+                                class="btn btn-sm btn-warning d-flex align-items-center justify-content-center tw-gap-2 fw-semibold tw-text-sm tw-px-3 tw-py-2 rounded-pill shadow-sm hover-shadow-lg hover-scale-105 transition-all">
+                                ⚡ Souscrire ici
+                                </a>
+                            </li>
+                        <% end %>
+
 
                         <li class="header-nav-submenu__item tw-mb-4 activePage">
                             <a href="<%=dashboard_index_path%>" class="header-nav-submenu__link fw-normal tw-text-lg text-dark-600 d-flex align-items-center tw-gap-2 hover-text-white bg-neutral-10 tw-px-3 tw-py-3 rounded-3 hover-bg-base-two-600 tw-duration-400">

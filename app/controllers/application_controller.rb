@@ -1,93 +1,65 @@
 class ApplicationController < ActionController::Base
     before_action :configure_permitted_parameters, if: :devise_controller?
-    VIP_PLANS = {
-        "VIP1" => {
-            amount: 3_000,
-            generations: { 1 => 300, 2 => 200, 3 => 200, 4 => 100, 5 => 100, 6 => 100, 7 => 50, 8 => 50 }
-        },
-        "VIP2" => {
-            amount: 60_000,
-            generations: { 9 => 6_000, 10 => 4_002, 11 => 4_002, 12 => 4_002, 13 => 1_998, 14 => 1_998 }
-        },
-        "VIP3" => {
-            amount: 300_000,
-            generations: { 15 => 30_000, 16 => 20_010, 17 => 20_010, 18 => 9_990, 19 => 9_990 }
-        },
-        "VIP4" => {
-            amount: 625_000,
-            generations: { 20 => 62_500, 21 => 41_680, 22 => 41_680, 23 => 20_812, 24 => 20_812 }
-        },
-        "VIP5" => {
-            amount: 975_000,
-            generations: { 25 => 97_500, 26 => 65_032, 27 => 65_032, 28 => 32_460, 29 => 32_460 }
-        }
-    }
+ def distribuer_gains(user)
+    # Prime d'inscription
+    #user.increment!(:balance, 600)
+    
+  prime = Parametre.find_by(cle: 'prime_inscription')&.valeur.to_i
+  user.increment!(:balance, prime)
 
+    # Gains par génération
+    # gain_generations = {
+    #   1 => 600,
+    #   2 => 400,
+    #   3 => 400,
+    #   4 => 200,
+    #   5 => 200,
+    #   6 => 200,
+    #   7 => 100,
+    #   8 => 100,
+    #   9 => 50,
+    #   10 => 50
+    # }
 
-    def distribuer_gains(user)
-  # Le nouvel utilisateur reçoit sa prime d'inscription
-  user.increment!(:balance, 300)
+    # 🔹 Chargement dynamique depuis la base de données
+  gain_generations = GenerationCommission.order(:niveau).pluck(:niveau, :commission).to_h
 
-  current_vip = user.current_vip
-  vip_plan = VIP_PLANS[current_vip]
-  return unless vip_plan
+    parrain = user.parrain
+    generation = 1
 
-  # On démarre avec la 1ère génération
-  gain_generations = vip_plan[:generations]
-  parrain = user.parrain
-  generation = 1
-
-  # Tant qu'il y a un parrain et que la génération existe
-  while parrain && gain_generations[generation]
-    gain = gain_generations[generation]
-    parrain.increment!(:balance, gain)
-    parrain = parrain.parrain
-    generation += 1
+    while parrain && generation <= 10
+      gain = gain_generations[generation]
+      parrain.increment!(:balance, gain)
+      parrain = parrain.parrain
+      generation += 1
+    end
   end
 
-  # Mise à jour du compteur de génération
-  user.update!(current_vip_generation_count: generation - 1)
 
-  # Vérification de fin de VIP
-  if (generation - 1) >= gain_generations.keys.max
-    next_vip = next_vip_level(current_vip)
-    if next_vip
-      user.update!(
-        current_vip: next_vip,
-        vip_status: "new",
-        current_vip_generation_count: 0
-      )
-    else
-      user.update!(vip_status: "open")
-    end
-  else
-    user.update!(vip_status: "close")
+  def balance_admin
+    # Total des souscriptions payées (entrées d’argent)
+    @total_montant = Subscription.where(status: "payé").sum(:amount)
+
+    # Total des balances actuelles des utilisateurs (ce qu’ils ont encore)
+    @total_commission = User.sum(:balance)
+
+    # === Retraits ===
+    retraits_valides = Retrait.where(statut: "Validé")
+    @total_retraits_bruts = retraits_valides.sum(:montant)
+    @total_retraits_nets  = retraits_valides.sum(:montant_net)
+
+    # Total des frais système accumulés sur les retraits
+    @total_frais_systeme = @total_retraits_bruts - @total_retraits_nets
+
+    # === Gains et vision réelle ===
+    # Gain total du système : argent des souscriptions - ce qui reste aux users
+    @total_gain = @total_montant - @total_commission - @total_retraits_nets
+
+    # Trésorerie réelle du système = montants encaissés + frais système
+    @balance_admin_reelle = @total_commission + @total_frais_systeme
   end
-end
 
 
-# Cette méthode peut être ajoutée dans ApplicationController ou User
-def next_vip_level(current_vip)
-  vip_keys = VIP_PLANS.keys
-  current_index = vip_keys.index(current_vip)
-  return nil if current_index.nil? || current_index == vip_keys.size - 1
-
-  vip_keys[current_index + 1]
-end
-
-
-
-    def balance_admin
-         # Somme brute des souscriptions
-        @total_montant = Subscription.where(status: "payé").sum(:amount)
-
-  
-        @total_commission = User.sum(:balance)
-
-
-        @total_gain = @total_montant - @total_commission
-
-    end
 
      protected
 

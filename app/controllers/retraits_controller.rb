@@ -28,6 +28,7 @@ class RetraitsController < ApplicationController
     if user.balance >= @retrait.montant
       ActiveRecord::Base.transaction do
         user.decrement!(:balance, @retrait.montant)
+         @retrait.skip_balance_validation!
         @retrait.update!(statut: "Validé")
       end
       redirect_to retraits_path, notice: "Retrait validé et solde mis à jour."
@@ -60,6 +61,7 @@ class RetraitsController < ApplicationController
   def new
     @retrait = current_user.retraits.build
     @retrait.nom_percepteur = "#{current_user.nom} #{current_user.prenom}"
+    @taux_retrait = Parametre.find_by(cle: 'taux_retrait')&.valeur.to_i
   end
 
   def create
