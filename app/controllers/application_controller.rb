@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
 
     while parrain && generation <= 10
       gain = gain_generations[generation]
-      parrain.increment!(:balance, gain)
+      parrain.update!(balance: (parrain.balance || 0) + gain.to_f)
       parrain = parrain.parrain
       generation += 1
     end

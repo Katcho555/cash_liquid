@@ -33,6 +33,13 @@ patch '/parametrage/update_generation/:id', to: 'parametrages#update_generation'
   patch 'profil'      => 'users/registrations#update'
 end
 
+  resources :users do
+    member do
+      get :arbre
+    end
+  end
+
+
   namespace :admin do
     resources :users do
       member do
@@ -57,13 +64,19 @@ end
   get "template/index"
   get 'subscriptions/index', to: 'subscriptions#index', as: 'souscriptions'
 
+
+
+
   resources :subscriptions do
     member do
       post 'process_payment', as: :process_payment
       patch :update_statut
     end
     collection do
-     get :index, as: 'souscriptions'
+      get :index, as: 'souscriptions'
+      get :callback
+      get :success
+      get :failed
     end
   end
 

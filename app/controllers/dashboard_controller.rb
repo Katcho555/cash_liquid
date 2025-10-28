@@ -2,7 +2,7 @@ class DashboardController < ApplicationController
     before_action :authenticate_user!
     before_action :balance_admin
     def index     
-        @generations = current_user.filleuls_par_generation
+        @generations = current_user.filleuls_par_generation(2)
         @generation_count = current_user.filleuls_par_generation.count
     end
 
@@ -24,6 +24,7 @@ class DashboardController < ApplicationController
              @users = [current_user]
         end
     end
+    
 
     def souscription_list
         @subscriptions = Subscription.includes(:user).order(created_at: :desc).all

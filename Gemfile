@@ -50,6 +50,8 @@ gem 'fedapay', git: 'https://github.com/fedapay/fedapay-ruby.git'
 gem 'faraday', '~> 1.8'
 gem 'pg'
 gem 'dotenv-rails'
+gem 'httparty'
+
 
 # Use Sass to process CSS
 # gem "sassc-rails"

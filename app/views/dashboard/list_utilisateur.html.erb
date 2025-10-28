@@ -167,98 +167,131 @@
                      <%= render partial: "layouts/card_entete"%>
                 </div>
 
-                <div class="bg-white tw-px-8 tw-py-8 rounded-3 tw-mb-6">
-                    <h4 class="fw-normal text-dark-600">Gestion des Utilisateurs & Parrainage</h4>
-                    <div>
-                        <form action="#" class="">
-                            <input type="text" id="searchInput" class="form-control mb-3 tw-px-3 tw-py-3 bg-neutral-10 rounded-3 border-0 max-w-500-px w-100 fw-normal tw-text-lg text-dark-600" placeholder="Rechercher un utilisateur, email, parrain...">
-                        </form>
+                <div class="bg-white shadow-sm rounded-4 p-5 mb-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold text-dark mb-0">
+                        <i class="bi bi-people-fill text-primary me-2"></i>
+                        Gestion des Utilisateurs & Parrainages
+                    </h4>
+                    <form class="d-flex" style="max-width: 400px;">
+                        <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="form-control me-2 shadow-sm" 
+                        placeholder="🔍 Rechercher un nom, email ou parrain..."
+                        >
+                    </form>
                     </div>
-                </div>
-
-                <div class="bg-white tw-px-8 tw-py-8 rounded-3">
-
-                    <h5 class="fw-normal text-dark-600">Utilisateurs</h5>
-                    <span class="border-neutral-200 border-bottom tw-border-dashed w-100 tw-mt-6 tw-mb-6"></span>
 
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0" id="usersTable">
-                        <thead class="table-dark">
-                            <tr>
+                    <table class="table table-hover align-middle table-borderless" id="usersTable">
+                        <thead class="bg-primary text-white rounded-top">
+                        <tr>
                             <th>Utilisateur</th>
                             <th>Email</th>
                             <th>Parrain</th>
-                            <th>Status Compte</th>
+                            <th>Statut</th>
                             <th>Balance</th>
-                            <th>Filleuls (actifs / total)</th>
-                            <th>Détails des filleuls</th>
-                            </tr>
+                            <th>Filleuls directs</th>
+                            <th>Filleuls totaux</th>
+                            <th>Détails</th>
+                        </tr>
                         </thead>
-                        <tbody>
-                            <% @users.each do |user| %>
-                            <tr>
-                                <td>
-                                <strong><%= user.prenom %> <%= user.nom %></strong><br>
-                                <small>ID: <%= user.id %></small>
-                                </td>
-                                <td><%= user.email %></td>
-                                <td>
-                                <% if user.parrain %>
-                                    <%= user.parrain.prenom %> <%= user.parrain.nom %> (ID: <%= user.parrain.id %>)
-                                <% else %>
-                                    <em>Pas de parrain</em>
-                                <% end %>
-                                </td>
-                                <td>
-                                <% if user.compte_status %>
-                                    <span class="badge bg-success">Actif</span>
-                                <% else %>
-                                    <span class="badge bg-secondary">Inactif</span>
-                                <% end %>
-                                </td>
-                                <td><%= number_to_currency(user.balance || 0, unit: "XOF", delimiter: " ", format: "%n %u") %></td>
-                                <td>
-                                <% total_filleuls = user.filleuls.count %>
-                                <% active_filleuls = user.filleuls.where(compte_status: true).count %>
-                                <%= "#{active_filleuls} / #{total_filleuls}" %>
-                                </td>
-                                <td>
-                                <% if total_filleuls > 0 %>
-                                    <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#filleuls-<%= user.id %>" aria-expanded="false" aria-controls="filleuls-<%= user.id %>">
-                                    Voir
-                                    </button>
 
-                                    <div class="collapse mt-2" id="filleuls-<%= user.id %>">
-                                    <ul class="list-group">
-                                        <% user.filleuls.each do |f| %>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div>
-                                            <strong><%= f.prenom %> <%= f.nom %></strong> (<%= f.email %>)<br>
-                                            <small>
-                                                Status: 
-                                                <% if f.compte_status %>
-                                                <span class="badge bg-success">Actif</span>
-                                                <% else %>
-                                                <span class="badge bg-secondary">Inactif</span>
-                                                <% end %>
-                                            </small>
-                                            </div>
-                                            <span class="badge bg-info"><%= number_to_currency(f.balance || 0, unit: "XOF", delimiter: " ", format: "%n %u") %></span>
-                                        </li>
+                        <tbody>
+                        <% @users.each do |user| %>
+                            <% total_filleuls = user.filleuls.count %>
+                            <% active_filleuls = user.filleuls.where(compte_status: true).count %>
+                            <% total_recursifs = user.total_filleuls_recursifs %>
+
+                            <tr class="border-bottom">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
+                                    <%= user.prenom[0].upcase %>
+                                </div>
+                                <div>
+                                    <strong class="text-dark">
+                                       <%= link_to arbre_user_path(user), class: "text-dark", data: { turbo: false } do %>
+                                            <%= user.nom_complet %>
                                         <% end %>
-                                    </ul>
-                                    </div>
+
+                                         </strong><br>
+                                    <small class="text-muted">ID: <%= user.id %></small>
+                                </div>
+                                </div>
+                            </td>
+
+                            <td class="text-muted"><%= user.email %></td>
+
+                            <td>
+                                <% if user.parrain %>
+                                <span class="badge bg-light text-dark border">
+                                    <i class="bi bi-person-check-fill text-success me-1"></i>
+                                    <%= user.parrain.nom_complet %>
+                                </span>
                                 <% else %>
-                                    <em>Aucun filleul</em>
+                                <em class="text-secondary">Aucun</em>
                                 <% end %>
-                                </td>
+                            </td>
+
+                            <td>
+                                <% if user.compte_status %>
+                                <span class="badge bg-success bg-opacity-75">Actif</span>
+                                <% else %>
+                                <span class="badge bg-secondary bg-opacity-75">Inactif</span>
+                                <% end %>
+                            </td>
+
+                            <td><%= number_to_currency(user.balance || 0, unit: "XOF", delimiter: " ", format: "%n %u") %></td>
+
+                            <td><span class="fw-semibold text-primary"><%= active_filleuls %> / <%= total_filleuls %></span></td>
+                            <td><span class="fw-semibold text-dark"><%= user.total_filleuls_recursifs %></span></td>
+
+
+                            <td>
+                                <% if total_recursifs > 0 %>
+                                <button class="btn btn-outline-primary btn-sm" 
+                                        type="button" 
+                                        data-bs-toggle="collapse" 
+                                        data-bs-target="#filleuls-<%= user.id %>">
+                                    <i class="bi bi-diagram-3"></i> Voir
+                                </button>
+
+                                <div class="collapse mt-3" id="filleuls-<%= user.id %>">
+                                    <div class="card card-body border-0 bg-light">
+                                    <% user.filleuls.each do |f| %>
+                                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                        <div>
+                                            <strong><%= f.prenom %> <%= f.nom %></strong>
+                                            <small class="text-muted d-block"><%= f.email %></small>
+                                        </div>
+                                        <div class="text-end">
+                                            <% if f.compte_status %>
+                                            <span class="badge bg-success">Actif</span>
+                                            <% else %>
+                                            <span class="badge bg-secondary">Inactif</span>
+                                            <% end %>
+                                            <div class="text-primary small mt-1">
+                                            <%= number_to_currency(f.balance || 0, unit: "XOF", delimiter: " ", format: "%n %u") %>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    <% end %>
+                                    </div>
+                                </div>
+                                <% else %>
+                                <em class="text-muted">Aucun filleul</em>
+                                <% end %>
+                            </td>
                             </tr>
-                            <% end %>
+                        <% end %>
                         </tbody>
-                        </table>
+                    </table>
                     </div>
 
-                </div>
+</div>
+
 
             </div>
 <!-- ========================= my profile account tabe section end ======================== --> 

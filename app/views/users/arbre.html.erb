@@ -1,0 +1,100 @@
+<div class="container mt-4">
+ <p class="text-center"> <%= link_to 'RETOUR', dashboard_list_utilisateur_path, class:'text-center text-danger'%></p>
+  <h4 class="fw-bold mb-3 text-center text-primary">
+    <i class="bi bi-diagram-3-fill me-2"></i> Arbre de Parrainage | 
+  </h4>
+
+  <div id="tree-container" class="border rounded shadow-sm bg-light p-3" style="height: 80vh; overflow: hidden;">
+    <svg id="parrainageTree" width="100%" height="100%"></svg>
+  </div>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const data = <%= raw @tree_data.to_json %>;
+
+  const width = document.getElementById("tree-container").clientWidth;
+  const height = document.getElementById("tree-container").clientHeight;
+
+  const svg = d3.select("#parrainageTree")
+    .attr("viewBox", [0, 0, width, height])
+    .call(d3.zoom().on("zoom", (event) => {
+      g.attr("transform", event.transform);
+    }));
+
+  const g = svg.append("g");
+
+  const root = d3.hierarchy(data);
+  const treeLayout = d3.tree().size([width, height - 100]);
+  treeLayout(root);
+
+  // Lignes reliant les nœuds
+  g.selectAll(".link")
+    .data(root.links())
+    .enter()
+    .append("path")
+    .attr("class", "link")
+    .attr("fill", "none")
+    .attr("stroke", "#ccc")
+    .attr("stroke-width", 2)
+    .attr("d", d3.linkVertical()
+      .x(d => d.x)
+      .y(d => d.y)
+    );
+
+  // Nœuds (cercles avec ombre)
+  const nodes = g.selectAll(".node")
+    .data(root.descendants())
+    .enter()
+    .append("g")
+    .attr("class", "node")
+    .attr("transform", d => `translate(${d.x},${d.y})`);
+
+  nodes.append("circle")
+    .attr("r", 28)
+    .attr("fill", d => d.data.compte_status ? "#198754" : "#6c757d")
+    .attr("stroke", "#fff")
+    .attr("stroke-width", 3)
+    .style("filter", "drop-shadow(0px 2px 3px rgba(0,0,0,0.2))");
+
+  nodes.append("text")
+    .attr("dy", 45)
+    .attr("text-anchor", "middle")
+    .attr("font-size", "12px")
+    .attr("fill", "#333")
+    .text(d => `${d.data.nom_complet}`);
+
+  // Tooltip au survol
+  const tooltip = d3.select("body")
+    .append("div")
+    .attr("class", "tooltip bg-white border rounded p-2 shadow-sm position-absolute")
+    .style("opacity", 0);
+
+  nodes.on("mouseover", (event, d) => {
+    tooltip.html(`
+      <strong>${d.data.nom_complet}</strong><br>
+      Email: ${d.data.email || '—'}<br>
+      Balance: ${d.data.balance || 0} XOF<br>
+      Filleuls: ${d.data.filleuls_count || 0}<br>
+      Statut: <span class='badge ${d.data.compte_status ? "bg-success" : "bg-secondary"}'>
+        ${d.data.compte_status ? "Actif" : "Inactif"}
+      </span>
+    `)
+    .style("left", (event.pageX + 10) + "px")
+    .style("top", (event.pageY - 40) + "px")
+    .style("opacity", 1);
+  })
+  .on("mouseout", () => {
+    tooltip.style("opacity", 0);
+  });
+});
+</script>
+
+<style>
+.tooltip {
+  font-size: 13px;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+</style>
