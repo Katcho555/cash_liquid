@@ -34,8 +34,7 @@ class SubscriptionsController < ApplicationController
         last_name: current_user.prenom || "",
         description: "Souscription premium",
         return_url: callback_subscriptions_url,
-        metadata: { subscription_id: @subscription.id },
-        methods: ["mtn_bj", "moov_bj"] # tu peux adapter selon le pays
+        metadata: { subscription_id: @subscription.id }
       )
 
       Rails.logger.info "=== MONEROO RESPONSE ==="
@@ -132,44 +131,5 @@ end
   def failed
   end
 
-  def process_payment
-    @souscription = Subscription.find(params[:id])
-    transaction = FedaPay::Transaction.retrieve(params[:'transaction-id'])
-
-    if transaction.status == 'approved'
-      @souscription.update(
-        status: "payé",
-        payment_method: transaction.mode,
-        reference: transaction.reference,
-        paid_at: transaction.approved_at
-      )
-
-      @user = @souscription.user
-      @user.generate_referral_code if @user.referral_code.blank?
-
-      # 🔹 Étape 1 : Trouver le bon parrain avant d’activer le compte
-      parrain_actuel = @user.parrain
-      if parrain_actuel.nil? || !parrain_actuel.parrain_disponible?(3)
-        parrain_initial = parrain_actuel || User.racine_parrain
-        nouveau_parrain = parrain_initial.premier_parrain_disponible(3)
-        @user.update(parrain: nouveau_parrain) if nouveau_parrain
-      end
-
-      # 🔹 Étape 2 : Activer le compte une fois le parrain fixé
-      @user.update(compte_status: true, vip_status: "open")
-
-      # 🔹 Étape 3 : Distribuer les gains
-      distribuer_gains(@user)
-
-      flash[:success] = "Souscription effectuée avec succès."
-      session.delete(:souscription_amount)
-      redirect_to dashboard_index_path
-
-    else
-      @souscription.update(status: "en_attente")
-      flash[:error] = "Le paiement a échoué ou a été annulé. Veuillez réessayer."
-      redirect_to souscriptions_path
-    end
-  end
 
 end
