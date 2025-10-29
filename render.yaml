@@ -3,7 +3,7 @@ services:
 - type: web
   name: cash_liquid
   runtime: ruby
-  repo: https://github.com/matinou-github/cash_liquid.git
+  repo: https://github.com/Katcho555/cash_liquid.git
   branch: develop
   plan: free
   envVars:
