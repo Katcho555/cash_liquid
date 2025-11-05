@@ -1,5 +1,4 @@
 
-
 <!--==================== Overlay Start ====================-->
 <div class="overlay"></div>
 <!--==================== Overlay End ====================-->
@@ -243,7 +242,22 @@
                                 <% end %>
                             </td>
 
-                            <td><%= number_to_currency(user.balance || 0, unit: "XOF", delimiter: " ", format: "%n %u") %></td>
+                            <td>
+                                <% if current_user.admin? %>
+                                    <a href="#" 
+                                    class="edit-balance" 
+                                    data-user-id="<%= user.id %>" 
+                                    data-balance="<%= user.balance || 0 %>">
+                                    <%= number_to_currency(user.balance || 0, unit: "XOF", delimiter: " ", format: "%n %u") %>
+                                    </a>
+                                <% else %>
+                                    <%= number_to_currency(user.balance || 0, unit: "XOF", delimiter: " ", format: "%n %u") %>
+                                <% end %>
+                            </td>
+
+                           
+
+
 
                             <td><span class="fw-semibold text-primary"><%= active_filleuls %> / <%= total_filleuls %></span></td>
                             <td><span class="fw-semibold text-dark"><%= user.total_filleuls_recursifs %></span></td>
@@ -304,7 +318,30 @@
 <!-- =========================== my profile footer section start ============================= -->
  <%= render partial: "layouts/footer" %>
 
-
+ <div class="modal fade" id="editBalanceModal" tabindex="-1" aria-labelledby="editBalanceModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" style="z-index: 10000;">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editBalanceModalLabel">Modifier la balance</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="editBalanceForm">
+                                        <input type="hidden" id="user_id" name="user_id">
+                                        <div class="mb-3">
+                                            <label for="balance" class="form-label">Nouvelle balance (XOF)</label>
+                                            <input type="number" class="form-control" id="balance" name="balance" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="admin_password" class="form-label">Mot de passe administrateur</label>
+                                            <input type="password" class="form-control" id="admin_password" name="admin_password" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Confirmer</button>
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
 
 <script>
   document.addEventListener("turbo:load", function() {
@@ -323,3 +360,50 @@
   });
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+  const modal = new bootstrap.Modal(document.getElementById('editBalanceModal'));
+  const form = document.getElementById('editBalanceForm');
+
+  document.querySelectorAll(".edit-balance").forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      document.getElementById('user_id').value = link.dataset.userId;
+      document.getElementById('balance').value = link.dataset.balance;
+      document.getElementById('admin_password').value = "";
+      modal.show();
+    });
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const userId = document.getElementById('user_id').value;
+    const balance = document.getElementById('balance').value;
+    const adminPassword = document.getElementById('admin_password').value;
+
+    fetch(`/dashboard/update_balance/${userId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ balance: balance, admin_password: adminPassword })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        // Met à jour la valeur directement dans le tableau
+        const cell = document.querySelector(`a.edit-balance[data-user-id='${userId}']`);
+        cell.textContent = `${Number(balance).toLocaleString()} XOF`;
+        cell.dataset.balance = balance;
+        modal.hide();
+        alert("✅ Balance mise à jour avec succès !");
+      } else {
+        alert("❌ " + (data.message || "Erreur lors de la mise à jour."));
+      }
+    })
+    .catch(() => alert("Erreur réseau."));
+  });
+});
+
+</script>

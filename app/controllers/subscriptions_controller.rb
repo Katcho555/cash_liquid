@@ -82,6 +82,11 @@ class SubscriptionsController < ApplicationController
     redirect_to failed_subscriptions_path and return
   end
 
+  # ✅ Vérifie si le paiement a déjà été traité
+  if @souscription.status == "payé"
+    Rails.logger.info "⚠️ Paiement déjà traité pour la souscription #{@souscription.id}"
+    redirect_to dashboard_index_path and return
+  end
   # Considère le paiement réussi si :
   # - le statut API est "success" ou
   # - le paramètre URL est "success"

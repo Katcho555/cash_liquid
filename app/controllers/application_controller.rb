@@ -7,20 +7,6 @@ class ApplicationController < ActionController::Base
   prime = Parametre.find_by(cle: 'prime_inscription')&.valeur.to_i
   user.increment!(:balance, prime)
 
-    # Gains par génération
-    # gain_generations = {
-    #   1 => 600,
-    #   2 => 400,
-    #   3 => 400,
-    #   4 => 200,
-    #   5 => 200,
-    #   6 => 200,
-    #   7 => 100,
-    #   8 => 100,
-    #   9 => 50,
-    #   10 => 50
-    # }
-
     # 🔹 Chargement dynamique depuis la base de données
   gain_generations = GenerationCommission.order(:niveau).pluck(:niveau, :commission).to_h
 

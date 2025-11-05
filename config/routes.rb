@@ -65,6 +65,7 @@ end
   get 'subscriptions/index', to: 'subscriptions#index', as: 'souscriptions'
 
 
+  patch 'dashboard/update_balance/:id', to: 'dashboard#update_balance', as: :update_balance
 
 
   resources :subscriptions do
