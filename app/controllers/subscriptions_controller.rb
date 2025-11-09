@@ -16,11 +16,20 @@ class SubscriptionsController < ApplicationController
     @frais_souscription = Parametre.find_by(cle: 'frais_souscription')&.valeur.to_i
     @amount = @frais_souscription * @taux_dollar
 
+     # 🔹 Vérifier s'il existe déjà une souscription en attente
+  @subscription = current_user.subscriptions.find_by(status: 'en_attente')
+
+  unless @subscription
     @subscription = current_user.subscriptions.create(
       amount: @amount,
       status: 'en_attente',
       payment_method: 'moneroo'
     )
+  else
+    # Mettre à jour le montant si les paramètres ont changé
+    @subscription.update(amount: @amount)
+  end
+
 
     if @subscription.persisted?
       moneroo = MonerooService.new
@@ -87,6 +96,7 @@ class SubscriptionsController < ApplicationController
     Rails.logger.info "⚠️ Paiement déjà traité pour la souscription #{@souscription.id}"
     redirect_to dashboard_index_path and return
   end
+
   # Considère le paiement réussi si :
   # - le statut API est "success" ou
   # - le paramètre URL est "success"

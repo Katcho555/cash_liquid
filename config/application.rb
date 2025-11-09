@@ -14,6 +14,8 @@ module CashLiquid
     config.time_zone = 'Africa/Porto-Novo'
     config.active_record.default_timezone = :utc
     config.assets.css_compressor = nil
+    config.i18n.default_locale = :fr
+
 
     # Configuration for the application, engines, and railties goes here.
     #

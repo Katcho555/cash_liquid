@@ -21,6 +21,7 @@ class DashboardController < ApplicationController
     def list_utilisateur
         if current_user.admin?
             @users = User.includes(:parrain, :filleuls).order(:id)
+            @users = @users.page(params[:page]).per(10)
         else
              @users = [current_user]
         end
@@ -42,8 +43,81 @@ class DashboardController < ApplicationController
     
 
     def souscription_list
-        @subscriptions = Subscription.includes(:user).order(created_at: :desc).all
+        @subscriptions = Subscription.includes(:user).order(created_at: :desc).page(params[:page]).per(10)
     end
+
+
+
+
+    def force_validate
+        unless current_user&.role == "admin"
+            redirect_to dashboard_index_path, alert: "Accès refusé 🚫"
+            return
+        end
+
+        @subscription = Subscription.find(params[:id])
+        admin_password = params[:admin_password]
+
+        if current_user.valid_password?(admin_password)
+            ActiveRecord::Base.transaction do
+            # ✅ Vérifie si le paiement a déjà été traité
+            if @subscription.status == "payé"
+                Rails.logger.info "⚠️ Paiement déjà traité pour la souscription #{@subscription.id}"
+                redirect_to dashboard_souscription_list_path and return
+            end
+            
+            @subscription.update!(
+                status: "payé",
+                paid_at: Time.current,
+                payment_method: current_user.nom_complet
+            )
+
+            user = @subscription.user
+            user.generate_referral_code if user.referral_code.blank?
+
+            # 🔹 Étape 1 : Trouver le bon parrain avant d’activer le compte
+            parrain_actuel = user.parrain
+            if parrain_actuel.nil? || !parrain_actuel.parrain_disponible?(3)
+                parrain_initial = parrain_actuel || User.racine_parrain
+                nouveau_parrain = parrain_initial.premier_parrain_disponible(3)
+                user.update(parrain: nouveau_parrain) if nouveau_parrain
+            end
+
+            # 🔹 Éviter une boucle : ne jamais être son propre parrain
+            user.update(parrain: nil) if user.parrain_id == user.id
+
+            # 🔹 Étape 2 : Activer le compte une fois le parrain fixé
+            user.update(compte_status: true, vip_status: "open")
+
+            # 🔹 Étape 3 : Distribuer les gains
+            distribuer_gains(user)
+            end
+
+            flash[:success] = "✅ Validation manuelle effectuée avec succès."
+        else
+            flash[:error] = "❌ Mot de passe administrateur incorrect."
+        end
+
+        redirect_to dashboard_souscription_list_path
+    end
+
+    def delete_subscription
+        @subscription = Subscription.find(params[:id])
+        
+        unless current_user&.role == "admin"
+            redirect_to dashboard_index_path, alert: "Accès refusé 🚫"
+            return
+        end
+
+        @subscription.destroy
+        flash[:success] = "Souscription supprimée avec succès ✅"
+        redirect_to dashboard_souscription_list_path
+    end
+
+
+
+
+
 
     private
 

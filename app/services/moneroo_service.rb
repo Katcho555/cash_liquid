@@ -38,9 +38,10 @@ class MonerooService
     end
   end
 
-  # Vérifier un paiement (GET)
+
+  # Vérifier un paiement (nouvelle route)
   def verify_payment(payment_id)
-    response = self.class.get("/v1/payments/#{payment_id}", headers: @headers)
+    response = self.class.get("/v1/payments/#{payment_id}/verify", headers: @headers)
     begin
       JSON.parse(response.body)
     rescue JSON::ParserError

@@ -65,6 +65,9 @@ end
   get 'subscriptions/index', to: 'subscriptions#index', as: 'souscriptions'
 
 
+post '/dashboard/force_validate/:id', to: 'dashboard#force_validate', as: :dashboard_force_validate
+delete '/dashboard/delete_subscription/:id', to: 'dashboard#delete_subscription', as: :dashboard_delete_subscription
+
   patch 'dashboard/update_balance/:id', to: 'dashboard#update_balance', as: :update_balance
 
 

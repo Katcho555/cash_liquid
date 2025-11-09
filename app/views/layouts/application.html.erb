@@ -31,7 +31,49 @@
     
     <%= javascript_importmap_tags %>
 
-    
+    <style>
+      /* Conteneur pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination .page, .pagination .next, .pagination .last, .pagination .first, .pagination .prev  {
+  margin: 0 3px;
+}
+
+.pagination .page a,
+.pagination .page span, .pagination .next, .pagination .last, .pagination .current, .pagination .first, .pagination .prev  {
+  display: inline-block;
+  padding: 6px 12px;
+  color: #232d5b;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.pagination .page a:hover {
+  background-color: #232d5b;
+  color: #fff;
+  border-color: #232d5b;
+}
+
+.pagination .current {
+  background-color: #232d5b;
+  color: #fff;
+  border-color: #232d5b;
+}
+
+.pagination .disabled span {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: #e9ecef;
+}
+
+    </style>
   </head>
 
     <body class="position-relative">

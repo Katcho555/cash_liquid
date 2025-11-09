@@ -1,0 +1,11 @@
+fr:
+  helpers:
+    page_entries_info:
+      one: "Affichage de 1 élément"
+      other: "Affichage de %{count} éléments"
+  views:
+    pagination:
+      first: "« Première"
+      previous: "‹ Précédente"
+      next: "Suivante ›"
+      last: "Dernière »"

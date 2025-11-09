@@ -180,6 +180,11 @@
 
                     <h5 class="fw-normal text-dark-600">Toutes les souscriptions</h5>
                     <span class="border-neutral-200 border-bottom tw-border-dashed w-100 tw-mt-6 tw-mb-6"></span>
+                        <% if flash[:success] %>
+                            <div class="alert alert-success"><%= flash[:success] %></div>
+                        <% elsif flash[:error] %>
+                            <div class="alert alert-danger"><%= flash[:error] %></div>
+                        <% end %>
 
                     <div class="table-responsive">
                          <table class="table table-striped table-hover table-bordered table-responsive" id="usersTable">
@@ -194,6 +199,7 @@
                                 <th>Date paiement</th>
                                 <th>Créé le</th>
                                 <th>Mis à jour le</th>
+                                <th>Vérification</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -223,10 +229,53 @@
                                 <td><%= subscription.paid_at ? l(subscription.paid_at, format: :short) : "—" %></td>
                                 <td><%= l(subscription.created_at, format: :short) %></td>
                                 <td><%= l(subscription.updated_at, format: :short) %></td>
+                                <td>
+                                    <% if subscription.status == "en_attente" %>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="actionsDropdown<%= subscription.id %>" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Actions
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="actionsDropdown<%= subscription.id %>">
+                                            
+                                            
+
+                                            <!-- Forcer la validation -->
+                                            <li>
+                                                <button 
+                                                    class="dropdown-item" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#forceValidateModal" 
+                                                    data-id="<%= subscription.id %>">
+                                                Forcer la validation
+                                                </button>
+                                            </li>
+
+                                            <!-- Supprimer la souscription -->
+                                            <li>
+                                                <%= button_to "Supprimer",
+                                                    dashboard_delete_subscription_path(subscription.id),
+                                                    method: :delete,
+                                                    data: { confirm: "Êtes-vous sûr de vouloir supprimer cette souscription ?" },
+                                                    class: "dropdown-item text-danger" %>
+                                            </li>
+
+                                            </ul>
+                                        </div>
+                                    <%else%>
+                                    OK
+                                    <%end%>
+                                </td>
+
+
+
                                 </tr>
                             <% end %>
                             </tbody>
                         </table>
+                        <div class="d-flex justify-content-center mt-3">
+                            <%= paginate @subscriptions %>
+                        </div>
+
                     </div>
 
                 </div>
@@ -242,6 +291,44 @@
 <!-- =========================== my profile footer section start ============================= -->
  <%= render partial: "layouts/footer" %>
 
+<div class="modal fade" id="forceValidateModal" tabindex="-1" aria-labelledby="forceValidateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title" id="forceValidateModalLabel">Forcer la validation du paiement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="forceValidateForm" method="POST">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Mot de passe administrateur</label>
+            <input type="password" name="admin_password" class="form-control" required>
+          </div>
+          <p class="text-muted">
+            ⚠️ Cette action activera le compte de l’utilisateur même si le paiement Moneroo n’a pas encore été confirmé.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-warning">Valider manuellement</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("forceValidateModal");
+  const form = document.getElementById("forceValidateForm");
+
+  modal.addEventListener("show.bs.modal", (event) => {
+    const button = event.relatedTarget;
+    const subscriptionId = button.getAttribute("data-id");
+    form.action = `/dashboard/force_validate/${subscriptionId}`;
+  });
+});
+</script>
 
 
 <script>

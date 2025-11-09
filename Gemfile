@@ -51,6 +51,7 @@ gem 'faraday', '~> 1.8'
 gem 'pg'
 gem 'dotenv-rails'
 gem 'httparty'
+gem 'kaminari'
 
 
 # Use Sass to process CSS
