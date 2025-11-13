@@ -1,693 +1,2206 @@
+  
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hedvig+Letters+Sans&family=Quattrocento+Sans&family=Liter&display=swap" rel="stylesheet">
+    
+    <!-- Three.js and Vanta.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.birds.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #FAFBFC;
+            --primary-color: #1A1D29;
+            --secondary-color: #4A5568;
+            --accent-color: #D69E2E;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+        
+        body {
+            font-family: 'Quattrocento Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            overflow-x: hidden;
+        }
+        
+        /* ===== MODALE RUPTURE ===== */
+        .ux-modal{
+        position: fixed; inset: 0; z-index: 9999;
+        background: rgba(0, 0, 0, .55); display: none;
+        align-items: center; justify-content: center;
+        animation: fade-in .3s ease;
+        }
+        .ux-modal.show{ display: flex; }
+        @keyframes fade-in{ from{ opacity: 0; } to{ opacity: 1; } }
+
+        .ux-modal-content{
+        background: #fff; border-radius: 20px; padding: 2rem;
+        max-width: 400px; width: 90%; text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, .25);
+        animation: slide-up .3s ease;
+        }
+        @keyframes slide-up{ from{ transform: translateY(30px); opacity: 0; } to{ transform: translateY(0); opacity: 1; } }
+
+        .ux-modal-icon{
+        font-size: 3rem; color: #dc3545; margin-bottom: 1rem;
+        animation: pulse-icon .6s ease-out;
+        }
+        @keyframes pulse-icon{ 0%{ transform: scale(1.2); } 100%{ transform: scale(1); } }
+
+        .ux-modal-title{ font-size: 1.4rem; font-weight: 700; margin-bottom: .5rem; }
+        .ux-modal-text{ font-size: .95rem; color: #555; margin-bottom: 1.5rem; }
+
+        .ux-modal-close{
+        position: absolute; top: 1rem; right: 1rem; background: none; border: none;
+        font-size: 1.5rem; color: #999; cursor: pointer; transition: color .2s;
+        }
+        .ux-modal-close:hover{ color: #dc3545; }
+
+        .ux-modal-ok{
+        padding: .7rem 1.5rem; border: none; border-radius: 12px; font-weight: 600;
+        color: #fff; background: linear-gradient(45deg, #dc3545, #ff6b6b);
+        cursor: pointer; transition: transform .2s, box-shadow .2s;
+        }
+        .ux-modal-ok:hover{ transform: translateY(-2px); box-shadow: 0 6px 20px rgba(220, 53, 69, .4); }
 
 
-<!-- Custom Toast Message start -->
-<div id="toast-container"></div>
-<!-- Custom Toast Message End -->
-
-<!-- ==================== Scroll to Top End Here ==================== -->
-<div class="progress-wrap cursor-big">
-  <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
-      <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
-  </svg>
-</div>
-<!-- ==================== Scroll to Top End Here ==================== -->
 
 
-<!-- ==================== Mobile Menu Start Here ==================== -->
-<div class="mobile-menu d-lg-none d-block scroll-sm position-fixed bg-base-two-600 tw-w-300-px tw-h-screen overflow-y-auto tw-p-6 tw-z-999 tw--translate-x-full tw-pb-68 ">
 
-    <button type="button" class="close-button position-absolute tw-end-0 top-0 tw-me-2 tw-mt-2 tw-w-605 tw-h-605 rounded-circle d-flex justify-content-center align-items-center text-white bg-neutral-200 hover-bg-neutral-900 hover-text-white"> 
-        <i class="ph ph-x"></i>
-    </button>
+        .hero-title {
+            font-family: 'Hedvig Letters Sans', sans-serif;
+            font-size: 50px;
+            font-weight: bold;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-family: 'Liter', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--secondary-color);
+            line-height: 1.6;
+        }
+        
+        .vanta-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-navbar {
+            background: var(--glass-bg) !important;
+            backdrop-filter: blur(20px) !important;
+            border-bottom: 1px solid var(--glass-border) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .feature-card {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: none;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15) !important;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #B7791F 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(214, 158, 46, 0.3);
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(214, 158, 46, 0.4);
+            color: white;
+        }
+        
+        .stats-number {
+            font-family: 'Hedvig Letters Sans', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+     
+        
+        .animated-icon {
+            width: 30px;
+            height: 20px;
+            position: relative;
+            margin: 0;
+            transform: rotate(0deg);
+            transition: .5s ease-in-out;
+            cursor: pointer;
+        }
+        
+        .animated-icon span {
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: var(--accent-color);
+            border-radius: 9px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+        
+        .animated-icon span:nth-child(1) {
+            top: 0px;
+        }
+        
+        .animated-icon span:nth-child(2) {
+            top: 10px;
+        }
+        
+        .animated-icon span:nth-child(3) {
+            top: 20px;
+        }
+        
+        .animated-icon.open span:nth-child(1) {
+            top: 11px;
+            transform: rotate(135deg);
+        }
+        
+        .animated-icon.open span:nth-child(2) {
+            opacity: 0;
+            left: -60px;
+        }
+        
+        .animated-icon.open span:nth-child(3) {
+            top: 11px;
+            transform: rotate(-135deg);
+        }
+        
+       
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .gradient-blue {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
+        }
+        
+        .gradient-amber {
+            background: linear-gradient(135deg, #F59E0B 0%, #B45309 100%);
+        }
+        
+        .gradient-green {
+            background: linear-gradient(135deg, #10B981 0%, #047857 100%);
+        }
+        
+        .step-number {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            margin: 0 auto 1rem;
+        }
+        
+        .step-connector {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+        }
+        
+        @media (max-width: 767.98px) {
+            .step-connector {
+                display: none;
+            }
+        }
+        @media (max-width: 979.98px) {
+            .hero-section {
+                margin-top: 100px;
+            }
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #B7791F 100%);
+            color: white;
+        }
+        
+        .btn-white {
+            background: white;
+            color: var(--accent-color);
+            border: 2px solid white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-white:hover {
+            background: transparent;
+            color: white;
+            border-color: white;
+        }
+        
+        .btn-outline-white {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-outline-white:hover {
+            background: white;
+            color: var(--accent-color);
+        }
+    </style>
 
-    <div class="mobile-menu__inner">
-        <a href="/" class="mobile-menu__logo">
-            <%= image_tag 'logo_first.png' %>
-        </a>
-        <div class="mobile-menu__menu">
-            <!-- Nav menu Start -->
-<ul class="nav-menu d-lg-flex align-items-center nav-menu--mobile d-block tw-mt-8">
-    <li class="nav-menu__item has-submenu position-relative activePage">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 text-white tw-py-9 fw-semibold w-100">HOME</a>
-        <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-menu__item activePage">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home One</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home Two</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home Three</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home Four</a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-menu__item has-submenu position-relative">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">BLOG</a>
-         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog Details</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog Grid</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog List</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog Standerd</a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-menu__item has-submenu position-relative">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">Dashboard</a>
-         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Dashboard</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Transaction</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Send Money</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Request Money</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Deposit Money</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Withdraw Money</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Notifications</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Account</a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-menu__item has-submenu position-relative">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">ABOUT</a>
-         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">About Us</a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-menu__item has-submenu position-relative">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">PAGES</a>
-         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Fees</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Our Services</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Services Details</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Our Team</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Pricing Plan</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="javascript:void(0)" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">FAQ</a>
-            </li>  
-        </ul>
-    </li>
-    <li class="nav-menu__item">
-        <a href="javascript:void(0)" class="nav-menu__link text-heading tw-py-9 fw-semibold w-100 text-white">CONTACT</a>
-    </li>
-</ul>
-<!-- Nav menu End  -->
+     <style>
+        :root {
+            --primary-colore: #f59e0b;
+            --primary-dark: #d97706;
+            --primary-light: #fef3c7;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --sidebar-width: 320px;
+        }
+        
+      
+        
+        /* Navigation principale - Version PC */
+        .glass-navbar {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+            padding: 1rem 0;
+            transition: all 0.4s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 0.7rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            color: var(--text-dark) !important;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .logo-container {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+        
+        .logo-container i {
+            color: white;
+            font-size: 1.3rem;
+        }
+        
+        /* Menu principal PC - Design spécial */
+        .nav-main {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(245, 158, 11, 0.05);
+            border-radius: 50px;
+            padding: 0.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(245, 158, 11, 0.1);
+        }
+        
+        .nav-item-pc {
+            position: relative;
+        }
+        
+        .nav-link-pc {
+            color: var(--text-dark) !important;
+            font-weight: 600;
+            padding: 0.7rem 1.5rem !important;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .nav-link-pc:hover {
+            color: var(--text-dark) !important;
+        }
+        
+        .nav-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-colore), var(--primary-dark));
+            border-radius: 50px;
+            z-index: 0;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+        
+        .nav-link-pc.active {
+            color: white !important;
+        }
+        
+        /* Boutons actions */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .btn-connect {
+            color: var(--text-dark) !important;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .btn-connect:hover {
+            border-color: var(--primary-colore);
+            color: var(--primary-colore) !important;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary-colore), var(--primary-dark));
+            color: white !important;
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+            color: white;
+        }
+        
+        /* Bouton menu mobile */
+        .menu-trigger {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-colore), var(--primary-dark));
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+        
+        .menu-trigger:hover {
+            transform: rotate(90deg);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+        
+        /* Offcanvas - Version Mobile */
+        .offcanvas-special {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            color: white;
+            width: 100vw !important;
+            border-left: none !important;
+        }
+        
+        @media (min-width: 400px) {
+            .offcanvas-special {
+                width: 380px !important;
+            }
+        }
+        
+        .offcanvas-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 1.5rem 1.5rem;
+        }
+        
+        .offcanvas-brand {
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .offcanvas-logo {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary-colore), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-close-custom {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-close-custom:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Navigation mobile */
+        .offcanvas-body {
+            padding: 2rem 1.5rem;
+        }
+        
+        .nav-mobile {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .nav-link-mobile {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid transparent;
+        }
+        
+        .nav-link-mobile:hover,
+        .nav-link-mobile.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .nav-link-mobile i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .nav-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 1.5rem 0;
+        }
+        
+        .user-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-colore), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        /* Section de démonstration */
+        .demo-section {
+            padding: 6rem 2rem 2rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+        
+        .demo-section h1 {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+        
+        .demo-section p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .scroll-indicator {
+            margin-top: 3rem;
+            color: var(--primary-color);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        /* Cacher le menu PC sur mobile et vice versa */
+        @media (max-width: 991px) {
+            .nav-pc {
+                display: none !important;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .menu-trigger {
+                display: none !important;
+            }
+        }
 
-        </div>
-    </div>
-</div>
-<!-- ==================== Mobile Menu End Here ==================== -->
+        .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        }
+
+        .product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card .btn-success {
+        background: linear-gradient(45deg, #28a745, #20c997);
+        border: none;
+        transition: all 0.3s ease;
+        }
+
+        .product-card .btn-success:hover {
+        background: linear-gradient(45deg, #20c997, #28a745);
+        transform: scale(1.05);
+        }
+
+        .animate-pulse {
+        animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
+        70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+        }
+
+        .badge.bg-danger {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e) !important;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
 
 
-<!-- ============ Top Header Section Start ================== -->
-<div class="bg-main-600 tw-py-205 z-1 ">
-    <div class="container">
-        <div class="d-flex align-items-center tw-gap-3 justify-content-between flex-wrap">
-            <div class="d-md-block d-none">
-                <div class="d-flex align-items-center tw-gap-6 flex-wrap ">
-                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <span class="tw-text-xl text-dark-600 fw-semibold">
-                            <i class="ph-bold ph-headset"></i>
-                        </span>
-                        <span class="text-dark-600 fw-semibold tw-text-lg">24/7</span>
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+
+        .body_product {
+        display: flex;
+        padding: 0 35px;
+        align-items: center;
+        justify-content: center;
+        
+        /*background: linear-gradient(to left top, #031A9A, #8B53FF);*/
+        }
+        .wrapper {
+        max-width: 1100px;
+        width: 100%;
+        position: relative;
+        }
+        .wrapper #left, .wrapper #right {
+        top: 50%;
+        height: 50px;
+        width: 50px;
+        cursor: pointer;
+        font-size: 1.25rem;
+        position: absolute;
+        text-align: center;
+        line-height: 50px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.23);
+        transform: translateY(-50%);
+        transition: transform 0.1s linear;
+        z-index: 1000;
+        }
+        .wrapper #left:active, .wrapper #right:active{
+        transform: translateY(-50%) scale(0.85);
+        }
+        .wrapper i:first-child{
+        left: -22px;
+        }
+        .wrapper i:last-child{
+        right: -22px;
+        }
+        .wrapper .carousel{
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: calc((100% / 3) - 12px);
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 16px;
+        border-radius: 8px;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        }
+        .carousel::-webkit-scrollbar {
+        display: none;
+        }
+        .carousel.no-transition {
+        scroll-behavior: auto;
+        }
+        .carousel.dragging {
+        scroll-snap-type: none;
+        scroll-behavior: auto;
+        }
+        .carousel.dragging .card {
+        cursor: grab;
+        user-select: none;
+        }
+        .carousel :where(.card, .img) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+        .carousel .card {
+        scroll-snap-align: start;
+        height: 342px;
+        list-style: none;
+        background: #fff;
+        cursor: pointer;
+        padding-bottom: 15px;
+        flex-direction: column;
+        border-radius: 8px;
+        }
+
+
+        @media screen and (max-width: 900px) {
+        .wrapper .carousel {
+            grid-auto-columns: calc((100% / 2) - 9px);
+        }
+        }
+
+        @media screen and (max-width: 600px) {
+        .wrapper .carousel {
+            grid-auto-columns: 100%;
+        }
+        }
+
+        /* Fond dégradé subtil */
+        .section-products {
+        background: linear-gradient(to bottom, #ffffff, #f9f9ff);
+        position: relative;
+        overflow: hidden;
+        }
+
+        /* Titre avec dégradé */
+        .title-gradient {
+        background: linear-gradient(90deg, #ff6b6b, #8b53ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        }
+
+        /* Sous-titre */
+        .subtitle {
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+        }
+
+        /* Bouton gradient */
+        .btn-gradient {
+        background: linear-gradient(45deg, #8b53ff, #ff6b6b);
+        color: #fff;
+        border: none;
+        font-weight: 600;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(139, 83, 255, 0.4);
+        color: #fff;
+        }
+
+        /* Animation douce */
+        [data-aos] {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease;
+        }
+
+        [data-aos].aos-animate {
+        opacity: 1;
+        transform: translateY(0);
+        }
+
+        footer a{
+            color: white;
+        }
+ 
+    </style>
+
+ 
+
+    <!-- Navigation -->
+    <!-- Navigation PC -->
+    <nav class="navbar glass-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center text-decoration-none" href="/">
+                <div class="logo-container">
+                     <%= image_tag 'logo2.png' %>
+                </div>
+                <span>Cash Liquid</span>
+            </a>
+            
+            <!-- Menu PC -->
+            <div class="nav-pc d-none d-lg-flex align-items-center">
+                <div class="nav-main position-relative">
+                    <div class="nav-indicator" style="transform: translateX(0px); width: 115px;"></div>
+                    
+                    <div class="nav-item-pc">
+                        <a class="nav-link-pc active" href="#">Accueil</a>
                     </div>
-                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <span class="tw-text-xl text-dark-600 fw-semibold">
-                            <i class="ph-bold ph-envelope-simple"></i>
-                        </span>
-                        <span class="text-dark-600 fw-semibold">cash.liquid03@gmail.com</span>
+                    <div class="nav-item-pc">
+                        <a class="nav-link-pc" href="#features">Fonctionnalités</a>
+                    </div>
+                    <div class="nav-item-pc">
+                        <a class="nav-link-pc" href="#marketplace">Marketplace</a>
+                    </div>
+                    <div class="nav-item-pc">
+                        <a class="nav-link-pc" href="#community">Communauté</a>
                     </div>
                 </div>
             </div>
-            <div class="top-header-item d-flex align-items-center tw-gap-15 flex-wrap">
-                <div>
-                    <ul class="d-flex align-items-center tw-gap-5 flex-wrap">
-                        <li>
-                            <a href="https://twitter-cl.vercel.app/login" class="tw-text-xl text-dark-600">
-                                <i class="ph-fill ph-twitter-logo"></i>
+            
+            <!-- Actions -->
+            <div class="nav-actions">
+                <div class="d-none d-lg-flex align-items-center gap-3">
+                    <a href="<%=login_path%>" class="btn-connect">Connexion</a>
+                    <a href="<%=signup_path%>" class="btn-primary-custom">
+                        Commencer
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Bouton menu mobile -->
+                <button class="menu-trigger d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Offcanvas Mobile -->
+    <div class="offcanvas offcanvas-end offcanvas-special" tabindex="-1" id="offcanvasMenu">
+        <div class="offcanvas-header">
+            <a href="#" class="offcanvas-brand">
+                <div class="offcanvas-logo">
+                    <i class="fas fa-link"></i>
+                </div>
+                Cash Liquid
+            </a>
+            <button type="button" class="btn-close-custom" data-bs-dismiss="offcanvas">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="offcanvas-body">
+            <nav class="nav-mobile">
+                <a href="#" class="nav-link-mobile active">
+                    <i class="fas fa-home"></i>
+                    Accueil
+                </a>
+                <a href="#features" class="nav-link-mobile">
+                    <i class="fas fa-star"></i>
+                    Fonctionnalités
+                </a>
+                <a href="#marketplace" class="nav-link-mobile">
+                    <i class="fas fa-store"></i>
+                    Marketplace
+                </a>
+                <a href="#community" class="nav-link-mobile">
+                    <i class="fas fa-users"></i>
+                    Communauté
+                </a>
+                
+                <div class="nav-divider"></div>
+                
+                <a href="#" class="nav-link-mobile">
+                    <i class="fas fa-question-circle"></i>
+                    Aide & Support
+                </a>
+                <a href="#" class="nav-link-mobile">
+                    <i class="fas fa-cog"></i>
+                    Paramètres
+                </a>
+            </nav>
+            
+            <div class="user-section">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h5 class="text-white mb-2">Bienvenue sur Cash Liquid</h5>
+                <p class="text-light mb-3">Rejoignez notre communauté et commencez à gagner dès maintenant</p>
+                <div class="d-flex gap-2">
+                    <a href="<%=login_path%>" class="btn btn-outline-light flex-fill">Connexion</a>
+                    <a href="<%=signup_path%>" class="btn-primary-custom flex-fill">Commencer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div id="vanta-bg" class="vanta-canvas"></div>
+        
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="text-center text-lg-start">
+                        <h1 class="hero-title mb-4">
+                            Gagnez ensemble,<br>
+                            progressez plus loin
+                        </h1>
+                        <p class="hero-subtitle mb-5">
+                            La première plateforme qui combine parrainage rémunéré, marketplace de services 
+                            et microtâches. Rejoignez une communauté où chaque connexion crée de la valeur.
+                        </p>
+                        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
+                            <a href="#" class="btn-primary-custom">
+                                <i class="fas fa-rocket me-2"></i>
+                                Démarrer l'aventure
                             </a>
-                        </li>
-                        <li>
-                            <a href="https://www.facebook.com" class="tw-text-xl text-dark-600">
-                                <i class="ph-bold ph-facebook-logo"></i>
+                            <a href="#" class="btn btn-outline-secondary btn-lg px-4 py-3">
+                                <i class="fas fa-play me-2"></i>
+                                Voir la démo
                             </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="floating-element mt-5 mt-lg-0">
+                      <%= image_tag 'hero-abstract.png', class: "img-fluid rounded-3 shadow-lg" %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="row g-4 text-center">
+                <div class="col-6 col-md-3">
+                    <div class="scroll-reveal">
+                        <div class="stats-number">50K+</div>
+                        <p class="text-muted fs-5">Utilisateurs actifs</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="scroll-reveal">
+                        <div class="stats-number">2.5M€</div>
+                        <p class="text-muted fs-5">Gagnés par la communauté</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="scroll-reveal">
+                        <div class="stats-number">150K</div>
+                        <p class="text-muted fs-5">Tâches complétées</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="scroll-reveal">
+                        <div class="stats-number">98%</div>
+                        <p class="text-muted fs-5">Satisfaction client</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-4 fw-bold mb-4 text-dark">Trois univers, une plateforme</h2>
+                <p class="lead text-muted max-w-800 mx-auto">
+                    Découvrez comment Cash Liquid révolutionne votre manière de gagner en ligne en combinant 
+                    parrainage, services et microtâches dans une expérience fluide et rémunératrice.
+                </p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Parrainage -->
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 p-4 rounded-3 scroll-reveal">
+                        <div class="feature-icon gradient-blue">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="h4 fw-bold mb-3 text-dark">Parrainage</h3>
+                        <p class="text-muted mb-4">
+                            Transformez votre réseau en opportunités. Gagnez des commissions sur les parrainages 
+                            et construisez une source de revenus passifs durable.
+                        </p>
+                        <ul class="list-unstyled">
+                            <li class="d-flex align-items-center mb-2">
+                                <i class="fas fa-check text-success me-3"></i>
+                                <span>Commissions jusqu'à 30%</span>
+                            </li>
+                            <li class="d-flex align-items-center mb-2">
+                                <i class="fas fa-check text-success me-3"></i>
+                                <span>Paiements instantanés</span>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <i class="fas fa-check text-success me-3"></i>
+                                <span>Outils de tracking avancés</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Marketplace -->
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 p-4 rounded-3 scroll-reveal">
+                        <div class="feature-icon gradient-amber">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <h3 class="h4 fw-bold mb-3 text-dark">Marketplace</h3>
+                        <p class="text-muted mb-4">
+                            Vendez vos compétences ou trouvez les meilleurs freelances. Une place de marché 
+                            sécurisée pour tous vos besoins professionnels.
+                        </p>
+                        <ul class="list-unstyled">
+                            <li class="d-flex align-items-center mb-2">
+                                <i class="fas fa-check text-success me-3"></i>
+                                <span>Évaluations vérifiées</span>
+                            </li>
+                            <li class="d-flex align-items-center mb-2">
+                                <i class="fas fa-check text-success me-3"></i>
+                                <span>Paiement sécurisé</span>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <i class="fas fa-check text-success me-3"></i>
+                                <span>Support 24/7</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Microtâches -->
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 p-4 rounded-3 scroll-reveal">
+                        <div class="feature-icon gradient-green">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3 class="h4 fw-bold mb-3 text-dark">Microtâches</h3>
+                        <p class="text-muted mb-4">
+                            Complétez des missions simples et rapides pour gagner de l'argent. 
+                            Idéal pour les moments libres et les revenus complémentaires.
+                        </p>
+                        <ul class="list-unstyled">
+                            <li class="d-flex align-items-center mb-2">
+                                <i class="fas fa-check text-success me-3"></i>
+                                <span>Tâches 5-15 minutes</span>
+                            </li>
+                            <li class="d-flex align-items-center mb-2">
+                                <i class="fas fa-check text-success me-3"></i>
+                                <span>Rémunération immédiate</span>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <i class="fas fa-check text-success me-3"></i>
+                                <span>Sans compétences requises</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <style>
+        /* ------ SECTION PARRAINAGE ------ */
+.section-referral{
+  background: linear-gradient(160deg, #f8f9ff 0%, #eef2ff 100%);
+  position: relative;
+  overflow: hidden;
+}
+.text-referral{
+  background: linear-gradient(90deg, #ff6b6b, #8b53ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---- BONUS PACKS ---- */
+.bonus-pack{
+  border-radius: 16px;
+  padding: 2rem 1rem;
+  color: #fff;
+  transition: transform .3s;
+}
+.bonus-pack:hover{ transform: translateY(-7px); }
+.silver-gradient{ background: linear-gradient(135deg, #bdc3c7, #2c3e50); }
+.warning-gradient{ background: linear-gradient(135deg, #f9d423, #ff4e50); }
+.danger-gradient{ background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+.bonus-amount{
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: .5rem 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,.25);
+}
+
+/* ---- STEPS ---- */
+.step-row{ counter-reset: step; }
+.step-icon{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.step-number{
+  position: absolute;
+  top: -8px; right: -8px;
+  background: #8b53ff;
+  color: #fff;
+  border-radius: 50%;
+  width: 28px; height: 28px;
+  font-size: .8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.step-item h6{ margin-top: .7rem; }
+
+/* ---- JAUKE / CTA ---- */
+.referral-cta-box{ background: #fff; }
+.progress-lg{ height: 14px; border-radius: 10px; background: #e9ecef; }
+.progress-lg .progress-bar{
+  background: linear-gradient(90deg, #8b53ff, #ff6b6b);
+  border-radius: 10px;
+  width: 0;
+  transition: width 1.5s ease;
+}
+.animated-bar{ width: 73% !important; }   /* JS peut la faire croître depuis 0 */
+.btn-referral{
+  background: linear-gradient(45deg, #ff6b6b, #8b53ff);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  transition: transform .3s, box-shadow .3s;
+}
+.btn-referral:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(139, 83, 255, .45);
+  color: #fff;
+}
+
+/* ===== PRO BONUS CARD – PRO & DYNAMIQUE ===== */
+.ux-pro-card{
+  position: relative; margin: 3rem auto;
+  border-radius: 24px; overflow: hidden;
+  background: linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%);
+  box-shadow: 0 12px 30px rgba(139, 83, 255, .12);
+  padding: 3rem 2.5rem; text-align: center;
+  font-family: 'Inter', sans-serif; color: #222;
+}
+
+/* Vecteur animé (fond léger) */
+.ux-pro-vecteur{
+  position: absolute; inset: 0; z-index: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath d='M40 40 Q100 20 160 40 T200 100' stroke='%238b53ff' stroke-width='2' fill='none' opacity='.08'%3E%3Canimate attributeName='d' values='M40 40 Q100 20 160 40 T200 100;M60 60 Q100 80 140 60 T200 100;M40 40 Q100 20 160 40 T200 100' dur='8s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E") no-repeat center/cover;
+  animation: float-vecteur 8s ease-in-out infinite;
+}
+@keyframes float-vecteur{ 0%,100%{ transform: translate(0, 0); } 50%{ transform: translate(-10px, -10px); } }
+
+/* Titre avec dégradé animé */
+.ux-pro-title{
+  position: relative; z-index: 2; font-size: 2rem; font-weight: 700;
+  line-height: 1.2; margin-bottom: 1rem;
+}
+.ux-pro-grad{
+  background: linear-gradient(90deg, #8b53ff, #ff6b6b);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: grad-shift 3s ease-in-out infinite;
+}
+@keyframes grad-shift{ 0%,100%{ filter: hue-rotate(0deg); } 50%{ filter: hue-rotate(20deg); } }
+
+/* Sous-titre */
+.ux-pro-subtitle{
+  font-size: 1.05rem; line-height: 1.6; color: #555; margin-bottom: 2rem;
+}
+
+/* CTA professionnel */
+.ux-pro-cta{
+  position: relative; z-index: 2; display: inline-flex; align-items: center; gap: .5rem;
+  padding: .9rem 1.8rem; border-radius: 50px; font-weight: 600; color: #fff;
+  background: linear-gradient(45deg, #8b53ff, #ff6b6b);
+  text-decoration: none; transition: transform .2s, box-shadow .2s;
+  animation: pulse-cta 2s infinite;
+}
+@keyframes pulse-cta{ 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.03); } }
+.ux-pro-cta:hover{ transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139, 83, 255, .4); }
+
+/* Preuves sociales animées */
+.ux-pro-social{ display: flex; justify-content: center; gap: 1.5rem; margin-top: 2rem; }
+.ux-social-item{
+  display: flex; align-items: center; gap: .5rem; font-size: .9rem; color: #666;
+  animation: fade-in-up 1s ease-out forwards; opacity: 0;
+}
+.ux-social-item:nth-child(1){ animation-delay: .2s; }
+.ux-social-item:nth-child(2){ animation-delay: .4s; }
+.ux-social-item:nth-child(3){ animation-delay: .6s; }
+@keyframes fade-in-up{ to{ opacity: 1; transform: translateY(0); } }
+.ux-social-item i{ color: #28a745; font-size: 1rem; }
+
+/* ------ SECTION NIVEAUX ------ */
+.section-task-levels{
+  background: linear-gradient(160deg, #ffffff 0%, #f8f9ff 100%);
+}
+.text-level{
+  background: linear-gradient(90deg, #28a745, #8b53ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---- CARTE NIVEAU ---- */
+.level-card{
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform .3s, box-shadow .3s;
+}
+.level-card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0,0,0,.08);
+}
+
+/* Header */
+.card-header-level{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1rem 0;
+}
+.level-badge{
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .3rem .6rem;
+  border-radius: 20px;
+  color: #fff;
+}
+.level-easy{ background: #28a745; }
+.level-medium{ background: #ffc107; color: #212529; }
+.level-hard{ background: #dc3545; }
+
+.price-tag{
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 700;
+  padding: .4rem .8rem;
+  border-radius: 20px;
+  font-size: .9rem;
+}
+
+/* Body */
+.info-line{
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .5rem;
+  font-size: .9rem;
+}
+.info-line a{
+  text-decoration: none;
+  color: #0d6efd;
+}
+.info-line a:hover{ text-decoration: underline; }
+
+/* Footer */
+.card-footer-level{ padding: 0 1rem 1rem; }
+
+/* Bouton final */
+.btn-gradient{
+  background: linear-gradient(45deg, #28a745, #8b53ff);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  transition: transform .3s, box-shadow .3s;
+}
+.btn-gradient:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(139, 83, 255, .45);
+  color: #fff;
+}
+    </style>
+
+    <!--Section parrainage-->
+    <section class="py-5 section-referral">
+        <div class="container">
+
+            <!-- Headline -->
+            <div class="text-center mb-4 d-none" data-aos="fade-up">
+                <h2 class="fw-bold display-6 text-referral">
+                    Faites grandir votre réseau <span class="text-warning">&</span> vos revenus
+                </h2>
+                <p class="text-muted mb-4 subtitle">
+                <%=@frais_souscription%> $ seulement pour démarrer, 30 niveaux de gains, des bonus explosifs.
+                </p>
+            </div>
+
+            <div class="ux-pro-card" data-aos="fade-up">
+            <!-- Fond animé (vecteur léger) -->
+            <div class="ux-pro-vecteur"></div>
+
+            <!-- Texte principal -->
+            <h2 class="ux-pro-title">
+                <span class="ux-pro-grad">Votre réseau</span> devient votre <span class="ux-pro-grad">revenu</span>
+            </h2>
+            <p class="ux-pro-subtitle">
+                Chaque partage, chaque invitation, chaque succès : <strong>vous gagnez</strong>.<br>
+                Pas de stock, pas de vente, juste du **partage et des bonus**.
+            </p>
+
+            <!-- CTA professionnel -->
+            <a href="<%=signup_path%>" class="ux-pro-cta">
+                <span>Commencer maintenant</span>
+                <i class="fa fa-arrow-right"></i>
+            </a>
+
+            <!-- Mini preuves sociales (animées) -->
+            <div class="ux-pro-social">
+                <div class="ux-social-item">
+                <i class="fa fa-check-circle"></i>
+                <span>Partage = Bonus</span>
+                </div>
+                <div class="ux-social-item">
+                <i class="fa fa-clock"></i>
+                <span>1 min suffit</span>
+                </div>
+                <div class="ux-social-item">
+                <i class="fa fa-gift"></i>
+                <span>Bonus quotidiens</span>
+                </div>
+            </div>
+            </div>
+
+            <!-- BONUS CARDS -->
+            <div class="row g-3 justify-content-center mb-5 d-none">
+                <% [
+                    {title: "Parrain Silver",   bonus: "500 FCFA",  icon: "fa-medal", color: "silver"},
+                    {title: "Parrain Gold",     bonus: "2 000 FCFA", icon: "fa-trophy", color: "warning"},
+                    {title: "Parrain Diamond",  bonus: "5 000 FCFA", icon: "fa-gem", color: "danger"}
+                    ].each do |pack| %>
+                    <div class="col-12 col-md-6 col-lg-4" data-aos="zoom-in">
+                    <div class="bonus-pack h-100 text-center <%= pack[:color] %>-gradient shadow-lg">
+                        <i class="fa-solid <%= pack[:icon] %> fa-3x mb-3"></i>
+                        <h5 class="fw-bold"><%= pack[:title] %></h5>
+                        <div class="bonus-amount"><%= pack[:bonus] %></div>
+                        <small class="text-light">offerts dès 10 filleuls actifs</small>
+                    </div>
+                    </div>
+                <% end %>
+            </div>
+
+            <!-- ETAPE BY ETAPE -->
+            <div class="row g-4 step-row">
+                <% [
+                    {num: "01", title: "Inscription", desc: "Payez 1&nbsp;$, recevez 50&nbsp;FCFA de bonus.", icon: "fa-user-plus"},
+                    {num: "02", title: "Parrainage", desc: "Partagez votre lien, invitez vos proches.", icon: "fa-share-nodes"},
+                    {num: "03", title: "Revenus", desc: "Gagnez sur 30 niveaux de profondeur&nbsp;!", icon: "fa-coins"},
+                    {num: "04", title: "Croissance", desc: "Votre réseau s’auto-alimente.", icon: "fa-chart-line"}
+                    ].each_with_index do |step, idx| %>
+                    <div class="col-6 col-lg-3 text-center step-item" data-aos="fade-up" data-aos-delay="<%= idx * 100 %>">
+                    <div class="step-icon mx-auto mb-3">
+                        <span class="step-number"><%= step[:num] %></span>
+                        <i class="fa-solid <%= step[:icon] %> fa-2x"></i>
+                    </div>
+                    <h6 class="fw-bold"><%= step[:title] %></h6>
+                    <p class="small text-muted"><%= raw step[:desc] %></p>
+                    </div>
+                <% end %>
+            </div>
+
+            <!-- JAUKE + CTA -->
+            <div class="row justify-content-center mt-5">
+                <div class="col-lg-6">
+                    <div class="referral-cta-box p-4 rounded-4 shadow text-center">
+                    <h5 class="mb-3">Pas encore inscrits ?</h5>
+                    <%= link_to "signup_path", class: "btn btn-referral btn-lg px-5 rounded-pill" do %>
+                        <i class="fa fa-rocket me-2"></i> Rejoindre maintenant – $<%=@frais_souscription%>
+                    <% end %>
+                    <div class="mt-2 small text-success">
+                        <i class="fa fa-check-circle"></i> Bonus <%=@prime_inscription%> FCFA crédités instantanément
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!--Section produit-->
+    <section class="py-5 bg-light section-products" id="marketplace">
+        <div class="container">
+            <!-- Titre avec effet -->
+            <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="fw-bold display-6 title-gradient">
+                🤑 Gagne avec ces produits tendance
+            </h2>
+            <p class="text-muted mt-3 mb-4 subtitle">
+                Ajoute-les à ton espace et touche une commission à chaque vente. <br>
+                Zéro stock, zéro frais, juste des gains.
+            </p>
+            <span class="badge bg-light text-dark px-3 py-2 shadow-sm">
+                <i class="fa fa-lightbulb text-warning me-1"></i> Mise à jour quotidiennement
+            </span>
+            </div>
+            <div class="body_product">
+                <div class="wrapper">
+                    <i id="left" class="fa-solid fa-angle-left"></i>
+                    <ul class="carousel">
+                        <li class="card product-card h-100 shadow-sm position-relative">
+                            <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
+                            <%= image_tag 'product.jpg', class:"card-img-top", alt: "Mini imprimante portable" %>
+                            <div class="card-body">
+                                <span class="badge bg-warning text-dark mb-2">Tech</span>
+                                <h5 class="card-title">Mini imprimante portable</h5>
+                                <p class="card-text small">Imprime tes photos où que tu sois. Compacte, sans encre.</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold text-success fs-5">59 €</span>
+                                    <small class="text-muted">Vendu par <strong>TechStore</strong></small>
+                                </div>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
+                                    <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
+                                   <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Mini imprimante portable"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
+                                </div>
+                            </div>
                         </li>
-                        <li>
-                            <a href="https://www.linkedin.com/login" class="tw-text-xl text-dark-600">
-                                <i class="ph-bold ph-linkedin-logo"></i>
-                            </a>
+                        <li class="card product-card h-100 shadow-sm position-relative">
+                            <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
+                            <%= image_tag 'product.jpg', class:"card-img-top" %>
+                            <div class="card-body">
+                                <span class="badge bg-info text-white mb-2">Maison</span>
+                                <h5 class="card-title">Lampe LED tactile</h5>
+                                <p class="card-text small">Change de couleur selon ton humeur. Design moderne.</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold text-success fs-5">29 €</span>
+                                    <small class="text-muted">Vendu par <strong>HomeVibe</strong></small>
+                                </div>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
+                                    <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
+                                     <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Lampe LED Tactile"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
+                                </div>
+                            </div>
                         </li>
+                        <li class="card product-card h-100 shadow-sm position-relative">
+                            <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
+                            <%= image_tag 'product.jpg', class:"card-img-top" %>
+                            <div class="card-body">
+                                <span class="badge bg-danger text-white mb-2">Fitness</span>
+                                <h5 class="card-title">Corde à sauter connectée</h5>
+                                <p class="card-text small">Compte tes sauts, brûle des calories, synchronise avec ton téléphone.</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold text-success fs-5">39 €</span>
+                                    <small class="text-muted">Vendu par <strong>FitGear</strong></small>
+                                </div>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
+                                    <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
+                                     <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Corde à sauter connectée"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="card product-card h-100 shadow-sm position-relative">
+                            <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
+                            <%= image_tag 'product.jpg', class:"card-img-top" %>
+                            <div class="card-body">
+                                <span class="badge bg-success text-white mb-2">Beauté</span>
+                                <h5 class="card-title">Kit soins visage bio</h5>
+                                <p class="card-text small">3 soins naturels pour une peau éclatante. Végan, cruelty-free.</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold text-success fs-5">45 €</span>
+                                    <small class="text-muted">Vendu par <strong>GlowLab</strong></small>
+                                </div>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
+                                    <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
+                                     <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Kit soin visage bio"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="card product-card h-100 shadow-sm position-relative">
+                            <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
+                            <%= image_tag 'product.jpg', class:"card-img-top" %>
+                            <div class="card-body">
+                                <span class="badge bg-secondary text-white mb-2">Accessoires</span>
+                                <h5 class="card-title">Porte-clés GPS tracker</h5>
+                                <p class="card-text small">Retrouve tes clés en un clic. Localisation en temps réel via app.</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold text-success fs-5">24 €</span>
+                                    <small class="text-muted">Vendu par <strong>SmartTag</strong></small>
+                                </div>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
+                                    <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
+                                     <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Porte-clés GPS tracker"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <i id="right" class="fa-solid fa-angle-right"></i>
+                </div>                
+            </div>
+            <!-- CTA finale -->
+            <div class="text-center mt-5 d-none" data-aos="fade-up">
+            <a href="#" class="btn btn-gradient px-4 py-2 rounded-pill shadow-lg">
+                <i class="fa fa-rocket me-2"></i> Voir tous les produits
+            </a>
+            </div>
+        </div>
+    </section>
+    
+        <!-- ===== SECTION MICRO-TÂCHES – NIVEAUX ===== -->
+    <section class="py-5 section-task-levels">
+        <div class="container">
+
+            <!-- Headline -->
+            <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="fw-bold display-6 text-level">
+                Choisissez votre <span class="text-primary">niveau</span> et gagnez
+            </h2>
+            <p class="text-muted subtitle">
+                Plus le niveau est élevé, plus le gain est gros.
+            </p>
+            </div>
+
+            <!-- GRILLE DES CARTES -->
+            <div class="row g-4">
+
+            <!-- NIVEAU 1 – FACILE -->
+            <div class="col-12 col-md-6 col-lg-4" data-aos="zoom-in">
+                <div class="level-card h-100 shadow-sm border-start border-success border-4">
+                <div class="card-header-level">
+                    <span class="level-badge level-easy">Niveau 1 – Facile</span>
+                    <span class="price-tag">25 FCFA</span>
+                </div>
+                <div class="card-body">
+                    <h5 class="fw-bold">Liker 5 posts Instagram</h5>
+                    <p class="small text-muted mb-3">
+                    Cliquez sur « J’aime » sous 5 publications (liens fournis).
+                    </p>
+                    <div class="info-line">
+                    <i class="fa fa-target text-danger"></i>
+                    <span>Objectif : <strong>100 likes</strong></span>
+                    </div>
+                    <div class="info-line">
+                    <i class="fa fa-link text-primary"></i>
+                    <a href="#" target="_blank" class="small">Ouvrir le lien de la tâche</a>
+                    </div>
+                </div>
+                <div class="card-footer-level">
+                    <a href="<%=signup_path%>" class="btn btn-success w-100 animate-pulse">
+                    <i class="fa fa-play-circle me-1"></i> Commencer
+                    </a>
+                </div>
+                </div>
+            </div>
+
+            <!-- NIVEAU 2 – MOYEN -->
+            <div class="col-12 col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+                <div class="level-card h-100 shadow-sm border-start border-warning border-4">
+                <div class="card-header-level">
+                    <span class="level-badge level-medium">Niveau 2 – Moyen</span>
+                    <span class="price-tag">75 FCFA</span>
+                </div>
+                <div class="card-body">
+                    <h5 class="fw-bold">Sondage Google Forms</h5>
+                    <p class="small text-muted mb-3">
+                    Répondez à 10 questions simples (avis consommateur).
+                    </p>
+                    <div class="info-line">
+                    <i class="fa fa-target text-danger"></i>
+                    <span>Objectif : <strong>50 réponses</strong></span>
+                    </div>
+                    <div class="info-line">
+                    <i class="fa fa-link text-primary"></i>
+                    <a href="#" target="_blank" class="small">Ouvrir le lien de la tâche</a>
+                    </div>
+                </div>
+                <div class="card-footer-level">
+                    <a href="<%=signup_path%>" class="btn btn-warning w-100 text-white animate-pulse">
+                    <i class="fa fa-play-circle me-1"></i> Commencer
+                    </a>
+                </div>
+                </div>
+            </div>
+
+            <!-- NIVEAU 3 – DIFFICILE -->
+            <div class="col-12 col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="200">
+                <div class="level-card h-100 shadow-sm border-start border-danger border-4">
+                <div class="card-header-level">
+                    <span class="level-badge level-hard">Niveau 3 – Expert</span>
+                    <span class="price-tag">150 FCFA</span>
+                </div>
+                <div class="card-body">
+                    <h5 class="fw-bold">Rédiger un avis détaillé</h5>
+                    <p class="small text-muted mb-3">
+                    200 mots sur un produit + capture d’écran.
+                    </p>
+                    <div class="info-line">
+                    <i class="fa fa-target text-danger"></i>
+                    <span>Objectif : <strong>10 avis</strong></span>
+                    </div>
+                    <div class="info-line">
+                    <i class="fa fa-link text-primary"></i>
+                    <a href="#" target="_blank" class="small">Ouvrir le lien de la tâche</a>
+                    </div>
+                </div>
+                <div class="card-footer-level">
+                    <a href="<%=signup_path%>" class="btn btn-danger w-100 animate-pulse">
+                    <i class="fa fa-play-circle me-1"></i> Commencer
+                    </a>
+                </div>
+                </div>
+            </div>
+
+            </div>
+
+            <!-- CTA FINALE -->
+            <div class="text-center mt-5" data-aos="fade-up">
+            <a href="<%=signup_path%>" class="btn btn-gradient btn-lg px-5 py-3 rounded-pill shadow-lg">
+                <i class="fa fa-rocket me-2"></i> Je m'inscris
+            </a>
+            </div>
+
+        </div>
+    </section>
+    <!-- How it Works Section -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-4 fw-bold mb-4 text-dark">Comment ça marche ?</h2>
+                <p class="lead text-muted max-w-800 mx-auto">
+                    Rejoignez la communauté Cash Liquid en 3 étapes simples et commencez à gagner dès aujourd'hui.
+                </p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4 text-center position-relative">
+                    <div class="scroll-reveal">
+                        <div class="step-number gradient-blue">
+                            <span class="fs-3 fw-bold">1</span>
+                        </div>
+                        <div class="step-connector"></div>
+                        <h3 class="h4 fw-bold mb-3 text-dark">Inscrivez-vous</h3>
+                        <p class="text-muted">
+                            Créez votre compte en quelques minutes. Vérifiez votre identité et accédez 
+                            à tous les services de la plateforme.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 text-center position-relative">
+                    <div class="scroll-reveal">
+                        <div class="step-number gradient-amber">
+                            <span class="fs-3 fw-bold">2</span>
+                        </div>
+                        <div class="step-connector"></div>
+                        <h3 class="h4 fw-bold mb-3 text-dark">Choisissez votre voie</h3>
+                        <p class="text-muted">
+                            Parrainez, vendez vos services ou complétez des microtâches. 
+                            Combinez les trois pour maximiser vos revenus.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 text-center">
+                    <div class="scroll-reveal">
+                        <div class="step-number gradient-green">
+                            <span class="fs-3 fw-bold">3</span>
+                        </div>
+                        <h3 class="h4 fw-bold mb-3 text-dark">Gagnez et grandissez</h3>
+                        <p class="text-muted">
+                            Recevez vos paiements instantanément. Construisez votre réputation 
+                            et débloquez de nouvelles opportunités.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section id="community" class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <div class="scroll-reveal">
+                        <h2 class="display-4 fw-bold mb-4 text-dark">Une communauté qui croît ensemble</h2>
+                        <p class="lead text-muted mb-5">
+                            Rejoignez des milliers d'utilisateurs qui ont déjà transformé leur manière de travailler. 
+                            Partagez, apprenez et progressez dans un environnement collaboratif et bienveillant.
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <div class="d-flex align-items-start">
+                                <div class="w-12 h-12 bg-success bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 me-4">
+                                    <i class="fas fa-comments text-success fs-4"></i>
+                                </div>
+                                <div>
+                                    <h4 class="h5 fw-semibold text-dark">Support communautaire</h4>
+                                    <p class="text-muted mb-0">Une communauté active qui s'entraide et partage ses succès.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-start">
+                                <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 me-4">
+                                    <i class="fas fa-graduation-cap text-primary fs-4"></i>
+                                </div>
+                                <div>
+                                    <h4 class="h5 fw-semibold text-dark">Ressources d'apprentissage</h4>
+                                    <p class="text-muted mb-0">Formations et guides pour maximiser vos revenus.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-start">
+                                <div class="w-12 h-12 bg-warning bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 me-4">
+                                    <i class="fas fa-trophy text-warning fs-4"></i>
+                                </div>
+                                <div>
+                                    <h4 class="h5 fw-semibold text-dark">Programmes de récompenses</h4>
+                                    <p class="text-muted mb-0">Des bonus et récompenses exclusives pour les membres actifs.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="scroll-reveal">
+                      <%= image_tag "referral-network.png", alt: "Community Network", class: "img-fluid rounded-3 shadow-lg" %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section py-5">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h2 class="display-4 fw-bold mb-4">Prêt à transformer votre temps en revenus ?</h2>
+                    <p class="lead mb-5 text-white opacity-90">
+                        Rejoignez la révolution Cash Liquid et découvrez un nouveau monde d'opportunités. 
+                        Inscrivez-vous gratuitement et commencez à gagner dès aujourd'hui.
+                    </p>
+                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                        <a href="<%=signup_path%>" class="btn-white">
+                            <i class="fas fa-rocket me-2"></i>
+                            Commencer maintenant
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modale unique -->
+    <div id="uxRuptureModal" class="ux-modal">
+        <div class="ux-modal-content">
+            <button class="ux-modal-close">&times;</button>
+            <div class="ux-modal-icon">
+            <i class="fa fa-box-open"></i>
+            </div>
+            <h4 class="ux-modal-title">Rupture de stock</h4>
+            <p class="ux-modal-text">
+            Impossible d’ajouter « <span id="uxProductName"></span> » à votre espace.<br>
+            Le produit est momentanément indisponible.
+            </p>
+            <button class="ux-modal-ok">Compris</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded d-flex align-items-center justify-content-center me-3">
+                             <%= image_tag 'logo2.png' %>
+                        </div>
+                        <span class="h4 mb-0 fw-bold">Cash Liquid</span>
+                    </div>
+                    <p class="">
+                        La plateforme qui transforme vos connexions en opportunités et votre temps en revenus.
+                    </p>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <h5 class="fw-bold mb-4">Services</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class=" text-decoration-none hover:text-white transition-colors">Parrainage</a></li>
+                        <li class="mb-2"><a href="#" class=" text-decoration-none hover:text-white transition-colors">Marketplace</a></li>
+                        <li class="mb-2"><a href="#" class=" text-decoration-none hover:text-white transition-colors">Microtâches</a></li>
+                        <li><a href="#" class=" text-decoration-none hover:text-white transition-colors">Formation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <h5 class="fw-bold mb-4">Entreprise</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class=" text-decoration-none hover:text-white transition-colors">À propos</a></li>
+                        <li class="mb-2"><a href="#" class=" text-decoration-none hover:text-white transition-colors">Carrières</a></li>
+                        <li class="mb-2"><a href="#" class=" text-decoration-none hover:text-white transition-colors">Presse</a></li>
+                        <li><a href="#" class=" text-decoration-none hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <h5 class="fw-bold mb-4">Légal</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class=" text-decoration-none hover:text-white transition-colors">CGU</a></li>
+                        <li class="mb-2"><a href="#" class=" text-decoration-none hover:text-white transition-colors">Confidentialité</a></li>
+                        <li class="mb-2"><a href="#" class=" text-decoration-none hover:text-white transition-colors">Cookies</a></li>
+                        <li><a href="#" class=" text-decoration-none hover:text-white transition-colors">Mentions légales</a></li>
                     </ul>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-<!-- ============ Top Header Section End ================== -->
-
-
-
-<!-- ==================== Header Start Here ==================== -->
-<header class="header bg-base-two-600 transition-all">
-    <div class="container container-two">
-        <nav class="d-flex align-items-center justify-content-between">
-            <!-- Logo Start -->
-            <div class="logo">
-                <a href="/" class="link">
-                     <%= image_tag 'logo_first.png', class: "tw-h-10" %>
-                </a>
-            </div>
-            <!-- Logo End  -->
-
-            <!-- Menu Start  -->
-            <div class="header-menu d-lg-block d-none">
-                <!-- Nav menu Start -->
-                <ul class="nav-menu d-lg-flex align-items-center tw-gap-6">
-                    <li class="nav-menu__item activePage">
-                        <a href="#accueil_section" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Accueil</a>
-                    </li>
-                    <li class="nav-menu__item">
-                        <a href="#fonctionnalite_section" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100 text-light">Fonctionnalités</a>
-                    </li>
-                    <li class="nav-menu__item">
-                        <a href="#work_section" class="nav-menu__link text-heading tw-py-9 fw-semibold w-100 text-white">Comment çà marche</a>
-                    </li>
-                    <li class="nav-menu__item">
-                        <a href="#faq_section" class="nav-menu__link text-heading tw-py-9 fw-semibold w-100 text-white">F.a.q</a>
-                    </li>
-                    <!--<li class="nav-menu__item has-submenu position-relative">
-                        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">Dashboard</a>
-                        <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-                            <li class="nav-menu__item d-block tw-rounded tw-duration-200 position-relative">
-                                <a href="dashboard.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Dashboard</a>
-                            </li>
-                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                                <a href="transactions.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Transaction</a>
-                            </li>
-                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                                <a href="send-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Send Money</a>
-                            </li>
-                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                                <a href="request-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Request Money</a>
-                            </li>
-                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                                <a href="deposit-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Deposit Money</a>
-                            </li>
-                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                                <a href="withdraw-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Withdraw Money</a>
-                            </li>
-                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                                <a href="notifications.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Notifications</a>
-                            </li>
-                            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                                <a href="my-profile.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Account</a>
-                            </li>
-                        </ul>
-                    </li>-->
-                </ul>
-                <!-- Nav menu End  -->
-
-            </div>
-            <!-- Menu End  -->
-
-            <!-- Header connexion inscription -->
-             <div class="d-flex align-items-center tw-gap-3">
-                <div class="d-sm-block d-block">
-                    <div class="d-flex align-items-center tw-gap-605 flex-wrap">
-                        <a href="<%=signup_path%>" class="text-white fw-semibold tw-text-md hover-text-main-600 tw-duration-500 d-md-block d-none">Inscription</a>
-                        <div class="position-relative z-1">
-                            <a href="<%=login_path%>" class="header-item-link text-dark-600 fw-semibold tw-text-md tw-px-4 tw-py-2 bg-main-600 border-two-px-solid rounded-2 hover-text-dark-600">Connexion</a>
-                        </div>
-                    </div>
-                </div>
-                <button type="button" class="toggle-mobileMenu leading-none d-lg-none ms-3 text-white tw-text-9 d-none"> 
-                    <i class="ph ph-list"></i>
-                </button>
-             </div>
-            <!-- Header Right End  -->
-        </nav>
-    </div>
-</header>
-<!-- ==================== Header End Here ==================== -->
-
-
-<!-- ==================== ACCUEIL Banner Section Start ================== -->
-<section class="pt-120 bg-base-two-600 z-1 position-relative overflow-hidden" id="accueil_section">
-    <%= image_tag 'shape/banner-scroll-img1.png', class: "position-absolute inset-block-end-80px inset-inline-start-7-persent d-lg-block d-none animation-moveTopBottom__two" %>
-    <%= image_tag 'shape/circle-shape-img1.png', class: "position-absolute inset-block-start-79px inset-inline-start-7-persent d-lg-block d-none animation-rotation__two" %>
-    <div class="container">
-        <div class="position-relative">
-            <div class="row flex-wrap gy-4">
-                <div class="col-lg-6">
-                    <div class="max-w-571-px">
-                        <div class="tw-mb-10 position-relative">
-                            <div class="d-flex align-items-center gap-1 tw-mb-3" data-aos="fade-up" data-aos-duration="800">
-                                <%= image_tag 'icon/star-icon1.png' %>
-                                <span class="fw-normal tw-text-xl text-neutral-10 cursor-big">Bienvenue sur </span>
-                            </div>
-                            <div class="position-relative" data-aos="fade-up" data-aos-duration="1000">
-                                <h2 class="banner-item-title text-neutral-10 fw-normal tw-mb-3 tw-text-15 cursor-big h1 text-light">Cash Liquid.</h2>
-                                <%= image_tag 'shape/line-shape1.png', class: "banner-shape-one position-absolute max-w-411-px z-n1 inset-block-start-62px inset-inline-end--30px d-lg-block d-none"  %>
-                            </div>
-                            <P class="banner-item-text text-neutral-10 fw-normal tw-text-xl line-clamp-2"  data-aos="fade-up" data-aos-duration="1100">Rejoignez la plateforme de parrainage la plus rentable et construisez votre réseau pour générer des revenus passifs exceptionnels.</P>
-                        </div>
-                        <div class="d-flex align-items-center tw-gap-7 flex-wrap position-relative"  data-aos="fade-up" data-aos-duration="1200">
-                            <div>
-                                <a href="<%=signup_path%>" class="banner-item-link bg-main-600 text-dark-600 fw-semibold  tw-text-lg tw-px-5 tw-py-3 border-two-px-solid rounded-3 hover-text-dark-600 tw-duration-500">S'INSCRIRE MAINTENANT</a>
-                            </div>
-                            <div class="d-flex align-items-center tw-gap-10 flex-wrap">
-                                <span class="text-neutral-10 fw-semibold tw-text-lg">VOIR LA DEMO</span>
-                                <div class="position-relative">
-                                    <a href="https://www.youtube.com/watch?v=MFLVmAE4cqg" class="play-button bg-light-animation tw-w-13 tw-h-13 d-inline-flex justify-content-center align-items-center bg-white text-base-two-600 hover-text-base-two-600 rounded-circle tw-text-xl position-absolute tw-start-50 tw--translate-middle top-50 z-1">
-                                        <i class="ph-fill ph-play"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="d-lg-block d-none text-end" data-aos="fade-up" data-aos-duration="1500">
-                        <%= image_tag 'thumbs/banner-img1.jpg', class: "margin-top--40px" %>
-                    </div>
-                </div>
-            </div>
-            <div class="banner-item">
-                <div class="bg-white tw-py-5 tw-px-5 rounded-3 d-inline-flex align-items-center tw-gap-3 position-absolute inset-block-start-70-persent inset-inline-start-42-persent z-1 max-w-263 animation-Updowm__two">
-                    <div class="d-flex align-items-center ">
-                        <%= image_tag 'thumbs/banner-img2.png', style: "width:100px;" %>
-                    </div>
-                    <div>
-                        <h4 class="fw-normal tw-text-6 counter">25k+</h4>
-                        <span class="fw-normal tw-text-lg text-dark-500">Parrainné </span>
-                    </div>
-                </div>
-            </div>
-            <%= image_tag 'shape/banner-shape-1.png', class: "position-absolute inset-block-start-44-persent inset-inline-start-50-persent z-n1 d-lg-block d-none animation-pulse__two" %>
-            <%= image_tag 'shape/arrow-shape1.png', class: "arrow-shape-one position-absolute inset-inline-start-44-persent inset-block-start--10-persent z-n1 d-lg-block d-none animate-wobble__two" %>
-            <%= image_tag 'shape/banner-shape2.png', class: "banner-shape-two position-absolute inset-inline-end--120px inset-block-end-120px z-n1 d-lg-block d-none animation-rotation__two" %>
-            <div class="banner-shape-five bg-white tw-py-5 tw-px-6 rounded-3 max-w-261 position-absolute inset-block-start-50px inset-inline-end--120px d-lg-block d-none z-1 animation-Updowm__two">
-                <span class="tw-text-lg fw-semibold text-dark-600 tw-mb-3">Montant distribué</span>
-                <h4 class="fw-normal tw-mb-3 counter">+35,890.00 $</h4>
-                <div class="d-flex align-items-center tw-gap-2 justify-content-between">
-                    <span class="tw-text-lg fw-semibold text-dark-600">1st Jan, 2025</span>
-                    <div class="d-flex align-items-center tw-gap-2">
-                        <span class="tw-text-lg fw-semibold text-primary-600">3.09%</span>
-                        <span class="tw-text-xl fw-medium text-primary-600">
-                            <i class="ph-bold ph-trend-up"></i>
-                        </span>
-                    </div>
-                </div>
+            
+            <div class="border-top border-gray-700 mt-5 pt-4 text-center ">
+                <p class="mb-0">&copy; 2024 Cash Liquid. Tous droits réservés. Construisons l'avenir ensemble.</p>
             </div>
         </div>
+    </footer>
 
-    </div>
-</section>
-<!-- ==================== ACCUEIL Banner Section End ================== -->
-
-
-<!-- ======================= FONNCTIONNALITE SECTION ================ -->
-<section class="py-140 z-1 overflow-hidden" id="fonctionnalite_section">
-    <div class="container">
-
-        <div class="d-flex align-items-center tw-gap-3 justify-content-between flex-wrap tw-mb-80-px">
-            <div class="max-w-526" >
-                <div class="d-flex align-items-center tw-gap-1 tw-mb-3" data-aos="fade-up" data-aos-duration="800">
-                    <%= image_tag 'icon/star-icon2.png' %>
-                   <h5 class="text-primary-600 fw-normal"> Nos fonctionnalités</h5>
-                </div>
-                <h2 class="fw-normal text-dark-600 h1 cursor-big" data-aos="fade-up" data-aos-duration="1000">Fonctionnalités de Cash Liquid</h2>
-            </div>
-            <div class="max-w-400">
-                <p class="fw-normal tw-text-lg text-dark-500" data-aos="fade-up" data-aos-duration="1200">Fiable, sécurisé, rapide, global, pratique, fiable, transparent, innovant.</p>
-            </div>
-        </div>
-
-        <div class="row gy-4 align-items-center">
-
-            <div class="col-lg-5">
-                <div class="max-w-416">
-
-                    <div class="tw-mb-12" data-aos="fade-up" data-aos-duration="800">
-                        <span class="tw-w-72px tw-h-72-px border-base-two-600 d-flex align-items-center justify-content-center rounded-3 tw-mb-6">
-                            <span class="w-15 h-15 bg-base-two-10 rounded-3 d-flex align-items-center justify-content-center">
-                                <%= image_tag 'icon/our-feature-icon1.png' %>
-                            </span>
-                        </span>
-                        <h5 class="fw-normal text-dark-600 tw-mb-2 cursor-big">Revenus Immédiats</h5>
-                        <p class="fw-normal tw-text-lg text-dark-500">Gagnez <%=@prime_inscription%> FCFA automatiquement dès votre inscription. Commencez à générer des revenus immédiatement.</p>
-                    </div>
-
-                    <div class="tw-mb-12" data-aos="fade-up" data-aos-duration="1000">
-                        <span class="tw-w-72px tw-h-72-px border-base-two-600 d-flex align-items-center justify-content-center rounded-3 tw-mb-6">
-                            <span class="w-15 h-15 bg-base-two-10 rounded-3 d-flex align-items-center justify-content-center">
-                                <%= image_tag 'icon/our-feature-icon2.png' %>
-                            </span>
-                        </span>
-                        <h5 class="fw-normal text-dark-600 tw-mb-2 cursor-big">Croissance Exponentielle</h5>
-                        <p class="fw-normal tw-text-lg text-dark-500">Croissance Exponentielle</p>
-                    </div>
-
-                    <div class="" data-aos="fade-up" data-aos-duration="1200">
-                        <span class="tw-w-72px tw-h-72-px border-base-two-600 d-flex align-items-center justify-content-center rounded-3 tw-mb-6">
-                            <span class="w-15 h-15 bg-base-two-10 rounded-3 d-flex align-items-center justify-content-center">
-                                <%= image_tag 'icon/our-feature-icon3.png' %>
-                            </span>
-                        </span>
-                        <h5 class="fw-normal text-dark-600 tw-mb-2 cursor-big">Système Simplifié</h5>
-                        <p class="fw-normal tw-text-lg text-dark-500">Inscription à seulement <%=@frais_souscription%>$ et interface intuitive pour gérer votre réseau facilement.</p>
-                    </div>
-
-                </div> 
-            </div>
-
-            <div class="col-lg-7">
-                <div class="position-relative">
-                    <div>
-                        <%= image_tag('thumbs/our-feature-img1.jpg', alt: 'Image', data: { aos: 'zoom-in', aos_duration: '1200' }) %>
-                    </div>
-                    
-                    <div class="our-feature__card-one bg-white tw-w-232-px tw-h-116-px position-absolute top-0 tw-start-0 border-bottom-right-24-px" data-aos="fade-right" data-aos-duration="1000">
-                        <div class="max-w-219 bg-warning-500 rounded-3 tw-px-6 tw-py-5 d-flex align-items-center tw-gap-4 position-absolute inset-inline-start-0 inset-block-start-0">
-                            <%= image_tag 'shape/our-feature-shape1.png', "data-aos-duration": "800" %>
-                            <div>
-                                <h3 class="fw-normal text-dark-600 mb-0 cursor-big counter">100%</h3>
-                                <span class="fw-normal tw-text-lg text-dark-500">Sûr</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="our-feature__card-two tw-w-200-px tw-h-150-px position-absolute bottom-0 tw-end-0 bg-white border-top-left-24-px" data-aos="fade-left" data-aos-duration="1000">
-                        <div class="max-w-176 bg-main-600 rounded-3 tw-px-6 tw-py-5 position-absolute inset-block-end-0 inset-inline-end-0">
-                            <div>
-                                <h3 class="fw-normal text-dark-600 mb-1 cursor-big counter">+5</h3>
-                                <span class="fw-normal tw-text-lg text-dark-500">Moyens de retrait</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-<!-- ================== Comment çà marche section ===================== -->
-<section class="py-140 z-1 bg-neutral-10 overflow-hidden" id="work_section">
-    <div class="container">
-        <div class="pt-100px">
-            <div class="max-w-856 mx-auto justify-content-center overflow-hidden">
-                <div class="tw-mb-80-px mx-auto text-center align-items-center  justify-content-center">
-                    <h3 class="fw-normal tw-mb-3 cursor-big" data-aos="fade-up" data-aos-duration="800">Comment çà marche?</h3>
-                    <p class="tw-text-lg text-dark-500 fw-normal" data-aos="fade-up" data-aos-duration="1000">Rien de plus simple que de s'inscire sur notre plateforme</p>
-                </div>
-                <div class=" position-relative overflow-hidden">
-                    <span class="fast-safe border-neutral-100 position-absolute top-0 start-50 w-05 h-100  d-lg-block d-none"></span>
-
-                    <div class="working-process max-w-580 d-flex align-items-center tw-gap-16 tw-ms-auto pb-120 flex-wrap" data-aos="fade-up" data-aos-duration="1000">
-                        <span class="tw-w-100px tw-h-100-px bg-base-two-10 tw-text-15 rounded-circle d-flex align-items-center justify-content-center text-base-two-600 flex-shrink-0"> 
-                            <i class="ph-fill ph-navigation-arrow"></i>
-                        </span>
-                        <div class="max-w-400 tw-px-10">
-                            <span class="fw-bold tw-text-lg text-primary-600 tw-mb-3">ETAPE 01 </span>
-                            <h4 class="fw-normal tw-mb-3 cursor-big">Inscription</h4>
-                            <p class="fw-normal tw-text-lg text-dark-500">Inscrivez-vous pour seulement <%=@frais_souscription%>$ et recevez automatiquement <%= @prime_inscription%> FCFA de bonus de bienvenue.</p>
-                        </div>
-                    </div>
-
-                    <div class=" working-process max-w-580 d-flex align-items-center tw-gap-16 text-end pb-120 flex-wrap" data-aos="fade-up" data-aos-duration="1000">
-                        <div class="max-w-400 tw-px-10">
-                            <span class="fw-bold tw-text-lg text-primary-600 tw-mb-3">ETAPE 02</span>
-                            <h4 class="fw-normal tw-mb-3 cursor-big">Parrainage</h4>
-                            <p class="fw-normal tw-text-lg text-dark-500">Partagez votre lien de parrainage et invitez vos amis, famille et contacts à rejoindre la plateforme.</p>
-                        </div>
-                        <span class="payment-method tw-w-100px tw-h-100-px bg-base-two-10 tw-text-15 rounded-circle d-flex align-items-center justify-content-center text-base-two-600 flex-shrink-0"> 
-                            <i class="ph-fill ph-cardholder"></i>
-                        </span>
-                    </div>
-
-                    <div class="working-process max-w-580 d-flex align-items-center tw-gap-16 pb-120 flex-wrap tw-ms-auto" data-aos="fade-up" data-aos-duration="1000">
-                        <span class="tw-w-100px tw-h-100-px bg-base-two-10 tw-text-13 rounded-circle d-flex align-items-center justify-content-center text-base-two-600 flex-shrink-0 transform-scale-09"> 
-                            
-                             <i class="ph-fill ph-cardholder"></i>
-                        </span>
-                        <div class="tw-px-10 max-w-400">
-                            <span class="fw-bold tw-text-lg text-primary-600 tw-mb-3">ETAPE 03 </span>
-                            <h4 class="fw-normal tw-mb-3 cursor-big">Génération de revenus</h4>
-                            <p class="fw-normal tw-text-lg text-dark-500">Gagnez des commissions sur chaque inscription dans votre réseau, jusqu'à 30 niveaux de profondeur.</p>
-                        </div>
-                    </div>
-
-                    <div class="working-process max-w-580 d-flex align-items-center tw-gap-16 text-end flex-wrap" data-aos="fade-up" data-aos-duration="1000">
-                        <div class="max-w-400 tw-px-10">
-                            <span class="fw-bold tw-text-lg text-primary-600 tw-mb-3">ETAPE 04</span>
-                            <h4 class="fw-normal tw-mb-3 cursor-big"> Croissance</h4>
-                            <p class="fw-normal tw-text-lg text-dark-500">Votre réseau grandit automatiquement et vos revenus augmentent avec chaque nouvelle génération.</p>
-                        </div>
-                        <span class="payment-method tw-w-100px tw-h-100-px bg-base-two-10 tw-text-15 rounded-circle d-flex align-items-center justify-content-center text-base-two-600 flex-shrink-0"> 
-                            <i class="ph-fill ph-map-pin"></i>
-                        </span>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- =============== FAQ Section  ================ -->
- <section class="py-140 z-1 overflow-hidden" id="faq_section">
-    <div class="container">
-        <div class="max-w-856 justify-content-center mx-auto">
-            <div class="tw-mb-12">
-                <div class="d-flex align-items-center justify-content-center text-center tw-mb-3" data-aos="fade-up" data-aos-duration="600">
-                    <span><%= image_tag 'icon/star-icon2.png' %> </span>
-                    <h5 class="text-primary-600 fw-normal cursor-big">Faq</h5>
-                </div>
-                <div class="max-w-560 text-center justify-content-center align-items-center mx-auto">
-                    <h2 class="fw-normal text-dark-600 tw-mb-4 cursor-big" data-aos="fade-up" data-aos-duration="800">Foire aux Questions</h2>
-                    <p class="fw-normal tw-text-lg text-dark-500" data-aos="fade-up" data-aos-duration="1000">Parcourez notre section FAQ complète pour obtenir des réponses claires et concises à vos questions parrainages sur CASH LIQUID.</p>
-                </div>
-            </div>
-
-            <div class="tab-content" id="pills-tabContent-two">
-                 <div class="tab-pane fade show active" id="pills-homeeee" role="tabpanel" aria-labelledby="pills-homeeee-tab" tabindex="0">
-                    <div class="accordion" id="accordionExample-one">
-                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="600">
-                                <h2 class="accordion-header cursor-big position-relative z-2">
-                                    <button class="accordion-button bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Comment puis-je devenir parrain sur la plateforme ?
-                                    </button>
-                                </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample-one">
-                                    <div class="accordion-body">
-                                        <p class="fw-normal tw-text-lg text-dark-600"> Pour devenir parrain, il suffit de créer un compte sur notre plateforme et de compléter votre profil. Une fois votre compte actif, vous pourrez partager votre code de parrainage avec vos filleuls.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="800">
-                            <h2 class="accordion-header cursor-big position-relative z-2">
-                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Comment mes filleuls génèrent-ils des gains ?
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample-one">
-                                <div class="accordion-body">
-                                    <p class="fw-normal tw-text-lg text-dark-600">Chaque filleul qui s’inscrit via votre code de parrainage et active son compte génère automatiquement des gains pour vous selon le niveau de parrainage défini dans la plateforme.</p>
-                                </div>
-                            </div>
-                            </div>
-
-                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="1000">
-                            <h2 class="accordion-header cursor-big position-relative z-2">
-                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree1" aria-expanded="false" aria-controls="collapseThree1">
-                                    Combien de générations de filleuls puis-je parrainer ?
-                                </button>
-                            </h2>
-                            <div id="collapseThree1" class="accordion-collapse collapse" data-bs-parent="#accordionExample-one">
-                                <div class="accordion-body">
-                                    <p class="fw-normal tw-text-lg text-dark-600">Notre système de parrainage prend en charge jusqu'à 30 générations. Vous pouvez donc recevoir des gains indirects provenant des filleuls de vos filleuls.</p>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="1200">
-                                <h2 class="accordion-header cursor-big position-relative z-2">
-                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour1" aria-expanded="false" aria-controls="collapseFour1">
-                                    Comment puis-je retirer mes gains ?
-                                </button>
-                                </h2>
-                                <div id="collapseFour1" class="accordion-collapse collapse" data-bs-parent="#accordionExample-one">
-                                <div class="accordion-body">
-                                    <p class="fw-normal tw-text-lg text-dark-600">Vous pouvez demander un retrait depuis votre tableau de bord. Il vous suffit de choisir la méthode de retrait, renseigner le montant et valider. Le retrait sera traité par notre équipe et vous recevrez une notification.</p>
-                                </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item tw-mb-6 rounded-3 bg-neutral-10 border-neutral-1px-solid"  data-aos="fade-up" data-aos-duration="1200">
-                                <h2 class="accordion-header cursor-big position-relative z-2">
-                                <button class="accordion-button collapsed bg-neutral-10 rounded-3 tw-text-xl tw-gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour1" aria-expanded="false" aria-controls="collapseFour1">
-                                    Que faire si mon compte est bloqué ?
-                                </button>
-                                </h2>
-                                <div id="collapseFour1" class="accordion-collapse collapse" data-bs-parent="#accordionExample-one">
-                                <div class="accordion-body">
-                                    <p class="fw-normal tw-text-lg text-dark-600">Si votre compte est bloqué, veuillez contacter notre support via le formulaire de contact ou l’adresse email indiquée sur la plateforme. Notre équipe pourra vérifier votre situation et débloquer le compte si nécessaire.</p>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- =============== FAQ Section End ================ -->
-
-
-<!-- ==================== Footer Two Section Start Here ==================== -->
-<footer class="tw-pt-250px bg-dark-600 z-1 overflow-hidden">
-    <div class="container">
-
-        <div class="tw-mb-80-px">
-            <div class="row gy-5">
-
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="max-w-306" data-aos="fade-up" data-aos-duration="600">
-                       <a href="/">
-                         <%= image_tag 'logo/logo.png', class: "tw-mb-6"%>
-                       </a>
-                        <p class="fw-normal tw-text-lg text-neutral-10 tw-mb-8">La plateforme de parrainage qui révolutionne la génération de revenus passifs en Afrique.</p>
-                        <ul class="d-flex align-items-center tw-gap-5">
-                            <li>
-                                <a href="https://www.facebook.com">
-                                    <%= image_tag 'icon/footer-facebook-logo.png'%>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://medium.com">
-                                    <%= image_tag 'icon/footer-medium-logo.png'%>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://youtube.com">
-                                    <%= image_tag 'icon/footer-youtube-logo.png'%>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://x.com/i/flow/login">
-                                    <%= image_tag 'icon/footer-twitter-logo.png'%>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-    
-                <div class="col-lg-2 col-md-4 col-sm-6">
-                    <div data-aos="fade-up" data-aos-duration="800">
-                       <h4 class="text-white fw-normal tw-mb-10 cursor-big">Liens Rapides</h4>
-                       <ul>
-                            <li class="tw-mb-4">
-                                <a href="javascript:void(0)" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">Accueil</a>
-                            </li>
-                            <li class="tw-mb-4">
-                                <a href="javascript:void(0)" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">Comment ça marche</a>
-                            </li>
-                            <li class="tw-mb-4">
-                                <a href="javascript:void(0)" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">Avantages</a>
-                            </li>
-                            <li class="tw-mb-4">
-                                <a href="javascript:void(0)" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">FAQ</a>
-                            </li>
-                       </ul>
-                    </div>
-                </div>
-    
-                <div class="col-lg-2 col-md-4 col-sm-6">
-                    <div data-aos="fade-up" data-aos-duration="1000">
-                       <h4 class="text-white fw-normal tw-mb-10 cursor-big">Nos Services</h4>
-                       <ul>
-                            <li class="tw-mb-4">
-                                <a href="javascript:void(0)" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">Marketing digital</a>
-                            </li>
-                            <li class="tw-mb-4">
-                                <a href="javascript:void(0)" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">MLM</a>
-                            </li>
-                            <li class="tw-mb-4">
-                                <a href="javascript:void(0)" class="fw-normal tw-text-lg text-neutral-10 hover-text-main-600">Parrainage</a>
-                            </li>
-                       </ul>
-                    </div>
-                </div>
-    
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="max-w-306" data-aos="fade-up" data-aos-duration="1200">
-                        <h4 class="text-white fw-normal tw-mb-10 cursor-big">Contactez-nous</h4>
-                        <p class="fw-normal tw-text-lg text-neutral-10 tw-mb-705">Portland</p>
-                        <h5 class="fw-bold text-neutral-10 tw-mb-3 cursor-big">+14382286344</h5>
-                        <span class="tw-text-lg fw-normal text-neutral-10">cash.liquid03@gmail.com</span>
-                    </div>
-                </div>
-    
-            </div>
-        </div>
-        <!-- ================ botter footer section start ====================== -->
-        <div class="tw-mb-10 border-top-dark-500 tw-pt-6">
-            <div class="d-flex align-items-center justify-content-between tw-gap-4 flex-wrap">
-                <p class="fw-semibold tw-text-lg text-white">Copyright @ 2025 CASH LIQUID</p>
-                <span class="fw-semibold tw-text-lg text-white">
-                    Designed By 
-                    <span class="text-main-600">
-                        CASH LIQUID
-                    </span>
-                </span>
-            </div>
-        </div>
-        <!-- ================ botter footer section end ====================== -->
-    </div>
-</footer>
-<!-- ==================== Footer Two Section End Here ==================== -->
-
+     <script>
+        // Effet de scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.glass-navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
         
-    <%= javascript_include_tag 'marquee-main'%>
-    <%= javascript_include_tag 'main'%>
-    <%= javascript_include_tag 'custom-gsap'%>
+        // Animation de l'indicateur du menu PC
+        document.querySelectorAll('.nav-link-pc').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Mettre à jour l'état actif
+                document.querySelectorAll('.nav-link-pc').forEach(item => {
+                    item.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Animer l'indicateur
+                const indicator = document.querySelector('.nav-indicator');
+                const linkRect = this.getBoundingClientRect();
+                const navRect = this.parentElement.parentElement.getBoundingClientRect();
+                const position = linkRect.left - navRect.left;
+                
+                indicator.style.transform = `translateX(${position}px)`;
+                indicator.style.width = `${linkRect.width}px`;
+            });
+        });
+        
+        // Animation des liens mobiles
+        document.querySelectorAll('.nav-link-mobile').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('.nav-link-mobile').forEach(item => {
+                    item.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Fermer l'offcanvas après clic
+                const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasMenu'));
+                offcanvas.hide();
+            });
+        });
+    </script>
+    <script>
+        // Initialize Vanta.js background
+        VANTA.BIRDS({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            backgroundColor: 0xfafbfd,
+            color1: 0x1a1d29,
+            color2: 0xd69e2e,
+            birdSize: 1.20,
+            wingSpan: 25.00,
+            speedLimit: 4.00,
+            separation: 20.00,
+            alignment: 20.00,
+            cohesion: 20.00,
+            quantity: 3.00
+        });
 
+       
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-    
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add floating animation delay
+        const floatingElements = document.querySelectorAll('.floating-element');
+        floatingElements.forEach((el, index) => {
+            el.style.animationDelay = `${index * 0.5}s`;
+        });
+
+       
+
+        // Button hover effects
+        document.querySelectorAll('.btn-primary-custom, .btn-white, .btn-outline-white').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px) scale(1.02)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+    AOS.init({
+        duration: 800,
+        once: true
+    });
+    </script>
+
+    <script>
+        const wrapper = document.querySelector(".wrapper");
+        const carousel = document.querySelector(".carousel");
+        const firstCardWidth = carousel.querySelector(".card").offsetWidth;
+        const arrowBtns = document.querySelectorAll(".wrapper i");
+        const carouselChildrens = [...carousel.children];
+
+        let isDragging = false, isAutoPlay = true, startX, startScrollLeft, timeoutId;
+
+        // Get the number of cards that can fit in the carousel at once
+        let cardPerView = Math.round(carousel.offsetWidth / firstCardWidth);
+
+        // Insert copies of the last few cards to beginning of carousel for infinite scrolling
+        carouselChildrens.slice(-cardPerView).reverse().forEach(card => {
+            carousel.insertAdjacentHTML("afterbegin", card.outerHTML);
+        });
+
+        // Insert copies of the first few cards to end of carousel for infinite scrolling
+        carouselChildrens.slice(0, cardPerView).forEach(card => {
+            carousel.insertAdjacentHTML("beforeend", card.outerHTML);
+        });
+
+        // Scroll the carousel at appropriate postition to hide first few duplicate cards on Firefox
+        carousel.classList.add("no-transition");
+        carousel.scrollLeft = carousel.offsetWidth;
+        carousel.classList.remove("no-transition");
+
+        // Add event listeners for the arrow buttons to scroll the carousel left and right
+        arrowBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                carousel.scrollLeft += btn.id == "left" ? -firstCardWidth : firstCardWidth;
+            });
+        });
+
+        const dragStart = (e) => {
+            isDragging = true;
+            carousel.classList.add("dragging");
+            // Records the initial cursor and scroll position of the carousel
+            startX = e.pageX;
+            startScrollLeft = carousel.scrollLeft;
+        }
+
+        const dragging = (e) => {
+            if(!isDragging) return; // if isDragging is false return from here
+            // Updates the scroll position of the carousel based on the cursor movement
+            carousel.scrollLeft = startScrollLeft - (e.pageX - startX);
+        }
+
+        const dragStop = () => {
+            isDragging = false;
+            carousel.classList.remove("dragging");
+        }
+
+        const infiniteScroll = () => {
+            // If the carousel is at the beginning, scroll to the end
+            if(carousel.scrollLeft === 0) {
+                carousel.classList.add("no-transition");
+                carousel.scrollLeft = carousel.scrollWidth - (2 * carousel.offsetWidth);
+                carousel.classList.remove("no-transition");
+            }
+            // If the carousel is at the end, scroll to the beginning
+            else if(Math.ceil(carousel.scrollLeft) === carousel.scrollWidth - carousel.offsetWidth) {
+                carousel.classList.add("no-transition");
+                carousel.scrollLeft = carousel.offsetWidth;
+                carousel.classList.remove("no-transition");
+            }
+
+            // Clear existing timeout & start autoplay if mouse is not hovering over carousel
+            clearTimeout(timeoutId);
+            if(!wrapper.matches(":hover")) autoPlay();
+        }
+
+        const autoPlay = () => {
+            if(window.innerWidth < 800 || !isAutoPlay) return; // Return if window is smaller than 800 or isAutoPlay is false
+            // Autoplay the carousel after every 2500 ms
+            timeoutId = setTimeout(() => carousel.scrollLeft += firstCardWidth, 2500);
+        }
+        autoPlay();
+
+        carousel.addEventListener("mousedown", dragStart);
+        carousel.addEventListener("mousemove", dragging);
+        document.addEventListener("mouseup", dragStop);
+        carousel.addEventListener("scroll", infiniteScroll);
+        wrapper.addEventListener("mouseenter", () => clearTimeout(timeoutId));
+        wrapper.addEventListener("mouseleave", autoPlay);
+    </script>
+    <!-- Bootstrap JS -->
+
+    <script>
+    const bar = document.querySelector('.animated-bar');
+    const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+        if(entry.isIntersecting){
+            bar.style.width = bar.dataset.target + '%';
+        }
+        });
+    }, {threshold: .5});
+    observer.observe(bar);
+    </script>
+
+    <script>
+        // app/assets/javascripts/modal-rupture.js
+document.querySelectorAll('.ux-add-btn').forEach(btn => {
+  btn.addEventListener('click', function () {
+    const available = this.dataset.available === 'true';
+    const name = this.dataset.name;
+
+    if (!available) {
+      openRuptureModal(name);
+      return; // bloque tout traitement
+    }
+
+    // Ici ton traitement normal (API, ajout, etc.)
+  });
+});
+
+function openRuptureModal(productName) {
+  const modal = document.getElementById('uxRuptureModal');
+  const nameSpan = document.getElementById('uxProductName');
+  nameSpan.textContent = productName;
+  modal.classList.add('show');
+
+  // ferme auto après 4s
+  setTimeout(() => closeRuptureModal(), 4000);
+}
+
+function closeRuptureModal() {
+  document.getElementById('uxRuptureModal').classList.remove('show');
+}
+
+// Fermetures manuelles
+document.querySelector('.ux-modal-close').addEventListener('click', closeRuptureModal);
+document.querySelector('.ux-modal-ok').addEventListener('click', closeRuptureModal);
+    </script>

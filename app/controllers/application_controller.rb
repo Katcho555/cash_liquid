@@ -23,6 +23,11 @@ class ApplicationController < ActionController::Base
 
 
   def balance_admin
+
+    if user_signed_in? 
+      @generations = current_user.filleuls_par_generation(2)
+      @generation_count = current_user.filleuls_par_generation.count
+    end
     # Total des souscriptions payées (entrées d’argent)
     @total_montant = Subscription.where(status: "payé").sum(:amount)
 

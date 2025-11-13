@@ -1,3 +1,362 @@
+
+    /* ========== BASE DASHBOARD ========== */
+  .ux-dashboard{
+    min-height: 100vh; background: #f7f8fc;
+    font-family: system-ui, sans-serif;
+  }
+
+  /* ===== DESKTOP : sidebar fixe ===== */
+  @media (min-width: 992px){
+    .ux-sidebar{
+      width: 260px; background: #ffffff;
+      box-shadow: 2px 0 8px rgba(0,0,0,.05);
+      display: flex; flex-direction: column; justify-content: space-between;
+      position: fixed;
+      height: 100vh;
+      overflow: auto;
+    }
+        
+    .ux-main{ margin-left: 260px; }
+    .ux-overlay{ display: none !important; }
+  }
+
+  .ux-sidebar{
+      position: fixed;
+      height: 100vh;
+      overflow: auto;
+      min-height: -webkit-fill-available;
+    }
+
+  /* ===== MOBILE : sidebar dessus (aucune compression) ===== */
+  @media (max-width: 991px){
+    .ux-sidebar{
+      position: fixed; top: 0; left: 0; height: 100vh; width: 280px;
+      z-index: 1031; background: #ffffff; transform: translateX(-100%);
+      transition: transform .3s; display: flex; flex-direction: column;
+    }
+    .ux-sidebar.show{ transform: translateX(0); }
+    .ux-main{ margin-left: 0; }
+    .ux-overlay{
+      position: fixed; inset: 0; background: rgba(0,0,0,.45);
+      z-index: 1030; display: none;
+    }
+    .ux-overlay.show{ display: block; }
+  }
+
+  .ux-sidebar-head{ padding: 1.2rem; display: flex; align-items: center; gap: .75rem; }
+  .ux-logo{ font-size: 1.5rem; color: #8b53ff; }
+  .ux-brand{ font-weight: 700; color: #333; flex: 1; }
+  .ux-close-btn{ background: none; border: none; font-size: 1.3rem; color: #666; }
+
+  .ux-nav{ list-style: none; padding: 0; margin: 0; flex: 1; }
+  .ux-nav-item{ border-left: 4px solid transparent; }
+  .ux-nav-item.active{ background: #f1f0ff; border-color: #8b53ff; }
+  .ux-nav-link{
+    display: flex; align-items: center; gap: .75rem;
+    padding: .9rem 1.2rem; color: #444; text-decoration: none;
+    transition: background .2s;
+  }
+  .ux-nav-link:hover{ background: #f1f0ff; }
+
+  .ux-balance-card{
+  position: relative; padding: 2rem; border-radius: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+  box-shadow: 0 4px 16px rgba(139, 83, 255, .08);
+  text-align: center; font-family: 'Inter', sans-serif; color: #111;
+  transition: background .3s, color .3s;
+}
+
+/* Icône animée (portefeuille) */
+.ux-wallet-icon{
+  width: 56px; height: 56px; margin: 0 auto 1rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18 7h-1V6c0-1.66-1.34-3-3-3H6C4.34 3 3 4.34 3 6v12c0 1.66 1.34 3 3 3h12c1.66 0 3-1.34 3-3v-7l-2-2V7zM6 5h10v2H6V5zm12 14H6V9h10v4l2 2v4z' fill='%238b53ff'/%3E%3C/svg%3E") no-repeat center/cover;
+  animation: pulse-wallet 2s infinite;
+}
+@keyframes pulse-wallet{ 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.08); } }
+
+/* Solde cliquable */
+.ux-balance-amount.ux-clickable{ cursor: pointer; transition: color .2s; }
+.ux-balance-amount.ux-clickable:hover{ color: #8b53ff; }
+
+/* Solde + devise */
+.ux-balance-amount{ font-size: 2.4rem; font-weight: 600; line-height: 1; margin-bottom: .25rem; }
+.ux-currency{ font-size: .9rem; color: #666; margin-left: .25rem; }
+
+/* Libellé */
+.ux-balance-label{ font-size: .9rem; color: #666; margin-bottom: 1rem; }
+
+/* CTA discret */
+.ux-balance-link{ display: inline-flex; align-items: center; gap: .25rem;
+  font-size: .85rem; color: #8b53ff; text-decoration: none; transition: color .2s; }
+.ux-balance-link:hover{ color: #6f42c1; }
+
+/* Modal « Comment gagner » */
+.ux-gain-list{ list-style: none; padding: 0; margin: 0; }
+.ux-gain-list li{
+  display: flex; align-items: center; gap: .75rem; padding: .75rem 0;
+  font-size: .95rem; color: #444;
+}
+.ux-gain-list li i{ color: #28a745; font-size: 1rem; }
+
+  /* Dropdown */
+  .ux-dropdown{
+    list-style: none; padding: 0; margin: 0;
+    background: #f8f9ff; max-height: 0; overflow: hidden;
+    transition: max-height .3s ease;
+  }
+  .ux-nav-item.has-dropdown.open .ux-dropdown{ max-height: 300px; }
+  .ux-dropdown a{
+    display: flex; align-items: center; gap: .5rem;
+    padding: .6rem 1.2rem .6rem 3rem; color: #555;
+    text-decoration: none; font-size: .9rem;
+    transition: background .2s;
+  }
+  .ux-dropdown a:hover{ background: #e8ebfa; }
+  .ux-badge{
+    background: #8b53ff; color: #fff; font-size: .7rem;
+    padding: .2rem .4rem; border-radius: 10px; margin-left: auto;
+  }
+
+  .ux-sidebar-foot{ padding: 1rem; }
+  .ux-btn-logout{
+    width: 100%; border: 1px solid #dc3545; background: transparent;
+    color: #dc3545; border-radius: 8px; padding: .5rem; cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .ux-btn-logout:hover{ background: #dc3545; color: #fff; }
+
+  .ux-main{ flex: 1; display: flex; flex-direction: column; }
+  .ux-topbar{
+    background: #fff; height: 64px; display: flex;
+    align-items: center; justify-content: space-between;
+    padding: 0 1rem; box-shadow: 0 2px 4px rgba(0,0,0,.05);
+  }
+  .ux-toggle{ background: none; border: none; font-size: 1.3rem; color: #666; }
+
+  .ux-user{ display: flex; align-items: center; gap: .5rem; }
+  .ux-avatar{ border-radius: 50%; width: 35px; }
+  .ux-username{ font-weight: 600; }
+
+  .ux-content{ flex: 1; }
+
+  /* ===== CARTES CAPTIVANTES ===== */
+  .ux-card-new{
+    background: #fff; border-radius: 16px; padding: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,.05);
+    position: relative; overflow: hidden;
+    transition: transform .3s, box-shadow .3s;
+  }
+  .ux-card-new:hover{ transform: translateY(-5px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+  .ux-card-icon-float{
+    font-size: 2.5rem; z-index: 1;
+    background: linear-gradient(135deg, #fff 0%, #f1f0ff 100%);
+    width: 70px; height: 70px; border-radius: 16px;
+    display: grid; place-items: center; box-shadow: 0 4px 10px rgba(0,0,0,.08);
+  }
+  .ux-card-data{ flex: 1; }
+  .ux-card-val{ font-size: 1.8rem; font-weight: 700; }
+  .ux-card-label{ font-size: .8rem; color: #6c757d; }
+
+  /* Glows */
+  .ux-card-glow-green .ux-card-icon-float{ color: #28a745; }
+  .ux-card-glow-blue  .ux-card-icon-float{ color: #0d6efd; }
+  .ux-card-glow-orange .ux-card-icon-float{ color: #fd7e14; }
+  .ux-card-glow-purple .ux-card-icon-float{ color: #8b53ff; }
+
+  /* ===== THEME SOMBRE ===== */
+  body.ux-dark{
+    background: #121212;
+    color: #eee;
+  }
+  body.ux-dark .ux-dashboard{ background: #121212; }
+  body.ux-dark .ux-sidebar{ background: #1e1e1e; }
+  body.ux-dark .ux-topbar{ background: #1e1e1e; }
+  body.ux-dark .ux-card-new{ background: #1e1e1e; color: #eee; }
+  body.ux-dark .ux-card-chart{ background: #1e1e1e; color: #eee; }
+  body.ux-dark .btn-outline-primary{ border-color: #8b53ff; color: #8b53ff; }
+  body.ux-dark .btn-outline-primary:hover{ background: #8b53ff; color: #fff; }
+  body.ux-dark .bg-white { background: #1e1e1e!important; color: #eee;}
+  body.ux-dark .ux-balance-card{
+  background: linear-gradient(135deg, #1e1e1e 0%, #121212 100%);
+  color: #f1f1f1;
+}
+  
+  body.ux-dark .table { --bs-table-color: #fff;
+    --bs-table-bg: #212529;
+    --bs-table-border-color: #373b3e;
+    --bs-table-striped-bg: #2c3034;
+    --bs-table-striped-color: #fff;
+    --bs-table-active-bg: #373b3e;
+    --bs-table-active-color: #fff;
+    --bs-table-hover-bg: #323539;
+    --bs-table-hover-color: #fff;
+    color: var(--bs-table-color);
+    border-color: var(--bs-table-border-color);}
+
+  /* ===== SWITCH THEME ===== */
+  .ux-theme-switch{ display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+  .ux-theme-label{
+    position: relative; width: 60px; height: 30px; background: #ccc;
+    border-radius: 30px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 6px;
+  }
+  .ux-theme-label .fa-sun{ color: #f39c12; }
+  .ux-theme-label .fa-moon{ color: #8b53ff; }
+  .ux-theme-ball{
+    position: absolute; top: 3px; left: 3px; width: 24px; height: 24px;
+    background: #fff; border-radius: 50%; transition: transform .3s;
+  }
+  #uxThemeToggle{display: none;}
+  #uxThemeToggle:checked + .ux-theme-label .ux-theme-ball{ transform: translateX(30px); }
+
+  /* ===== POPUP BIENVENUE + GUIRLANDE ===== */
+  .ux-welcome-modal{
+    position: fixed; inset: 0; background: rgba(0,0,0,.55);
+    z-index: 9999; display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; transition: opacity .4s, visibility .4s;
+  }
+  .ux-welcome-modal.show{ opacity: 1; visibility: visible; }
+  .ux-welcome-content{
+    background: #fff; border-radius: 20px; padding: 2.5rem 2rem;
+    max-width: 480px; width: 90%; text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,.25);
+    position: relative; z-index: 1;
+  }
+
+  /* Guirlande (confetti) */
+  .ux-confetti{
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  }
+  .ux-confetti::before, .ux-confetti::after{
+    content: ''; position: absolute; width: 12px; height: 12px;
+    background: #ff6b6b; border-radius: 50%;
+    animation: confetti 3s linear infinite;
+  }
+  .ux-confetti::after{
+    background: #8b53ff; left: 20%; animation-delay: .5s;
+  }
+  @keyframes confetti{
+    0%{ transform: translateY(-100vh) rotate(0); }
+    100%{ transform: translateY(100vh) rotate(720deg); }
+  }
+
+    .referral-card {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    border-radius: 15px;
+    padding: 2rem;
+    color: white;
+    box-shadow: 0 10px 30px rgba(106, 17, 203, 0.2);
+    }
+    .referral-code {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-align: center;
+    margin: 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .social-share {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    }
+
+    .social-share .btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    background: white;
+    color: #6a11cb;
+    transition: all 0.3s ease;
+    }
+
+    .social-share .btn:hover {
+    transform: translateY(-5px);
+    }
+
+    .floating-animation {
+    animation: floating 3s ease-in-out infinite;
+    }
+
+        /* ===== RETRAIT – DESIGN ATTRACTIF ===== */
+.ux-retrait-card{
+  max-width: 480px; margin: 2rem auto; background: #ffffff;
+  border-radius: 24px; padding: 2rem;
+  box-shadow: 0 12px 30px rgba(139, 83, 255, .18);
+  font-family: system-ui, sans-serif;
+}
+.ux-retrait-header{
+  text-align: center; margin-bottom: 1.5rem;
+}
+.ux-icon-wallet{
+  font-size: 2.5rem; background: linear-gradient(45deg, #8b53ff, #ff6b6b);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.ux-title{
+  font-size: 1.4rem; font-weight: 700; color: #333; margin: .5rem 0 .2rem;
+}
+.ux-subtitle{
+  font-size: .9rem; color: #6c757d;
+}
+
+.ux-retrait-form .ux-field{ margin-bottom: 1.2rem; }
+.ux-label{
+  font-size: .9rem; font-weight: 600; color: #444; margin-bottom: .4rem; display: block;
+}
+.ux-input, .ux-select{
+  width: 100%; padding: .75rem 1rem; border: 1.5px solid #e0e0e0;
+  border-radius: 12px; font-size: 1rem; transition: border-color .2s, box-shadow .2s;
+}
+.ux-input:focus, .ux-select:focus{
+  border-color: #8b53ff; box-shadow: 0 0 0 3px rgba(139, 83, 255, .15);
+  outline: none;
+}
+
+.ux-select-wrapper{ position: relative; }
+.ux-select-icon{
+  position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+  pointer-events: none; color: #6c757d;
+}
+
+.ux-hint{ font-size: .75rem; color: #6c757d; margin-top: .25rem; display: block; }
+.ux-net{ margin-top: .5rem; font-size: .9rem; color: #444; }
+.ux-net-val{ font-weight: 700; color: #28a745; }
+.ux-taux{ font-size: .75rem; color: #6c757d; margin-left: .5rem; }
+
+.ux-actions{ margin-top: 1.5rem; }
+.ux-btn-submit{
+  width: 100%; padding: .9rem; border: none; border-radius: 12px;
+  font-size: 1.05rem; font-weight: 600; color: #fff;
+  background: linear-gradient(45deg, #28a745, #20c997);
+  cursor: pointer; transition: transform .2s, box-shadow .2s;
+}
+.ux-btn-submit:hover{ transform: translateY(-2px); box-shadow: 0 6px 20px rgba(40, 167, 69, .35); }
+
+.ux-btn-blocked{
+  width: 100%; padding: .9rem; border: none; border-radius: 12px;
+  font-size: 1rem; font-weight: 600; color: #fff;
+  background: linear-gradient(45deg, #dc3545, #ff6b6b);
+  cursor: pointer; transition: transform .2s, box-shadow .2s;
+}
+.ux-btn-blocked:hover{ transform: translateY(-2px); box-shadow: 0 6px 20px rgba(220, 53, 69, .35); }
+
+.ux-alert-error{
+  background: #fff5f5; border: 1px solid #feb2b2; border-radius: 12px; padding: 1rem;
+  margin-bottom: 1rem; color: #c53030; font-size: .9rem;
+}
+.ux-alert-error h5{ font-size: 1rem; margin-bottom: .5rem; }
+.ux-alert-error ul{ margin: 0; padding-left: 1.2rem; }
+
+
 /* ============================= CSS table of contents and Scss Indexing ================================
 * Name: PayOne money exchange HTML Template
 * Version: 1.0.0

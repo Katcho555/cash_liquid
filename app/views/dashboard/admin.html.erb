@@ -1,394 +1,299 @@
 
+<!-- ===== DASHBOARD USER – COMPLET ===== -->
+<div class="ux-dashboard">
+  <!-- Sidebar -->
+  
 
-    
-<!--==================== Preloader End ====================-->
+     <%if current_user.admin?%>
+        <%= render partial: "layouts/sidebar/admin" %>
+    <%else%>
+        <%= render partial: "layouts/sidebar/utilisateur" %>
+    <%end%>
 
-<!--==================== Overlay Start ====================-->
-<div class="overlay"></div>
-<!--==================== Overlay End ====================-->
+    <!-- Main -->
+        <main class="ux-main">
 
-<!--==================== Sidebar Overlay End ====================-->
-<div class="side-overlay"></div>
-<!--==================== Sidebar Overlay End ====================-->
-<!-- Custom Toast Message start -->
-<div id="toast-container"></div>
-<!-- Custom Toast Message End -->
+            <%= render partial: "layouts/card_entete"%>
 
-<!-- ==================== Scroll to Top End Here ==================== -->
-<div class="progress-wrap cursor-big">
-  <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
-      <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
-  </svg>
-</div>
-<!-- ==================== Scroll to Top End Here ==================== -->
+            <!-- Contenu -->
+            <div class="ux-content p-3 p-lg-4">
+              <!-- Contenu -->
 
+              <!-- Cartes résumé : DESIGN CAPTIVANT -->
+                <div class="bg-white tw-px-10 rounded-3 tw-py-8 w-100 tw-mb-6">
+                    <div class="row gy-4" style="align-items: center;">
+                        <div class="col-lg-6">
+                            <!-- app/views/shared/_balance_card.html.erb -->
+                                <!-- app/views/shared/_balance_card.html.erb -->
+                            <div class="ux-balance-card" data-theme="light">
+                                <!-- Icône animée (portefeuille) -->
+                                <div class="ux-wallet-icon"></div>
 
-<!-- ==================== Mobile Menu Start Here ==================== -->
-<div class="mobile-menu d-lg-none d-block scroll-sm position-fixed bg-base-two-600 tw-w-300-px tw-h-screen overflow-y-auto tw-p-6 tw-z-999 tw--translate-x-full tw-pb-68 ">
-
-    <button type="button" class="close-button position-absolute tw-end-0 top-0 tw-me-2 tw-mt-2 tw-w-605 tw-h-605 rounded-circle d-flex justify-content-center align-items-center text-white bg-neutral-200 hover-bg-neutral-900 hover-text-white"> 
-        <i class="ph ph-x"></i>
-    </button>
-
-    <div class="mobile-menu__inner">
-        <a href="index.html" class="mobile-menu__logo">
-            <%= image_tag 'logo/logo.png' %>
-        </a>
-        <div class="mobile-menu__menu">
-            <!-- Nav menu Start -->
-<ul class="nav-menu d-lg-flex align-items-center nav-menu--mobile d-block tw-mt-8">
-    <li class="nav-menu__item has-submenu position-relative activePage">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 text-white tw-py-9 fw-semibold w-100">ACCUEIL</a>
-        <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-menu__item activePage">
-                <a href="index.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home One</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="index-2.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home Two</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="index-3.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home Three</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="index-4.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home Four</a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-menu__item has-submenu position-relative">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">BLOG</a>
-         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="blog-details.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog Details</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="blog-grid.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog Grid</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="blog-list.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog List</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="blog-standerd.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog Standerd</a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-menu__item has-submenu position-relative">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">Dashboard</a>
-         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="dashboard.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Dashboard</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="transactions.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Transaction</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="send-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Send Money</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="request-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Request Money</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="deposit-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Deposit Money</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="withdraw-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Withdraw Money</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="notifications.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Notifications</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="my-profile.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Account</a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-menu__item has-submenu position-relative">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">ABOUT</a>
-         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="about-us-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">About Us</a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-menu__item has-submenu position-relative">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">PAGES</a>
-         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="fees-others.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Fees</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="our-services-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Our Services</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="services-details-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Services Details</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="our-team-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Our Team</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="pricing-plan-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Pricing Plan</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="faq-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">FAQ</a>
-            </li>  
-        </ul>
-    </li>
-    <li class="nav-menu__item">
-        <a href="contact-us-other.html" class="nav-menu__link text-heading tw-py-9 fw-semibold w-100 text-white">CONTACT</a>
-    </li>
-</ul>
-<!-- Nav menu End  -->
-
-        </div>
-    </div>
-</div>
-<!-- ==================== Mobile Menu End Here ==================== -->
-
-
-<!-- ===================== my profile header section start ====================== -->
-
-
-<%= render partial: "layouts/header" %>
-
-<%= render partial: "layouts/banner_dashboard" %>
-
-<!-- ===================== my profile header section end ====================== -->
-
-
-<!-- ===================== account my profile section start ====================== -->
-<section class="bg-neutral-10 z-1">
-    <div class="container">
-        <div class="dashboard-item tw-pb-8 d-xl-flex tw-gap-6 w-100 tw-mt--193px">
-            
-
-             <%if current_user.admin?%>
-                <%= render partial: "layouts/sidebar/admin" %>
-            <%else%>
-                <%= render partial: "layouts/sidebar/utilisateur" %>
-            <%end%>
-
-            <!-- ========================= my profile account tabe section start ======================== -->
-<div class="flex-grow-1">
-
-    <div class="bg-white tw-px-10 rounded-3 tw-py-8 w-100 tw-mb-6">
-        <button type="button" class="dashboard-toggle-button text-base-two-600 tw-text-8 tw-mb-6 d-xl-none d-block tw-m-l-end">
-            <i class="ph-bold ph-list"></i>
-        </button>
-        
-        <%= render partial: "layouts/card_entete"%>
-    </div>
-
-    <div class="bg-white tw-px-5 tw-py-5 rounded-3 tw-mb-6 ">
-        <h4 class="fw-normal text-dark-600">Statistiques</h4>
-        <span class="border-neutral-200 border-bottom tw-border-dashed w-100 tw-mt-6 tw-mb-6"></span>
-
-    <div class="row gy-4">
-      <div class="col-md-4"> 
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex" style="justify-content: space-between;">
-                <div class="align-self-center">
-                  <i class="fas fa-users text-primary fa-2x float-left"></i>
-                </div>
-                <div class="media-body text-right">
-                  <h3><%=@total_utilisateur_nombre%></h3>
-                  <span>Utilisateurs inscrits</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4"> 
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex" style="justify-content: space-between;">
-                <div class="align-self-center">
-                  <i class="fas fa-users text-success fa-2x float-left"></i>
-                </div>
-                <div class="media-body text-right">
-                  <h3><%= User.where(compte_status: 'true').count %></h3>
-                  <span>Utilisateurs Actif</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4"> 
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex" style="justify-content: space-between;">
-                <div class="align-self-center">
-                  <i class="fas fa-users text-danger fa-2x float-left"></i>
-                </div>
-                <div class="media-body text-right">
-                  <h3><%= User.where(compte_status: 'false').count %></h3>
-                  <span>Utilisateurs Inactif</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex" style="justify-content: space-between;">
-                <div class="align-self-center">
-                  <i class="fas fa-wallet text-success fa-2x float-left"></i>
-                </div>
-                <div class="media-body text-right">
-                  <h3><%=@balance_admin_reelle%></h3>
-                  <span>Total Commission</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex" style="justify-content: space-between;">
-                <div class="align-self-center">
-                 <i class="fas fa-wallet text-success fa-2x float-left"></i>
-                </div>
-                <div class="media-body text-right">
-                  <h3><%=@total_gain %></h3>
-                  <span>Gain généré</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex" style="justify-content: space-between;">
-                <div class="align-self-center">
-                   <i class="fas fa-credit-card text-danger fa-2x float-left"></i>
-                </div>
-                <div class="media-body text-right">
-                  <h3><%=@total_retraits_nets%></h3>
-                  <span>Retrait total</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    </div>
-
-    <div class="bg-white tw-px-8 tw-py-8 rounded-3 ">
-
-        <h4 class="fw-normal text-dark-600">Inscriptions récentes</h4>
-        <span class="border-neutral-200 border-bottom tw-border-dashed w-100 tw-mt-6 tw-mb-6"></span>
-
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead >
-                  <tr class="tw-mb-3">
-                    <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
-                        <span class="tw-px-6 tw-py-4">
-                            utilisateur
-                        </span>
-                    </th>
-                    <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
-                        <span class="tw-px-6 tw-py-4">
-                            Date Inscription
-                        </span>
-                    </th>
-                    <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
-                        <span class="tw-px-6 tw-py-4 text-center justify-content-center d-flex">
-                            Status
-                        </span>
-                    </th>
-                    <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
-                        <span class="tw-px-6 tw-py-4">
-                            Solde
-                        </span>
-                    </th>
-                  </tr>
-                </thead>
-    
-                <tbody>  
-                    <% @total_utilisateur_liste.each_with_index do |user| %> 
-                        <tr>
-                            <th scope="row">
-                                <div class="tw-px-6 tw-py-2">
-                                    <span class="fw-semibold tw-text-4 text-dark-600 tw-mb-1 d-block"><%=user.nom%> <%=user.prenom%></span>  
-                                    <span class="fw-medium tw-text-sm">
-                                        <%=user.email%>
-                                    </span>
+                                <!-- Solde cliquable -->
+                                <div class="ux-balance-amount ux-clickable" data-bs-toggle="modal" data-bs-target="#uxGainModal">
+                                    <% if current_user.admin? %>
+                                    <%= number_with_delimiter(@total_gain + User.first.balance) %> <span class="ux-currency">FCFA</span>
+                                    <% else %>
+                                    <%= number_with_delimiter(current_user.balance) %> <span class="ux-currency">FCFA</span>
+                                    <% end %>
                                 </div>
+
+                                <!-- Libellé -->
+                                <div class="ux-balance-label">Solde disponible</div>
+
+                                <!-- CTA discret -->
+                                <a href="#" class="ux-balance-link" data-bs-toggle="modal" data-bs-target="#uxGainModal">Voir détails</a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="referral-card">
+                                <p class="mb-3">Partagez ce code avec vos contacts pour gagner des récompenses à chaque nouvelle inscription</p>
+                                <div class="referral-code" id="referralCode"><%= root_url %>inscription?ref=<%= current_user.referral_code %></div>
+                                <p>Pour chaque filleul qui s'inscrit avec votre code, vous gagnez <span class="fw-bold">10%</span> de ses transactions</p>
+                                
+                                <div class="social-share">
+                                    <button class="btn" title="Copier le code" id="copyBtn">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button class="btn" title="Partager sur WhatsApp">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </button>
+                                    <button class="btn" title="Partager sur Facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </button>
+                                    <button class="btn" title="Partager par email">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal « Comment gagner » -->
+                <div class="modal fade" id="uxGainModal" tabindex="-1" aria-labelledby="uxGainModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="uxGainModalLabel">Comment gagner ?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="ux-gain-list">
+                            <li><i class="fa fa-share-nodes"></i> Parrainez → bonus par filleul</li>
+                            <li><i class="fa fa-bag-shopping"></i> Ajoutez des produits → commissions</li>
+                            <li><i class="fa fa-bolt"></i> Faites des micro-tâches → gains instantanés</li>
+                            <li><i class="fa fa-gift"></i> Participez aux événements → cadeaux</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row g-4 mb-4">
+                  <div class="col-12 col-md-6">
+                      <div class="ux-card-new ux-card-glow-green">
+                      <div class="ux-card-icon-float"><i class="fas fa-users text-primary"></i></div>
+                      <div class="ux-card-data">
+                          <div class="ux-card-val" data-target=<%=@total_utilisateur_nombre%>><%=@total_utilisateur_nombre%></div>
+                          <div class="ux-card-label">Utilisateurs inscrits</div>
+                      </div>
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                      <div class="ux-card-new ux-card-glow-blue">
+                      <div class="ux-card-icon-float"><i class="fas fa-users text-success"></i></div>
+                      <div class="ux-card-data">
+                        <%@user_actif =  User.where(compte_status: 'true').count %>
+                          <div class="ux-card-val" data-target=<%=@user_actif%>><%=@user_actif%></div>
+                          <div class="ux-card-label">Utilisateurs Actif</div>
+                      </div>
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                      <div class="ux-card-new ux-card-glow-green">
+                      <div class="ux-card-icon-float"><i class="fa fa-coins"></i></div>
+                      <div class="ux-card-data">
+                          <div class="ux-card-val" data-target=<%=@total_gain %>><%=@total_gain %> FCFA</div>
+                          <div class="ux-card-label">Gains Générés</div>
+                      </div>
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                      <div class="ux-card-new ux-card-glow-blue">
+                      <div class="ux-card-icon-float"><i class="fas fa-wallet text-success"></i></div>
+                      <div class="ux-card-data">
+                          <div class="ux-card-val" data-target=<%=@balance_admin_reelle%>><%=@balance_admin_reelle%></div>
+                          <div class="ux-card-label">Total commission</div>
+                      </div>
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                      <div class="ux-card-new ux-card-glow-orange">
+                      <div class="ux-card-icon-float"><i class="fa fa-bag-shopping"></i></div>
+                      <div class="ux-card-data">
+                          <div class="ux-card-val" data-target="0">0</div>
+                          <div class="ux-card-label">Produits</div>
+                      </div>
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                      <div class="ux-card-new ux-card-glow-purple">
+                      <div class="ux-card-icon-float"><i class="fa fa-list-check"></i></div>
+                      <div class="ux-card-data">
+                          <div class="ux-card-val" data-target="0">0</div>
+                          <div class="ux-card-label">Tâches</div>
+                      </div>
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                      <div class="ux-card-new ux-card-glow-orange">
+                      <div class="ux-card-icon-float"><i class="fas fa-users text-danger"></i></div>
+                      <div class="ux-card-data">
+                        <%@user_inactif = User.where(compte_status: 'false').count %>
+                          <div class="ux-card-val" data-target=<%=@user_inactif%>><%=@user_inactif%></div>
+                          <div class="ux-card-label">Utilisateur inactif</div>
+                      </div>
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                      <div class="ux-card-new ux-card-glow-purple">
+                      <div class="ux-card-icon-float"><i class="fas fa-credit-card text-danger"></i></div>
+                      <div class="ux-card-data">
+                          <div class="ux-card-val" data-target=<%=@total_retraits_nets%>><%=@total_retraits_nets%></div>
+                          <div class="ux-card-label">Retrait total</div>
+                      </div>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="bg-white tw-px-8 tw-py-8 rounded-3 mb-5">
+                <h4 class="fw-normal text-dark-600">Inscriptions récentes</h4>
+                <span class="border-neutral-200 border-bottom tw-border-dashed w-100 tw-mt-6 tw-mb-6"></span>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead >
+                            <tr class="tw-mb-3">
+                            <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
+                                <span class="tw-px-6 tw-py-4">
+                                    utilisateur
+                                </span>
                             </th>
-            
-                            <td>
-                                <div class="tw-px-6 tw-py-2">
-                                    <span class="fw-semibold tw-text-4 text-dark-600 tw-mb-1 d-block">
-                                        <%= user.created_at.strftime("%d %B %Y") %>
-                                    </span>
-                                    <span class="fw-medium tw-text-sm">
-                                        <%= user.created_at.strftime("%I:%M %p") %>
-                                    </span>
-                                </div>
+                            <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
+                                <span class="tw-px-6 tw-py-4">
+                                    Date Inscription
+                                </span>
+                            </th>
+                            <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
+                                <span class="tw-px-6 tw-py-4 text-center justify-content-center d-flex">
+                                    Status
+                                </span>
+                            </th>
+                            <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
+                                <span class="tw-px-6 tw-py-4">
+                                    Solde
+                                </span>
+                            </th>
+                            </tr>
+                        </thead>
 
-                            </td>
-            
-                            <td>
-                                <%if user.compte_status == true%>
-                                    <button type="button" class="bg-primary-05 text-primary-600 tw-px-6 tw-py-205 rounded-pill fw-semibold tw-text-sm mx-auto justify-content-center d-flex">
-                                        Actif
-                                    </button>
-                                <%else%>
-                                    <button type="button" class="bg-danger-05 text-danger-600 tw-px-6 tw-py-205 rounded-pill fw-semibold tw-text-sm mx-auto justify-content-center d-flex">
-                                        Inactif
-                                    </button>
-                                <%end%>
-                            </td>
-            
-                            <td>
-                                <div class="tw-px-6 tw-py-2">
-                                    <span class="fw-semibold tw-text-4 text-dark-600 tw-mb-1 d-block"> <%=user.balance%> </span>
-                                    <span class="fw-medium tw-text-sm">
-                                        Fcfa
-                                    </span>
-                                </div>
-                            </td>
-                        </tr> 
-                    <%end%> 
-                </tbody>
-            </table>
-        </div>
-        
-        <ul class="d-flex align-items-center tw-gap-1 justify-content-center flex-wrap pt-5">
-            <li>
-                <a href="<%=dashboard_list_utilisateur_path%>" class="btn btn-primary">
-                    Voir la liste complet
-                </a>
-            </li>
-        </ul>
+                        <tbody>  
+                            <% @total_utilisateur_liste.each_with_index do |user| %> 
+                                <tr>
+                                    <th scope="row">
+                                        <div class="tw-px-6 tw-py-2">
+                                            <span class="fw-semibold tw-text-4 text-dark-600 tw-mb-1 d-block"><%=user.nom%> <%=user.prenom%></span>  
+                                            <span class="fw-medium tw-text-sm">
+                                                <%=user.email%>
+                                            </span>
+                                        </div>
+                                    </th>
+                    
+                                    <td>
+                                        <div class="tw-px-6 tw-py-2">
+                                            <span class="fw-semibold tw-text-4 text-dark-600 tw-mb-1 d-block">
+                                                <%= user.created_at.strftime("%d %B %Y") %>
+                                            </span>
+                                            <span class="fw-medium tw-text-sm">
+                                                <%= user.created_at.strftime("%I:%M %p") %>
+                                            </span>
+                                        </div>
 
+                                    </td>
+                    
+                                    <td>
+                                        <%if user.compte_status == true%>
+                                            <button type="button" class="bg-primary-05 text-primary-600 tw-px-6 tw-py-205 rounded-pill fw-semibold tw-text-sm mx-auto justify-content-center d-flex">
+                                                Actif
+                                            </button>
+                                        <%else%>
+                                            <button type="button" class="bg-danger-05 text-danger-600 tw-px-6 tw-py-205 rounded-pill fw-semibold tw-text-sm mx-auto justify-content-center d-flex">
+                                                Inactif
+                                            </button>
+                                        <%end%>
+                                    </td>
+                    
+                                    <td>
+                                        <div class="tw-px-6 tw-py-2">
+                                            <span class="fw-semibold tw-text-4 text-dark-600 tw-mb-1 d-block"> <%=user.balance%> </span>
+                                            <span class="fw-medium tw-text-sm">
+                                                Fcfa
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr> 
+                            <%end%> 
+                        </tbody>
+                    </table>
+                </div>
+                <ul class="d-flex align-items-center tw-gap-1 justify-content-center flex-wrap pt-5">
+                    <li>
+                        <a href="<%=dashboard_list_utilisateur_path%>" class="btn btn-primary">
+                            Voir la liste complet
+                        </a>
+                    </li>
+                </ul>
+                </div>
+
+                <!-- ACTIONS RAPIDES (remplace graphique) -->
+                <div class="row g-3">
+                <div class="col-12">
+                    <div class="ux-card-new ux-card-chart">
+                    <div class="ux-card-header">Actions rapides</div>
+                    <div class="d-flex flex-wrap gap-2 p-3">
+                        <button class="btn btn-outline-primary"><i class="fa fa-copy me-2"></i>Copier lien</button>
+                        <button class="btn btn-outline-success"><i class="fa fa-plus me-2"></i>Ajouter produit</button>
+                        <button class="btn btn-outline-warning"><i class="fa fa-bolt me-2"></i>Faire une tâche</button>
+                        <button class="btn btn-outline-info"><i class="fa fa-chart-line me-2"></i>Voir stats</button>
+                        <button class="btn btn-outline-purple"><i class="fa fa-gift me-2"></i>Inviter un ami</button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+              <!--FIN  Contenu -->
+            </div>
+        </main>
     </div>
 
- </div>
-<!-- ========================= my profile account tabe section end ======================== -->
-
-        </div>
+    <!-- Popup Bienvenue + Guirlande -->
+    <div class="ux-welcome-modal" id="uxWelcomeModal">
+    <div class="ux-confetti"></div>
+    <div class="ux-welcome-content">
+        <h3 class="mb-3">🎉 Bienvenue dans votre espace !</h3>
+        <p class="mb-4">
+        Vous êtes à un clic de transformer votre temps en argent. <br>
+        Commencez dès maintenant : parrainez, vendez, effectuez des tâches.
+        </p>
+        <button class="btn btn-gradient px-4 py-2" id="uxCloseWelcome">
+        C'est parti !
+        </button>
     </div>
- </section>
-<!-- ===================== account my profile section end ====================== -->
+    </div>
 
-<!-- =========================== my profile footer section start ============================= -->
 
-<%= render partial: "layouts/footer" %>
- 
-<!-- =========================== my profile footer section end ============================= -->
+  <%#= javascript_include_tag 'dashboard' %>

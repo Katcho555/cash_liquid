@@ -1,177 +1,20 @@
+<div class="ux-dashboard">
+  <!-- Sidebar -->
+     <%if current_user.admin?%>
+        <%= render partial: "layouts/sidebar/admin" %>
+    <%else%>
+        <%= render partial: "layouts/sidebar/utilisateur" %>
+    <%end%>
 
+    <!-- Main -->
+        <main class="ux-main">
 
-<!--==================== Overlay Start ====================-->
-<div class="overlay"></div>
-<!--==================== Overlay End ====================-->
+            <%= render partial: "layouts/card_entete"%>
 
-<!--==================== Sidebar Overlay End ====================-->
-<div class="side-overlay"></div>
-<!--==================== Sidebar Overlay End ====================-->
+            <!-- Contenu -->
+            <div class="ux-content p-3 p-lg-4">
+              <!-- Contenu -->
 
-<!-- Custom Toast Message start -->
-<div id="toast-container"></div>
-<!-- Custom Toast Message End -->
-
-<!-- ==================== Scroll to Top End Here ==================== -->
-<div class="progress-wrap cursor-big">
-  <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
-      <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
-  </svg>
-</div>
-<!-- ==================== Scroll to Top End Here ==================== -->
-
-
-
-<!-- ==================== Mobile Menu Start Here ==================== -->
-<div class="mobile-menu d-lg-none d-block scroll-sm position-fixed bg-base-two-600 tw-w-300-px tw-h-screen overflow-y-auto tw-p-6 tw-z-999 tw--translate-x-full tw-pb-68 ">
-
-    <button type="button" class="close-button position-absolute tw-end-0 top-0 tw-me-2 tw-mt-2 tw-w-605 tw-h-605 rounded-circle d-flex justify-content-center align-items-center text-white bg-neutral-200 hover-bg-neutral-900 hover-text-white"> 
-        <i class="ph ph-x"></i>
-    </button>
-
-    <div class="mobile-menu__inner">
-        <a href="index.html" class="mobile-menu__logo">
-            <img src="assets/images/logo/logo.png" alt="Logo">
-        </a>
-        <div class="mobile-menu__menu">
-            <!-- Nav menu Start -->
-<ul class="nav-menu d-lg-flex align-items-center nav-menu--mobile d-block tw-mt-8">
-    <li class="nav-menu__item has-submenu position-relative activePage">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 text-white tw-py-9 fw-semibold w-100">HOME</a>
-        <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-menu__item activePage">
-                <a href="index.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home One</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="index-2.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home Two</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="index-3.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home Three</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="index-4.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100"> Home Four</a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-menu__item has-submenu position-relative">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">BLOG</a>
-         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="blog-details.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog Details</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="blog-grid.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog Grid</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="blog-list.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog List</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="blog-standerd.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Blog Standerd</a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-menu__item has-submenu position-relative">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">Dashboard</a>
-         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="dashboard.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Dashboard</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="transactions.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Transaction</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="send-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Send Money</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="request-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Request Money</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="deposit-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Deposit Money</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="withdraw-money.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Withdraw Money</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="notifications.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Notifications</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="my-profile.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Account</a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-menu__item has-submenu position-relative">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">ABOUT</a>
-         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="about-us-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">About Us</a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-menu__item has-submenu position-relative">
-        <a href="javascript:void(0)" class="nav-menu__link tw-pe-5 tw-py-9 text-white fw-semibold w-100">PAGES</a>
-         <ul class="nav-submenu scroll-sm position-absolute start-0 top-100 tw-w-max bg-white tw-rounded-md tw-p-2 tw-mt-4 tw-duration-200 tw-z-99">
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="fees-others.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Fees</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="our-services-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Our Services</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="services-details-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Services Details</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="our-team-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Our Team</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="pricing-plan-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">Pricing Plan</a>
-            </li>
-            <li class="nav-submenu__item d-block tw-rounded tw-duration-200 position-relative">
-                <a href="faq-other.html" class="nav-submenu__link hover-bg-neutral-100 text-heading fw-semibold w-100 d-block tw-py-2 tw-px-305 tw-rounded hover-bg-main-100">FAQ</a>
-            </li>  
-        </ul>
-    </li>
-    <li class="nav-menu__item">
-        <a href="contact-us-other.html" class="nav-menu__link text-heading tw-py-9 fw-semibold w-100 text-white">CONTACT</a>
-    </li>
-</ul>
-<!-- Nav menu End  -->
-
-        </div>
-    </div>
-</div>
-<!-- ==================== Mobile Menu End Here ==================== -->
-
-
-<!-- ===================== my profile header section start ====================== -->
- <%= render partial: "layouts/header" %>
-
-<%= render partial: "layouts/banner_dashboard" %>
-<!-- ===================== my profile header section end ====================== -->
-
-
-<!-- ===================== account my profile section start ====================== -->
-<section class="bg-neutral-10 z-1">
-    <div class="container">
-        <div class="tw-pb-8 d-xl-flex tw-gap-6 w-100 tw-mt--193px">
-            <%if current_user.admin?%>
-                <%= render partial: "layouts/sidebar/admin" %>
-            <%else%>
-                <%= render partial: "layouts/sidebar/utilisateur" %>
-            <%end%>  
-            <!-- ========================= my profile account tabe section start ======================== -->
-            <div class="flex-grow-1">
-
-                <div class="bg-white tw-px-10 rounded-3 tw-py-8 w-100 tw-mb-6">
-                    <button type="button" class="dashboard-toggle-button text-base-two-600 tw-text-8 tw-mb-6 d-xl-none d-block tw-m-l-end">
-                        <i class="ph-bold ph-list"></i>
-                    </button>
-                     <%= render partial: "layouts/card_entete"%>
-                </div>
-
-
-                <div class="bg-white tw-px-8 tw-py-8 rounded-3">
-
-                    <div class="container my-5">
                       <div class="card shadow-lg border-0 rounded-4">
                         <div class="card-header bg-primary text-white rounded-top-4">
                           <h3 class="mb-0">Modifier mon profil</h3>
@@ -239,20 +82,7 @@
                           <% end %>
                         </div>
                       </div>
-                    </div>
-
-
-                </div>
-
+                          <!--FIN  Contenu -->
             </div>
-<!-- ========================= my profile account tabe section end ======================== --> 
-
-        </div>
+        </main>
     </div>
- </section>
-<!-- ===================== account my profile section end ====================== -->
-
-<!-- =========================== my profile footer section start ============================= -->
- <%= render partial: "layouts/footer" %>
-
-

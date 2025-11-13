@@ -1,0 +1,776 @@
+<style>
+    /* ========== BASE DASHBOARD ========== */
+.ux-dashboard{
+  display: flex; min-height: 100vh; background: #f7f8fc;
+  font-family: system-ui, sans-serif;
+}
+
+/* ===== DESKTOP : sidebar fixe ===== */
+@media (min-width: 992px){
+  .ux-sidebar{
+    width: 260px; background: #ffffff;
+    box-shadow: 2px 0 8px rgba(0,0,0,.05);
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+
+  .ux-overlay{ display: none !important; }
+}
+
+/* ===== MOBILE : sidebar dessus (aucune compression) ===== */
+@media (max-width: 991px){
+  .ux-sidebar{
+    position: fixed; top: 0; left: 0; height: 100vh; width: 280px;
+    z-index: 1031; background: #ffffff; transform: translateX(-100%);
+    transition: transform .3s; display: flex; flex-direction: column;
+  }
+  .ux-sidebar.show{ transform: translateX(0); }
+  .ux-main{ margin-left: 0; }
+  .ux-overlay{
+    position: fixed; inset: 0; background: rgba(0,0,0,.45);
+    z-index: 1030; display: none;
+  }
+  .ux-overlay.show{ display: block; }
+}
+
+.ux-sidebar-head{ padding: 1.2rem; display: flex; align-items: center; gap: .75rem; }
+.ux-logo{ font-size: 1.5rem; color: #8b53ff; }
+.ux-brand{ font-weight: 700; color: #333; flex: 1; }
+.ux-close-btn{ background: none; border: none; font-size: 1.3rem; color: #666; }
+
+.ux-nav{ list-style: none; padding: 0; margin: 0; flex: 1; }
+.ux-nav-item{ border-left: 4px solid transparent; }
+.ux-nav-item.active{ background: #f1f0ff; border-color: #8b53ff; }
+.ux-nav-link{
+  display: flex; align-items: center; gap: .75rem;
+  padding: .9rem 1.2rem; color: #444; text-decoration: none;
+  transition: background .2s;
+}
+.ux-nav-link:hover{ background: #f1f0ff; }
+
+/* Dropdown */
+.ux-dropdown{
+  list-style: none; padding: 0; margin: 0;
+  background: #f8f9ff; max-height: 0; overflow: hidden;
+  transition: max-height .3s ease;
+}
+.ux-nav-item.has-dropdown.open .ux-dropdown{ max-height: 300px; }
+.ux-dropdown a{
+  display: flex; align-items: center; gap: .5rem;
+  padding: .6rem 1.2rem .6rem 3rem; color: #555;
+  text-decoration: none; font-size: .9rem;
+  transition: background .2s;
+}
+.ux-dropdown a:hover{ background: #e8ebfa; }
+.ux-badge{
+  background: #8b53ff; color: #fff; font-size: .7rem;
+  padding: .2rem .4rem; border-radius: 10px; margin-left: auto;
+}
+
+.ux-sidebar-foot{ padding: 1rem; }
+.ux-btn-logout{
+  width: 100%; border: 1px solid #dc3545; background: transparent;
+  color: #dc3545; border-radius: 8px; padding: .5rem; cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.ux-btn-logout:hover{ background: #dc3545; color: #fff; }
+
+.ux-main{ flex: 1; display: flex; flex-direction: column; }
+.ux-topbar{
+  background: #fff; height: 64px; display: flex;
+  align-items: center; justify-content: space-between;
+  padding: 0 1rem; box-shadow: 0 2px 4px rgba(0,0,0,.05);
+}
+.ux-toggle{ background: none; border: none; font-size: 1.3rem; color: #666; }
+
+.ux-user{ display: flex; align-items: center; gap: .5rem; }
+.ux-avatar{ border-radius: 50%; }
+.ux-username{ font-weight: 600; }
+
+.ux-content{ flex: 1; }
+
+/* ===== CARTES CAPTIVANTES ===== */
+.ux-card-new{
+  background: #fff; border-radius: 16px; padding: 1.5rem;
+  display: flex; align-items: center; gap: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,.05);
+  position: relative; overflow: hidden;
+  transition: transform .3s, box-shadow .3s;
+}
+.ux-card-new:hover{ transform: translateY(-5px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+.ux-card-icon-float{
+  font-size: 2.5rem; z-index: 1;
+  background: linear-gradient(135deg, #fff 0%, #f1f0ff 100%);
+  width: 70px; height: 70px; border-radius: 16px;
+  display: grid; place-items: center; box-shadow: 0 4px 10px rgba(0,0,0,.08);
+}
+.ux-card-data{ flex: 1; }
+.ux-card-val{ font-size: 1.8rem; font-weight: 700; }
+.ux-card-label{ font-size: .8rem; color: #6c757d; }
+
+/* Glows */
+.ux-card-glow-green .ux-card-icon-float{ color: #28a745; }
+.ux-card-glow-blue  .ux-card-icon-float{ color: #0d6efd; }
+.ux-card-glow-orange .ux-card-icon-float{ color: #fd7e14; }
+.ux-card-glow-purple .ux-card-icon-float{ color: #8b53ff; }
+
+/* ===== THEME SOMBRE ===== */
+body.ux-dark{
+  background: #121212;
+  color: #eee;
+}
+body.ux-dark .ux-dashboard{ background: #121212; }
+body.ux-dark .ux-sidebar{ background: #1e1e1e; }
+body.ux-dark .ux-topbar{ background: #1e1e1e; }
+body.ux-dark .ux-card-new{ background: #1e1e1e; color: #eee; }
+body.ux-dark .ux-card-chart{ background: #1e1e1e; color: #eee; }
+body.ux-dark .btn-outline-primary{ border-color: #8b53ff; color: #8b53ff; }
+body.ux-dark .btn-outline-primary:hover{ background: #8b53ff; color: #fff; }
+
+/* ===== SWITCH THEME ===== */
+.ux-theme-switch{ display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+.ux-theme-label{
+  position: relative; width: 60px; height: 30px; background: #ccc;
+  border-radius: 30px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 6px;
+}
+.ux-theme-label .fa-sun{ color: #f39c12; }
+.ux-theme-label .fa-moon{ color: #8b53ff; }
+.ux-theme-ball{
+  position: absolute; top: 3px; left: 3px; width: 24px; height: 24px;
+  background: #fff; border-radius: 50%; transition: transform .3s;
+}
+#uxThemeToggle{display: none;}
+#uxThemeToggle:checked + .ux-theme-label .ux-theme-ball{ transform: translateX(30px); }
+
+/* ===== POPUP BIENVENUE + GUIRLANDE ===== */
+.ux-welcome-modal{
+  position: fixed; inset: 0; background: rgba(0,0,0,.55);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden; transition: opacity .4s, visibility .4s;
+}
+.ux-welcome-modal.show{ opacity: 1; visibility: visible; }
+.ux-welcome-content{
+  background: #fff; border-radius: 20px; padding: 2.5rem 2rem;
+  max-width: 480px; width: 90%; text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,.25);
+  position: relative; z-index: 1;
+}
+
+/* Guirlande (confetti) */
+.ux-confetti{
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+}
+.ux-confetti::before, .ux-confetti::after{
+  content: ''; position: absolute; width: 12px; height: 12px;
+  background: #ff6b6b; border-radius: 50%;
+  animation: confetti 3s linear infinite;
+}
+.ux-confetti::after{
+  background: #8b53ff; left: 20%; animation-delay: .5s;
+}
+@keyframes confetti{
+  0%{ transform: translateY(-100vh) rotate(0); }
+  100%{ transform: translateY(100vh) rotate(720deg); }
+}
+</style>
+
+<style>
+    .referral-card {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    border-radius: 15px;
+    padding: 2rem;
+    color: white;
+    box-shadow: 0 10px 30px rgba(106, 17, 203, 0.2);
+    }
+    .referral-code {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-align: center;
+    margin: 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .social-share {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    }
+
+    .social-share .btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    background: white;
+    color: #6a11cb;
+    transition: all 0.3s ease;
+    }
+
+    .social-share .btn:hover {
+    transform: translateY(-5px);
+    }
+
+    .floating-animation {
+    animation: floating 3s ease-in-out infinite;
+    }
+</style>
+
+<!-- ===== DASHBOARD USER – COMPLET ===== -->
+<div class="ux-dashboard">
+  <!-- Sidebar -->
+  <nav class="ux-sidebar" id="uxSidebar">
+    <div class="ux-sidebar-head">
+      <i class="fa fa-layer-group ux-logo"></i>
+      <span class="ux-brand">Tableau de bord</span>
+      <button class="ux-close-btn d-lg-none" id="uxCloseSidebar">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+
+    <ul class="ux-nav">
+      <!-- Dropdown Parrainage -->
+      <li class="ux-nav-item active">
+        <a href="#parrainage" class="ux-nav-link">
+          <i class="fa fa-home"></i>
+          <span>dahboard</span>
+        </a>
+      </li>
+      <li class="ux-nav-item has-dropdown">
+        <a href="#" class="ux-nav-link">
+          <i class="fa fa-share-nodes"></i>
+          <span>Parrainage</span>
+          <i class="fa fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="ux-dropdown">
+          <li><a href="#"><i class="fa fa-link"></i> Lien de parrainage</a></li>
+          <li><a href="#"><i class="fa fa-users"></i> Mes filleuls <span class="ux-badge">73</span></a></li>
+          <li><a href="#"><i class="fa fa-chart-line"></i> Statistiques</a></li>
+        </ul>
+      </li>
+
+      <!-- Dropdown Boutique -->
+      <li class="ux-nav-item has-dropdown">
+        <a href="#" class="ux-nav-link">
+          <i class="fa fa-store"></i>
+          <span>Boutique</span>
+          <i class="fa fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="ux-dropdown">
+          <li><a href="#"><i class="fa fa-plus"></i> Ajouter un produit</a></li>
+          <li><a href="#"><i class="fa fa-bag-shopping"></i> Mes produits <span class="ux-badge">12</span></a></li>
+          <li><a href="#"><i class="fa fa-chart-pie"></i> Ventes</a></li>
+        </ul>
+      </li>
+
+      <!-- Dropdown Tâches -->
+      <li class="ux-nav-item has-dropdown">
+        <a href="#" class="ux-nav-link">
+          <i class="fa fa-list-check"></i>
+          <span>Micro-tâches</span>
+          <i class="fa fa-chevron-down ms-auto"></i>
+        </a>
+        <ul class="ux-dropdown">
+          <li><a href="#"><i class="fa fa-bolt"></i> Tâches disponibles <span class="ux-badge">24</span></a></li>
+          <li><a href="#"><i class="fa fa-check-double"></i> Tâches terminées</a></li>
+          <li><a href="#"><i class="fa fa-trophy"></i> Classement</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="ux-sidebar-foot">
+      <!-- SWITCH THEME -->
+      <div class="ux-theme-switch">
+        <input type="checkbox" id="uxThemeToggle" />
+        <label for="uxThemeToggle" class="ux-theme-label">
+          <i class="fa fa-sun"></i>
+          <i class="fa fa-moon"></i>
+          <span class="ux-theme-ball"></span>
+        </label>
+      </div>
+      <button class="ux-btn-logout">
+        <i class="fa fa-right-from-bracket"></i>
+        <span>Déconnexion</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Overlay mobile -->
+    <div class="ux-overlay d-lg-none" id="uxOverlay"></div>
+
+    <!-- Main -->
+        <main class="ux-main">
+            <header class="ux-topbar">
+                <button class="ux-toggle d-lg-none" id="uxToggleSidebar">
+                <i class="fa fa-bars"></i>
+                </button>
+                <div class="ux-user">
+                <img src="https://via.placeholder.com/36x36/8b53ff/fff?text=U" alt="avatar" class="ux-avatar">
+                <span class="ux-username">Jean D.</span>
+                </div>
+            </header>
+
+            <!-- Contenu -->
+            <div class="ux-content p-3 p-lg-4">
+                <!-- Cartes résumé : DESIGN CAPTIVANT -->
+
+                <div class="row gy-4">
+                    <div class="col-lg-6">
+                        <div class="bg-neutral-10 tw-pt-11 rounded-3 w-100 h-100">
+                            <div class=" w-100 h-100 tw-pb-3">
+                                <div class="text-center ">
+                                    <span class="text-base-two-600 tw-text-15 tw-mb-5">
+                                        <i class="ph-fill ph-wallet text-success"></i>
+                                    </span>
+                                    <div>
+                                        <h2 class="fw-normal text-dark-600 text-success">
+                                            <%if current_user.admin?%>
+                                                <%=@total_gain + User.first.balance%> Fcfa
+                                            <%else%>
+                                            <%=current_user.balance%> Fcfa
+                                            <%end%>
+                                        </h2>
+                                        <span class="text-dark-500 fw-bold tw-text-lg">
+                                            BALANCE TOTAL
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="referral-card">
+                            <p class="mb-3">Partagez ce code avec vos contacts pour gagner des récompenses à chaque nouvelle inscription</p>
+                            <div class="referral-code" id="referralCode"><%= root_url %>inscription?ref=<%= current_user.referral_code %></div>
+                            <p>Pour chaque filleul qui s'inscrit avec votre code, vous gagnez <span class="fw-bold">10%</span> de ses transactions</p>
+                            
+                            <div class="social-share">
+                                <button class="btn" title="Copier le code" id="copyBtn">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button class="btn" title="Partager sur WhatsApp">
+                                    <i class="fab fa-whatsapp"></i>
+                                </button>
+                                <button class="btn" title="Partager sur Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </button>
+                                <button class="btn" title="Partager par email">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="row g-4 mb-4">
+                <div class="col-12 col-md-6">
+                    <div class="ux-card-new ux-card-glow-green">
+                    <div class="ux-card-icon-float"><i class="fa fa-coins"></i></div>
+                    <div class="ux-card-data">
+                        <div class="ux-card-val" data-target="24350">0 FCFA</div>
+                        <div class="ux-card-label">Gains total</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="ux-card-new ux-card-glow-blue">
+                    <div class="ux-card-icon-float"><i class="fa fa-users"></i></div>
+                    <div class="ux-card-data">
+                        <div class="ux-card-val" data-target="73">0</div>
+                        <div class="ux-card-label">Filleuls</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="ux-card-new ux-card-glow-orange">
+                    <div class="ux-card-icon-float"><i class="fa fa-bag-shopping"></i></div>
+                    <div class="ux-card-data">
+                        <div class="ux-card-val" data-target="12">0</div>
+                        <div class="ux-card-label">Produits</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="ux-card-new ux-card-glow-purple">
+                    <div class="ux-card-icon-float"><i class="fa fa-list-check"></i></div>
+                    <div class="ux-card-data">
+                        <div class="ux-card-val" data-target="156">0</div>
+                        <div class="ux-card-label">Tâches</div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="bg-white tw-px-5 tw-py-5 rounded-3 tw-mb-6 ">
+                    <h4 class="fw-normal text-dark-600">Statistiques</h4>
+                    <span class="border-neutral-200 border-bottom tw-border-dashed w-100 tw-mt-6 tw-mb-6"></span>
+
+                    <div class="row gy-4">
+                        <div class="col-md-4"> 
+                            <div class="card">
+                                <div class="card-content">
+                                <div class="card-body">
+                                    <div class="media d-flex" style="justify-content: space-between;">
+                                    <div class="align-self-center">
+                                        <i class="fas fa-users text-primary fa-2x float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                        <h3><%=@total_utilisateur_nombre%></h3>
+                                        <span>Utilisateurs inscrits</span>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4"> 
+                            <div class="card">
+                                <div class="card-content">
+                                <div class="card-body">
+                                    <div class="media d-flex" style="justify-content: space-between;">
+                                    <div class="align-self-center">
+                                        <i class="fas fa-users text-success fa-2x float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                        <h3><%= User.where(compte_status: 'true').count %></h3>
+                                        <span>Utilisateurs Actif</span>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4"> 
+                            <div class="card">
+                                <div class="card-content">
+                                <div class="card-body">
+                                    <div class="media d-flex" style="justify-content: space-between;">
+                                    <div class="align-self-center">
+                                        <i class="fas fa-users text-danger fa-2x float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                        <h3><%= User.where(compte_status: 'false').count %></h3>
+                                        <span>Utilisateurs Inactif</span>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-content">
+                                <div class="card-body">
+                                    <div class="media d-flex" style="justify-content: space-between;">
+                                    <div class="align-self-center">
+                                        <i class="fas fa-wallet text-success fa-2x float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                        <h3><%=@balance_admin_reelle%></h3>
+                                        <span>Total Commission</span>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-content">
+                                <div class="card-body">
+                                    <div class="media d-flex" style="justify-content: space-between;">
+                                    <div class="align-self-center">
+                                    <i class="fas fa-wallet text-success fa-2x float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                        <h3><%=@total_gain %></h3>
+                                        <span>Gain généré</span>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-content">
+                                <div class="card-body">
+                                    <div class="media d-flex" style="justify-content: space-between;">
+                                    <div class="align-self-center">
+                                        <i class="fas fa-credit-card text-danger fa-2x float-left"></i>
+                                    </div>
+                                    <div class="media-body text-right">
+                                        <h3><%=@total_retraits_nets%></h3>
+                                        <span>Retrait total</span>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white tw-px-8 tw-py-8 rounded-3 ">
+                <h4 class="fw-normal text-dark-600">Inscriptions récentes</h4>
+                <span class="border-neutral-200 border-bottom tw-border-dashed w-100 tw-mt-6 tw-mb-6"></span>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead >
+                            <tr class="tw-mb-3">
+                            <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
+                                <span class="tw-px-6 tw-py-4">
+                                    utilisateur
+                                </span>
+                            </th>
+                            <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
+                                <span class="tw-px-6 tw-py-4">
+                                    Date Inscription
+                                </span>
+                            </th>
+                            <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
+                                <span class="tw-px-6 tw-py-4 text-center justify-content-center d-flex">
+                                    Status
+                                </span>
+                            </th>
+                            <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
+                                <span class="tw-px-6 tw-py-4">
+                                    Solde
+                                </span>
+                            </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>  
+                            <% @total_utilisateur_liste.each_with_index do |user| %> 
+                                <tr>
+                                    <th scope="row">
+                                        <div class="tw-px-6 tw-py-2">
+                                            <span class="fw-semibold tw-text-4 text-dark-600 tw-mb-1 d-block"><%=user.nom%> <%=user.prenom%></span>  
+                                            <span class="fw-medium tw-text-sm">
+                                                <%=user.email%>
+                                            </span>
+                                        </div>
+                                    </th>
+                    
+                                    <td>
+                                        <div class="tw-px-6 tw-py-2">
+                                            <span class="fw-semibold tw-text-4 text-dark-600 tw-mb-1 d-block">
+                                                <%= user.created_at.strftime("%d %B %Y") %>
+                                            </span>
+                                            <span class="fw-medium tw-text-sm">
+                                                <%= user.created_at.strftime("%I:%M %p") %>
+                                            </span>
+                                        </div>
+
+                                    </td>
+                    
+                                    <td>
+                                        <%if user.compte_status == true%>
+                                            <button type="button" class="bg-primary-05 text-primary-600 tw-px-6 tw-py-205 rounded-pill fw-semibold tw-text-sm mx-auto justify-content-center d-flex">
+                                                Actif
+                                            </button>
+                                        <%else%>
+                                            <button type="button" class="bg-danger-05 text-danger-600 tw-px-6 tw-py-205 rounded-pill fw-semibold tw-text-sm mx-auto justify-content-center d-flex">
+                                                Inactif
+                                            </button>
+                                        <%end%>
+                                    </td>
+                    
+                                    <td>
+                                        <div class="tw-px-6 tw-py-2">
+                                            <span class="fw-semibold tw-text-4 text-dark-600 tw-mb-1 d-block"> <%=user.balance%> </span>
+                                            <span class="fw-medium tw-text-sm">
+                                                Fcfa
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr> 
+                            <%end%> 
+                        </tbody>
+                    </table>
+                </div>
+                <ul class="d-flex align-items-center tw-gap-1 justify-content-center flex-wrap pt-5">
+                    <li>
+                        <a href="<%=dashboard_list_utilisateur_path%>" class="btn btn-primary">
+                            Voir la liste complet
+                        </a>
+                    </li>
+                </ul>
+                </div>
+
+                <!-- ACTIONS RAPIDES (remplace graphique) -->
+                <div class="row g-3">
+                <div class="col-12">
+                    <div class="ux-card-new ux-card-chart">
+                    <div class="ux-card-header">Actions rapides</div>
+                    <div class="d-flex flex-wrap gap-2 p-3">
+                        <button class="btn btn-outline-primary"><i class="fa fa-copy me-2"></i>Copier lien</button>
+                        <button class="btn btn-outline-success"><i class="fa fa-plus me-2"></i>Ajouter produit</button>
+                        <button class="btn btn-outline-warning"><i class="fa fa-bolt me-2"></i>Faire une tâche</button>
+                        <button class="btn btn-outline-info"><i class="fa fa-chart-line me-2"></i>Voir stats</button>
+                        <button class="btn btn-outline-purple"><i class="fa fa-gift me-2"></i>Inviter un ami</button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Popup Bienvenue + Guirlande -->
+    <div class="ux-welcome-modal" id="uxWelcomeModal">
+    <div class="ux-confetti"></div>
+    <div class="ux-welcome-content">
+        <h3 class="mb-3">🎉 Bienvenue dans votre espace !</h3>
+        <p class="mb-4">
+        Vous êtes à un clic de transformer votre temps en argent. <br>
+        Commencez dès maintenant : parrainez, vendez, effectuez des tâches.
+        </p>
+        <button class="btn btn-gradient px-4 py-2" id="uxCloseWelcome">
+        C'est parti !
+        </button>
+    </div>
+    </div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    /* ===== SIDEBAR MOBILE ===== */
+    const sidebar = document.getElementById('uxSidebar');
+    const toggle = document.getElementById('uxToggleSidebar');
+    const closeBtn = document.getElementById('uxCloseSidebar');
+    const overlay = document.getElementById('uxOverlay');
+
+    function openSidebar() {
+    sidebar.classList.add('show');
+    overlay.classList.add('show');
+    }
+    function closeSidebar() {
+    sidebar.classList.remove('show');
+    overlay.classList.remove('show');
+    }
+
+    toggle.addEventListener('click', openSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+
+    /* Fermer auto après clic sur lien (mobile) */
+    document.querySelectorAll('.ux-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        // on ne ferme PAS si ce lien possède un sous-menu
+        const parent = link.parentElement;
+        if (window.innerWidth < 992 && !parent.classList.contains('has-dropdown')) {
+        closeSidebar();
+        }
+    });
+    });
+    /* ===== DROPDOWNS ===== */
+    document.querySelectorAll('.ux-nav-item.has-dropdown > a').forEach(item => {
+    item.addEventListener('click', function (e) {
+        e.preventDefault();
+        this.parentElement.classList.toggle('open');
+    });
+    });
+
+    /* ===== THEME SOMBRE PERSISTANT ===== */
+    const themeToggle = document.getElementById('uxThemeToggle');
+    const body = document.body;
+
+    // chargement
+    if (localStorage.getItem('ux-theme') === 'dark') {
+    body.classList.add('ux-dark');
+    themeToggle.checked = true;
+    }
+
+    // changement
+    themeToggle.addEventListener('change', () => {
+    if (themeToggle.checked) {
+        body.classList.add('ux-dark');
+        localStorage.setItem('ux-theme', 'dark');
+    } else {
+        body.classList.remove('ux-dark');
+        localStorage.setItem('ux-theme', 'light');
+    }
+    });
+
+    /* ===== COMPTES ANIMÉS ===== */
+    document.querySelectorAll('.ux-card-val[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    let current = 0;
+    const inc = target / (1200 / 16);
+    const timer = setInterval(() => {
+        current += inc;
+        if (current >= target) { current = target; clearInterval(timer); }
+        el.textContent = Math.floor(current).toLocaleString() + (el.textContent.includes('FCFA') ? ' FCFA' : '');
+    }, 16);
+    });
+
+    /* ===== POPUP BIENVENUE ===== */
+    window.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('uxWelcomeModal');
+    modal.classList.add('show');
+    document.getElementById('uxCloseWelcome').addEventListener('click', () => {
+        modal.classList.remove('show');
+    });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Copier le code de parrainage
+        $('#copyBtn').click(function() {
+            const code = $('#referralCode').text();
+            navigator.clipboard.writeText(code)
+                .then(() => {
+                    $(this).html('<i class="fas fa-check"></i>');
+                    $(this).addClass('btn-success').removeClass('btn-light');
+                    setTimeout(() => {
+                        $(this).html('<i class="fas fa-copy"></i>');
+                        $(this).addClass('btn-light').removeClass('btn-success');
+                    }, 2000);
+                });
+        });
+        
+        // Soumission du formulaire de paiement
+        $('#paymentForm').submit(function(e) {
+            e.preventDefault();
+            
+            const btn = $(this).find('button[type="submit"]');
+            btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Traitement...');
+            
+            // Simulation de traitement de paiement
+            setTimeout(() => {
+                // Animation de succès
+                $('.premium-header').css('background', 'linear-gradient(135deg, #20bf6b 0%, #01baef 100%)');
+                $('.premium-badge').css('background', 'linear-gradient(135deg, #20bf6b 0%, #01baef 100%)');
+                $('.premium-badge').html('<i class="fas fa-check me-2"></i>ABONNEMENT ACTIVÉ');
+                
+                // Message de succès
+                const successHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-check-circle display-1 text-success mb-4"></i>
+                        <h2 class="fw-bold mb-3">Votre compte premium est activé !</h2>
+                        <p class="lead mb-4">Félicitations ! Vous avez maintenant accès à toutes les fonctionnalités premium.</p>
+                        <a href="dashboard.html" class="btn btn-primary btn-lg px-5">
+                            <i class="fas fa-tachometer-alt me-2"></i>Accéder à votre tableau de bord
+                        </a>
+                    </div>
+                `;
+                
+                $('.premium-content').html(successHTML);
+            }, 2000);
+        });
+    });
+</script>
