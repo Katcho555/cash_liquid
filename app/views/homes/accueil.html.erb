@@ -222,34 +222,10 @@
             background: linear-gradient(135deg, #10B981 0%, #047857 100%);
         }
         
-        .step-number {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
-            margin: 0 auto 1rem;
-        }
-        
-        .step-connector {
-            position: absolute;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
-        }
+  
         
         @media (max-width: 767.98px) {
-            .step-connector {
-                display: none;
-            }
-        }
+          
         @media (max-width: 979.98px) {
             .hero-section {
                 margin-top: 100px;
@@ -1007,7 +983,7 @@
             <!-- ETAPE BY ETAPE -->
             <div class="row g-4 step-row">
                 <% [
-                    {num: "01", title: "Inscription", desc: "Payez 1&nbsp;$, recevez 50&nbsp;FCFA de bonus.", icon: "fa-user-plus"},
+                    {num: "01", title: "Inscription", desc: "Souscrivez et recevez un bonus automatiquement.", icon: "fa-user-plus"},
                     {num: "02", title: "Parrainage", desc: "Partagez votre lien, invitez vos proches.", icon: "fa-share-nodes"},
                     {num: "03", title: "Revenus", desc: "Gagnez sur 30 niveaux de profondeur&nbsp;!", icon: "fa-coins"},
                     {num: "04", title: "Croissance", desc: "Votre réseau s’auto-alimente.", icon: "fa-chart-line"}
