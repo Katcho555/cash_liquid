@@ -192,15 +192,21 @@
 
               <% provide :title, "Centre de bonus" %>
 
-
+              <% setting = SpinSetting.instance %>
+              <% reward_amount = setting.goal_points.to_i * setting.point_value_in_francs.to_i %>
               <!-- HERO -->
             <div class="bonus-hero text-light">
               <h2 class="fw-bold">🎁 Espace Bonus</h2>
               <p class="text-white-50">Débloque des récompenses lumineuses</p>
-              <%if  SpinSetting.instance.enabled == true %>
+              <%if  setting.enabled == true %>
               <div class="points-box">
                 <span class="points-label">Points :</span>
-                <span class="points-value"><%= current_user.points %>/<%= SpinSetting.instance.goal_points %></span>
+                <span class="points-value"><%= current_user.points %>/<%= setting.goal_points %></span>
+              </div>
+              <!-- ⭐ Nouveau : récompense finale -->
+              <div class="reward-box mt-2">
+                <span class="reward-label">🎉 Récompense à gagner :</span>
+                <span class="reward-value"><%= number_to_currency(reward_amount, unit: "F CFA", precision: 0) %></span>
               </div>
               <%end%>
             </div>

@@ -132,7 +132,7 @@
             </label>
         </div>
         <% if user_signed_in? %>
-            <li class="header-nav-submenu__item">
+            <li class="header-nav-submenu__item mb-5">
                 <%= button_to logout_path, method: :delete, class: "ux-btn-logout", form_class: "d-inline" do %>
                     <i class="fa fa-right-from-bracket"></i>
                     Déconnexion
