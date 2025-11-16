@@ -1,3 +1,5 @@
+
+
 <div class="ux-dashboard">
   <!-- Sidebar -->
      <%if current_user.admin?%>
@@ -9,12 +11,13 @@
     <!-- Main -->
         <main class="ux-main">
                 
+                <%= render partial: "layouts/card_entete"%>
 
             <!-- Contenu -->
             <div class="ux-content p-3 p-lg-4">
 
                     <!-- Cartes résumé : DESIGN CAPTIVANT -->
-                    <div class="bg-white tw-px-10 rounded-3 tw-py-8 w-100 tw-mb-6">
+                    <div class="bg-white rounded-3 card-margin">
                     <div class="row gy-4">
                         <div class="col-lg-6">
                             <!-- app/views/shared/_balance_card.html.erb -->
@@ -129,97 +132,245 @@
                     </div>
 
                 
-                    <div class="bg-white tw-px-8 tw-py-8 rounded-3 ">
+                    <div class="bg-white tw-px-8 tw-py-8 rounded-3 card-margin">
 
-                        <h4 class="fw-normal text-dark-600">Inscriptions récentes</h4>
-                        <span class="border-neutral-200 border-bottom tw-border-dashed w-100 tw-mt-6 tw-mb-6"></span>
-
-                        <div class="table-responsive">
-                            <table class="table tw-mb-15 min-w-max table-responsive">
-                                <thead >
-                                <tr class="tw-mb-3">
-                                    <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
-                                        <span class="tw-px-6 tw-py-4">
-                                            utilisateur
-                                        </span>
-                                    </th>
-                                    <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
-                                        <span class="tw-px-6 tw-py-4">
-                                            Date Inscription
-                                        </span>
-                                    </th>
-                                    <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
-                                        <span class="tw-px-6 tw-py-4 text-center justify-content-center d-flex">
-                                            Status
-                                        </span>
-                                    </th>
-                                    <th scope="col" class="bg-base-two-10 fw-semibold tw-text-xl">
-                                        <span class="tw-px-6 tw-py-4">
-                                            Solde
-                                        </span>
-                                    </th>
-                                </tr>
-                                </thead>
-                    
-                                <tbody>  
-                                    <% @generations.each do |generation, users| %>
-                                        <% users.each do |user| %>
-                                        <tr>
-                                            <th scope="row">
-                                                <div class="tw-px-6 tw-py-2">
-                                                    <span class="fw-semibold tw-text-4 text-dark-600 tw-mb-1 d-block"><%=user.nom%> <%=user.prenom%></span>  
-                                                    <span class="fw-medium tw-text-sm">
-                                                        <%=user.email%>
-                                                    </span>
+                       <!--Section produit-->
+                        <section class="py-5 bg-light section-products" id="marketplace">
+                            <div class="container">
+                                <!-- Titre avec effet -->
+                                <div class="text-center mb-5" data-aos="fade-up">
+                                <h2 class="fw-bold display-6 title-gradient">
+                                    🤑 Gagne avec ces produits tendance
+                                </h2>
+                                <p class="text-muted mt-3 mb-4 subtitle">
+                                    Ajoute-les à ton espace et touche une commission à chaque vente. <br>
+                                    Zéro stock, zéro frais, juste des gains.
+                                </p>
+                                <span class="badge bg-light text-dark px-3 py-2 shadow-sm">
+                                    <i class="fa fa-lightbulb text-warning me-1"></i> Mise à jour quotidiennement
+                                </span>
+                                </div>
+                                <div class="body_product">
+                                    <div class="wrapper">
+                                        <i id="left" class="fa-solid fa-angle-left"></i>
+                                        <ul class="carousel">
+                                            <li class="card product-card h-100 shadow-sm position-relative">
+                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
+                                                <%= image_tag 'product.jpg', class:"card-img-top", alt: "Mini imprimante portable" %>
+                                                <div class="card-body">
+                                                    <span class="badge bg-warning text-dark mb-2">Tech</span>
+                                                    <h5 class="card-title">Mini imprimante portable</h5>
+                                                    <p class="card-text small">Imprime tes photos où que tu sois. Compacte, sans encre.</p>
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <span class="fw-bold text-success fs-5">59 €</span>
+                                                        <small class="text-muted">Vendu par <strong>TechStore</strong></small>
+                                                    </div>
+                                                    <div class="d-flex gap-2 flex-wrap">
+                                                        <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
+                                                        <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
+                                                    <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Mini imprimante portable"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
+                                                    </div>
                                                 </div>
-                                            </th>
-                            
-                                            <td>
-                                                <div class="tw-px-6 tw-py-2">
-                                                    <span class="fw-semibold tw-text-4 text-dark-600 tw-mb-1 d-block">
-                                                        <%= user.created_at.strftime("%d %B %Y") %>
-                                                    </span>
-                                                    <span class="fw-medium tw-text-sm">
-                                                        <%= user.created_at.strftime("%I:%M %p") %>
-                                                    </span>
+                                            </li>
+                                            <li class="card product-card h-100 shadow-sm position-relative">
+                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
+                                                <%= image_tag 'product.jpg', class:"card-img-top" %>
+                                                <div class="card-body">
+                                                    <span class="badge bg-info text-white mb-2">Maison</span>
+                                                    <h5 class="card-title">Lampe LED tactile</h5>
+                                                    <p class="card-text small">Change de couleur selon ton humeur. Design moderne.</p>
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <span class="fw-bold text-success fs-5">29 €</span>
+                                                        <small class="text-muted">Vendu par <strong>HomeVibe</strong></small>
+                                                    </div>
+                                                    <div class="d-flex gap-2 flex-wrap">
+                                                        <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
+                                                        <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
+                                                        <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Lampe LED Tactile"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
+                                                    </div>
                                                 </div>
-
-                                            </td>
-                            
-                                            <td>
-                                                <%if user.compte_status == true%>
-                                                    <button type="button" class="bg-primary-05 text-primary-600 tw-px-6 tw-py-205 rounded-pill fw-semibold tw-text-sm mx-auto justify-content-center d-flex">
-                                                        Actif
-                                                    </button>
-                                                <%else%>
-                                                    <button type="button" class="bg-danger-05 text-danger-600 tw-px-6 tw-py-205 rounded-pill fw-semibold tw-text-sm mx-auto justify-content-center d-flex">
-                                                        Inactif
-                                                    </button>
-                                                <%end%>
-                                            </td>
-                            
-                                            <td>
-                                                <div class="tw-px-6 tw-py-2">
-                                                    <span class="fw-semibold tw-text-4 text-dark-600 tw-mb-1 d-block"> <%=user.balance%> </span>
-                                                    <span class="fw-medium tw-text-sm">
-                                                        Fcfa
-                                                    </span>
+                                            </li>
+                                            <li class="card product-card h-100 shadow-sm position-relative">
+                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
+                                                <%= image_tag 'product.jpg', class:"card-img-top" %>
+                                                <div class="card-body">
+                                                    <span class="badge bg-danger text-white mb-2">Fitness</span>
+                                                    <h5 class="card-title">Corde à sauter connectée</h5>
+                                                    <p class="card-text small">Compte tes sauts, brûle des calories, synchronise avec ton téléphone.</p>
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <span class="fw-bold text-success fs-5">39 €</span>
+                                                        <small class="text-muted">Vendu par <strong>FitGear</strong></small>
+                                                    </div>
+                                                    <div class="d-flex gap-2 flex-wrap">
+                                                        <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
+                                                        <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
+                                                        <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Corde à sauter connectée"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
+                                                    </div>
                                                 </div>
-                                            </td>
-                                        </tr> 
-                                        <%end%>
-                                    <%end%> 
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <ul class="d-flex align-items-center tw-gap-1 justify-content-center flex-wrap">
-                            <li>
-                                <a href="<%=dashboard_list_utilisateur_path%>" type="button" class="tw-text-lg hover-bg-base-two-600 hover-text-white tw-duration-500 text-dark-600 d-flex align-items-center justify-content-center" style="border-radius: 10px;">
-                                    Voir la liste complet
+                                            </li>
+                                            <li class="card product-card h-100 shadow-sm position-relative">
+                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
+                                                <%= image_tag 'product.jpg', class:"card-img-top" %>
+                                                <div class="card-body">
+                                                    <span class="badge bg-success text-white mb-2">Beauté</span>
+                                                    <h5 class="card-title">Kit soins visage bio</h5>
+                                                    <p class="card-text small">3 soins naturels pour une peau éclatante. Végan, cruelty-free.</p>
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <span class="fw-bold text-success fs-5">45 €</span>
+                                                        <small class="text-muted">Vendu par <strong>GlowLab</strong></small>
+                                                    </div>
+                                                    <div class="d-flex gap-2 flex-wrap">
+                                                        <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
+                                                        <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
+                                                        <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Kit soin visage bio"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="card product-card h-100 shadow-sm position-relative">
+                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
+                                                <%= image_tag 'product.jpg', class:"card-img-top" %>
+                                                <div class="card-body">
+                                                    <span class="badge bg-secondary text-white mb-2">Accessoires</span>
+                                                    <h5 class="card-title">Porte-clés GPS tracker</h5>
+                                                    <p class="card-text small">Retrouve tes clés en un clic. Localisation en temps réel via app.</p>
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <span class="fw-bold text-success fs-5">24 €</span>
+                                                        <small class="text-muted">Vendu par <strong>SmartTag</strong></small>
+                                                    </div>
+                                                    <div class="d-flex gap-2 flex-wrap">
+                                                        <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
+                                                        <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
+                                                        <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Porte-clés GPS tracker"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <i id="right" class="fa-solid fa-angle-right"></i>
+                                    </div>                
+                                </div>
+                                <!-- CTA finale -->
+                                <div class="text-center mt-5 d-none" data-aos="fade-up">
+                                <a href="#" class="btn btn-gradient px-4 py-2 rounded-pill shadow-lg">
+                                    <i class="fa fa-rocket me-2"></i> Voir tous les produits
                                 </a>
-                            </li>
-                        </ul>
+                                </div>
+                            </div>
+                        </section>
+                        
+                            <!-- ===== SECTION MICRO-TÂCHES – NIVEAUX ===== -->
+                        <section class="py-5 section-task-levels">
+                            <div class="container">
+
+                                <!-- Headline -->
+                                <div class="text-center mb-5" data-aos="fade-up">
+                                <h2 class="fw-bold display-6 text-level">
+                                    Choisissez votre <span class="text-primary">niveau</span> et gagnez
+                                </h2>
+                                <p class="text-muted subtitle">
+                                    Plus le niveau est élevé, plus le gain est gros.
+                                </p>
+                                </div>
+
+                                <!-- GRILLE DES CARTES -->
+                                <div class="row g-4">
+
+                                <!-- NIVEAU 1 – FACILE -->
+                                <div class="col-12 col-md-6 col-lg-4" data-aos="zoom-in">
+                                    <div class="level-card h-100 shadow-sm border-start border-success border-4">
+                                    <div class="card-header-level">
+                                        <span class="level-badge level-easy">Niveau 1 – Facile</span>
+                                        <span class="price-tag">25 FCFA</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="fw-bold">Liker 5 posts Instagram</h5>
+                                        <p class="small text-muted mb-3">
+                                        Cliquez sur « J’aime » sous 5 publications (liens fournis).
+                                        </p>
+                                        <div class="info-line">
+                                        <i class="fa fa-target text-danger"></i>
+                                        <span>Objectif : <strong>100 likes</strong></span>
+                                        </div>
+                                        <div class="info-line">
+                                        <i class="fa fa-link text-primary"></i>
+                                        <a href="#" target="_blank" class="small">Ouvrir le lien de la tâche</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer-level">
+                                        <a href="#" class="btn btn-success w-100 animate-pulse">
+                                        <i class="fa fa-play-circle me-1"></i> Commencer
+                                        </a>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <!-- NIVEAU 2 – MOYEN -->
+                                <div class="col-12 col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+                                    <div class="level-card h-100 shadow-sm border-start border-warning border-4">
+                                    <div class="card-header-level">
+                                        <span class="level-badge level-medium">Niveau 2 – Moyen</span>
+                                        <span class="price-tag">75 FCFA</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="fw-bold">Sondage Google Forms</h5>
+                                        <p class="small text-muted mb-3">
+                                        Répondez à 10 questions simples (avis consommateur).
+                                        </p>
+                                        <div class="info-line">
+                                        <i class="fa fa-target text-danger"></i>
+                                        <span>Objectif : <strong>50 réponses</strong></span>
+                                        </div>
+                                        <div class="info-line">
+                                        <i class="fa fa-link text-primary"></i>
+                                        <a href="#" target="_blank" class="small">Ouvrir le lien de la tâche</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer-level">
+                                        <a href="#" class="btn btn-warning w-100 text-white animate-pulse">
+                                        <i class="fa fa-play-circle me-1"></i> Commencer
+                                        </a>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <!-- NIVEAU 3 – DIFFICILE -->
+                                <div class="col-12 col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="200">
+                                    <div class="level-card h-100 shadow-sm border-start border-danger border-4">
+                                    <div class="card-header-level">
+                                        <span class="level-badge level-hard">Niveau 3 – Expert</span>
+                                        <span class="price-tag">150 FCFA</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="fw-bold">Rédiger un avis détaillé</h5>
+                                        <p class="small text-muted mb-3">
+                                        200 mots sur un produit + capture d’écran.
+                                        </p>
+                                        <div class="info-line">
+                                        <i class="fa fa-target text-danger"></i>
+                                        <span>Objectif : <strong>10 avis</strong></span>
+                                        </div>
+                                        <div class="info-line">
+                                        <i class="fa fa-link text-primary"></i>
+                                        <a href="#" target="_blank" class="small">Ouvrir le lien de la tâche</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer-level">
+                                        <a href="#" class="btn btn-danger w-100 animate-pulse">
+                                        <i class="fa fa-play-circle me-1"></i> Commencer
+                                        </a>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                </div>
+
+                                
+                            </div>
+                        </section>
 
                     </div>
 
@@ -244,3 +395,55 @@
             </button>
         </div>
     </div>
+
+        <!-- Modale unique -->
+    <div id="uxRuptureModal" class="ux-modal">
+        <div class="ux-modal-content">
+            <button class="ux-modal-close">&times;</button>
+            <div class="ux-modal-icon">
+            <i class="fa fa-box-open"></i>
+            </div>
+            <h4 class="ux-modal-title">Rupture de stock</h4>
+            <p class="ux-modal-text">
+            Impossible d’ajouter « <span id="uxProductName"></span> » à votre espace.<br>
+            Le produit est momentanément indisponible.
+            </p>
+            <button class="ux-modal-ok">Compris</button>
+        </div>
+    </div>
+
+
+        <script>
+        // app/assets/javascripts/modal-rupture.js
+        document.querySelectorAll('.ux-add-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const available = this.dataset.available === 'true';
+            const name = this.dataset.name;
+
+            if (!available) {
+            openRuptureModal(name);
+            return; // bloque tout traitement
+            }
+
+            // Ici ton traitement normal (API, ajout, etc.)
+        });
+        });
+
+        function openRuptureModal(productName) {
+        const modal = document.getElementById('uxRuptureModal');
+        const nameSpan = document.getElementById('uxProductName');
+        nameSpan.textContent = productName;
+        modal.classList.add('show');
+
+        // ferme auto après 4s
+        setTimeout(() => closeRuptureModal(), 4000);
+        }
+
+        function closeRuptureModal() {
+        document.getElementById('uxRuptureModal').classList.remove('show');
+        }
+
+        // Fermetures manuelles
+        document.querySelector('.ux-modal-close').addEventListener('click', closeRuptureModal);
+        document.querySelector('.ux-modal-ok').addEventListener('click', closeRuptureModal);
+    </script>

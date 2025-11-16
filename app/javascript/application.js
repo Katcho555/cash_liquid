@@ -2,6 +2,7 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "dashboard";
+import "spin_game";
 
 
 

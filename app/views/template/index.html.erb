@@ -1,26 +1,159 @@
-<!-- ===== DASHBOARD USER – COMPLET ===== -->
-<div class="ux-dashboard">
-  <!-- Sidebar -->
-  
+<% provide :title, "Mes bonus" %>
 
-     <%if current_user.admin?%>
-        <%= render partial: "layouts/sidebar/admin" %>
-    <%else%>
-        <%= render partial: "layouts/sidebar/utilisateur" %>
-    <%end%>
+<div class="container bonus-page py-4">
 
-    <!-- Main -->
-        <main class="ux-main">
+  <!-- Header -->
+  <div class="text-center mb-4">
+    <h2 class="fw-bold bonus-title">🎁 Mes bonus</h2>
+    <p class="bonus-subtitle">Complète les missions et débloque des récompenses exclusives.</p>
+  </div>
 
-            <%= render partial: "layouts/card_entete"%>
+  <!-- Cartes bonus -->
+  <div id="bonus-list" class="row g-3">
 
-            <!-- Contenu -->
-            <div class="ux-content p-3 p-lg-4">
-              <!-- Contenu -->
-
-              
-                
-              <!--FIN  Contenu -->
-            </div>
-        </main>
+    <!-- Carte Spin -->
+    <div class="col-6 col-md-4">
+      <div class="bonus-card clickable">
+        <%= link_to spin_path, data: { turbo_frame: "spin_full" }, class:"text-decoration-none text-reset" do %>
+          <div class="card-body text-center">
+            <div class="bonus-icon mb-2"><span>🎡</span></div>
+            <h6 class="fw-bold">Roue de la chance</h6>
+            <small class="text-muted">Tours restants : <span id="bonus-spin-left">0</span></small>
+          </div>
+        <% end %>
+      </div>
     </div>
+
+    <%= turbo_frame_tag "spin_full", class:"d-none" %>
+
+    <!-- Parrainage -->
+    <div class="col-6 col-md-4">
+      <div class="bonus-card disabled-card">
+        <div class="card-body text-center">
+          <div class="bonus-icon inactive mb-2"><span>👥</span></div>
+          <h6 class="fw-bold">Parrainer un ami</h6>
+          <p class="text-muted small mb-3">0 / 5 amis invités</p>
+          <button class="btn btn-disabled w-100" disabled>Bientôt</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vidéos -->
+    <div class="col-6 col-md-4">
+      <div class="bonus-card disabled-card">
+        <div class="card-body text-center">
+          <div class="bonus-icon inactive mb-2"><span>📹</span></div>
+          <h6 class="fw-bold">Vidéo sponsorisée</h6>
+          <p class="text-muted small mb-3">0 / 3 vidéos</p>
+          <button class="btn btn-disabled w-100" disabled>Bientôt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zone Spin -->
+  <div id="spin-zone" class="d-none mt-4">
+    <%= render 'users/shared/spin_box' %>
+  </div>
+
+  <!-- Historique -->
+  <div class="card shadow-sm mt-5">
+    <div class="card-header bg-light">
+      <h6 class="mb-0">Historique récent</h6>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-sm mb-0">
+        <thead class="table-light">
+          <tr><th>Date</th><th>Type</th><th>Résultat</th></tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="3" class="text-center text-muted">Aucune activité</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ==== DESIGN PREMIUM ==== */
+:root {
+  --grad1: #6a5af9;
+  --grad2: #a45deb;
+  --radius: 1.1rem;
+}
+
+/* Titres */
+.bonus-title {
+  font-size: 1.9rem;
+  background: linear-gradient(135deg, var(--grad1), var(--grad2));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.bonus-subtitle {
+  color: #6c757d;
+}
+
+/* Carte bonus */
+.bonus-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 5px 18px rgba(0,0,0,.08);
+  transition: .3s;
+}
+
+.bonus-card.clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px rgba(0,0,0,.12);
+}
+
+.disabled-card {
+  opacity: 0.6;
+}
+
+/* Icône */
+.bonus-icon {
+  width: 65px;
+  height: 65px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--grad1), var(--grad2));
+}
+
+.bonus-icon.inactive {
+  background: #d7d7d7;
+}
+
+/* Boutons */
+.btn-disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  border-radius: var(--radius);
+}
+
+/* Mobile */
+@media(max-width:576px) {
+  .bonus-title { font-size: 1.5rem; }
+  .bonus-icon { width: 55px; height: 55px; font-size: 1.5rem; }
+}
+</style>
+
+<script>
+document.addEventListener('turbo:load', () => {
+  const list = document.getElementById('bonus-list');
+  const zone = document.getElementById('spin-zone');
+  if (!list || !zone) return;
+
+  list.addEventListener('click', (e) => {
+    const btn = e.target.closest('.bonus-card.clickable');
+    if (!btn) return;
+
+    list.classList.add('d-none');
+    zone.classList.remove('d-none');
+    zone.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>

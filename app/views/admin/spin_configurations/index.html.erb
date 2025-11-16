@@ -1,0 +1,69 @@
+<!-- app/views/admin/spin_configurations/index.html.erb -->
+<% content_for :bonus_tab_content do %>
+  <div class="d-flex justify-content-between mb-3">
+    <h5>Probabilité  spin</h5>
+    <%= link_to "➕ Ajouter une case", new_admin_spin_configuration_path,
+                class: "btn btn-primary btn-sm" %>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Label</th>
+          <th>Valeur</th>
+          <th>Probabilité</th>
+          <th>Statut</th>
+          <th width="120"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @spin_configurations.each do |c| %>
+          <tr>
+            <td><%= c.label %></td>
+            <td>
+              <% if c.value =~ /\A\d+\z/ %>
+                <span class="badge bg-info">+ <%= c.value %> pts</span>
+              <% elsif c.value == "bonus" %>
+                <span class="badge bg-success">🎁 Spin bonus</span>
+              <% else %>
+                <span class="badge bg-secondary"><%= c.value %></span>
+              <% end %>
+            </td>
+            <td>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar"
+                     style="width: <%= c.probability %>%"></div>
+              </div>
+              <small class="text-muted"><%= number_to_percentage c.probability %></small>
+            </td>
+            <td>
+              <%= c.active ? tag.span("Actif", class: "badge bg-success") : tag.span("Inactif", class: "badge bg-secondary") %>
+            </td>
+            <td>
+              <div class="btn-group btn-group-sm">
+                <%= link_to "✏️", edit_admin_spin_configuration_path(c),
+                            class: "btn btn-outline-warning" %>
+                <%= button_to "🗑", admin_spin_configuration_path(c),
+                            method: :delete,
+                            data: { confirm: "Supprimer cette case ?" },
+                            class: "btn btn-outline-danger" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Aperçu miniature de la roue -->
+  <div class="mt-4 text-center">
+    <h6>Aperçu</h6>
+    <div id="mini-wheel" style="width: 180px; height: 180px; margin: 0 auto;">
+      <%= render "wheel_preview" %>
+    </div>
+  </div>
+<% end %>
+
+<% content_for :title, "Cases de la roue" %>
+<%= render template: 'admin/bonus/index' %>

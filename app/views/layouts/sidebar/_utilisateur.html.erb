@@ -24,6 +24,12 @@
                 <span>Dashboard</span>
                 </a>
             </li>
+            <li class="ux-nav-item"> 
+                <%= link_to bonus_recompenses_index_path, class: 'ux-nav-link' do %>
+                    <i class="nav-icon fas fa-gift"></i>
+                    Centre de recompense
+                <% end %>
+            </li>
             <li class="ux-nav-item has-dropdown">
                 <a href="#" class="ux-nav-link">
                 <i class="fa fa-share-nodes"></i>
@@ -35,7 +41,6 @@
                 <li><a href="<%=dashboard_list_utilisateur_path%>"><i class="fa fa-users"></i> Les parrainages <span class="ux-badge"><%=@generation_count%></span></a></li>
                 </ul>
             </li>
-
             <!-- Dropdown Boutique -->
             <li class="ux-nav-item has-dropdown">
                 <a href="#" class="ux-nav-link">

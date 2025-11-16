@@ -24,11 +24,21 @@
                 <span>Dashboard</span>
                 </a>
             </li>
-            <li class="ux-nav-item">
-                <a href="<%=parametrage_path%>" class="ux-nav-link">
-                    <i class="ph ph-bank"></i>
-                <span>Configuration</span>
+            <li class="ux-nav-item has-dropdown">
+                <a href="#" class="ux-nav-link">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Configuration Générale</span>
+                    <i class="fa fa-chevron-down ms-auto"></i>
                 </a>
+                <ul class="ux-dropdown">
+                    <li><a href="<%=parametrage_path%>"><i class="fa-solid fa-gear"></i> Config. systeme</a></li>
+                    <li class="ux-nav-item"> 
+                        <%= link_to admin_bonus_root_path, class: 'ux-nav-link' do %>
+                            <i class="nav-icon fas fa-gift"></i>
+                            Config. Bonus
+                        <% end %>
+                    </li>
+                </ul>
             </li>
             <li class="ux-nav-item has-dropdown">
                 <a href="#" class="ux-nav-link">
@@ -96,6 +106,18 @@
                     <li><a href="<%=user_profile_path%>"><i class="ph ph-user"></i> Mon Profile </a></li>
                     <li><a href="<%=edit_user_registration_path%>"><i class="ph ph-pencil-simple-line"></i> Modifier compte</a></li>
                 </ul>
+            </li>
+            <li class="ux-nav-item"> 
+                <%= link_to bonus_recompenses_index_path, class: 'ux-nav-link' do %>
+                    <i class="nav-icon fas fa-gift"></i>
+                    Centre de recompense
+                <% end %>
+            </li>
+            <li class="ux-nav-item"> 
+                <%= link_to admin_reward_claims_index_path, class: 'ux-nav-link' do %>
+                    <i class="nav-icon fas fa-gift"></i>
+                    hist. recompense
+                <% end %>
             </li>
         </ul>
 

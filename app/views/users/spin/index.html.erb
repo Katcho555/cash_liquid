@@ -1,0 +1,34 @@
+<div class="spin-enter-page">
+  <!-- Entête -->
+  <div class="spin-head">
+    <%= link_to bonus_recompenses_index_path, class:"btn-back" do %>
+      <i class="fa fa-arrow-left"></i> Retour
+    <% end %>
+    <h5>Roullette</h5>
+    <div></div>
+  </div>
+
+  <!-- Contenu -->
+  <div class="spin-body" style="margin-bottom: 100px;">
+    <%= render 'users/shared/spin_box' %>
+  </div>
+</div>
+
+<style>
+.spin-enter-page{
+  animation:fadeIn .5s ease;
+}
+@keyframes fadeIn{
+  from{ opacity:0; transform:translateY(20px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+.spin-head{
+  display:flex; align-items:baseline; justify-content:space-between;
+  padding:.75rem 1rem; border-bottom:1px solid #dee2e6;
+}
+.btn-back{
+  background:transparent; border:none; font-size:1.3rem;
+}
+</style>
+
+

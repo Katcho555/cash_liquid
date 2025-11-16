@@ -1,0 +1,26 @@
+<!-- ===== DASHBOARD USER – COMPLET ===== -->
+<div class="ux-dashboard">
+  <!-- Sidebar -->
+  
+      <%if current_user.admin?%>
+          <%= render partial: "layouts/sidebar/admin" %>
+      <%else%>
+          <%= render partial: "layouts/sidebar/utilisateur" %>
+      <%end%>
+
+      <!-- Main -->
+      <main class="ux-main">
+
+          <%= render partial: "layouts/card_entete"%>
+
+          <!-- Contenu -->
+          <div class="ux-content">
+            <!-- Contenu -->
+            <h3>✏ Modifier la case</h3>
+
+            <%= render "form" %>
+           
+           <!--FIN  Contenu -->
+          </div>
+      </main>
+  </div>

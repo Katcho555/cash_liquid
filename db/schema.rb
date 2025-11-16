@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_11_13_074435) do
+ActiveRecord::Schema[7.0].define(version: 2025_11_16_034850) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -41,6 +41,43 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_13_074435) do
     t.index ["user_id"], name: "index_retraits_on_user_id"
   end
 
+  create_table "reward_claims", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "amount", null: false
+    t.datetime "claimed_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_reward_claims_on_user_id"
+  end
+
+  create_table "spin_configurations", force: :cascade do |t|
+    t.string "label", null: false
+    t.string "value", null: false
+    t.float "probability", default: 0.0
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "spin_logs", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "result_label", null: false
+    t.string "value"
+    t.string "ip_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_spin_logs_on_user_id"
+  end
+
+  create_table "spin_settings", force: :cascade do |t|
+    t.boolean "enabled", default: true, null: false
+    t.integer "spins_per_day", default: 1, null: false
+    t.integer "point_value_in_francs", default: 1, null: false
+    t.integer "goal_points", default: 100, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "subscriptions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.decimal "amount"
@@ -51,6 +88,16 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_13_074435) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
+  end
+
+  create_table "user_spin_dailies", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "spins_used", default: 0, null: false
+    t.date "date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "date"], name: "index_user_spin_dailies_on_user_id_and_date", unique: true
+    t.index ["user_id"], name: "index_user_spin_dailies_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -74,10 +121,16 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_13_074435) do
     t.string "current_vip", default: "VIP1", null: false
     t.string "vip_status", default: "new", null: false
     t.integer "current_vip_generation_count", default: 0, null: false
+    t.datetime "last_spin_at"
+    t.integer "bonus_spins", default: 0, null: false
+    t.integer "points", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "retraits", "users"
+  add_foreign_key "reward_claims", "users"
+  add_foreign_key "spin_logs", "users"
   add_foreign_key "subscriptions", "users"
+  add_foreign_key "user_spin_dailies", "users"
 end

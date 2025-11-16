@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  spins_used: 1
+  date: 2025-11-14
+
+two:
+  user: two
+  spins_used: 1
+  date: 2025-11-14

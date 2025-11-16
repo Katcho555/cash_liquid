@@ -1,0 +1,52 @@
+<!-- ===== DASHBOARD USER – COMPLET ===== -->
+<div class="ux-dashboard">
+  <!-- Sidebar -->
+  
+
+     <%if current_user.admin?%>
+        <%= render partial: "layouts/sidebar/admin" %>
+    <%else%>
+        <%= render partial: "layouts/sidebar/utilisateur" %>
+    <%end%>
+
+    <!-- Main -->
+        <main class="ux-main">
+
+            <%= render partial: "layouts/card_entete"%>
+
+            <!-- Contenu -->
+            <div class="ux-content p-3 p-lg-4">
+              <!-- Contenu -->
+
+                <!-- app/views/admin/bonus/index.html.erb -->
+                <% provide :title, "Configuration des bonus" %>
+
+                <div class="card card-outline card-primary">
+                <div class="card-header p-0">
+                    <ul class="nav nav-pills ml-auto p-2">
+                    <li class="nav-item">
+                        <%= link_to "🎡 Probabilité  spin", admin_spin_configurations_path,
+                            class: "nav-link #{active_if(controller: 'admin/spin_configurations#index')}" %>
+                    </li>
+                    <li class="nav-item">
+                        <%= link_to "📦 Config spin", edit_admin_spin_setting_path,
+                            class: "nav-link #{active_if(controller: 'admin/spin_configurations')}" %>
+                    </li>
+                    <!-- NOUVEAUX MODULES ICI
+                    <li class="nav-item">
+                        <%#= link_to "🎰 Jackpot", admin_jackpot_path %>
+                    </li>
+                    -->
+                    </ul>
+                </div><!-- /.card-header -->
+
+                <div class="card-body">
+                    <%= yield :bonus_tab_content %>
+                </div>
+                </div>
+
+
+                <!--FIN  Contenu -->
+            </div>
+        </main>
+    </div>

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  enabled: false
+  spins_per_day: 1
+  point_value_in_francs: 1
+  goal_points: 1
+  wheel_options: 
+
+two:
+  enabled: false
+  spins_per_day: 1
+  point_value_in_francs: 1
+  goal_points: 1
+  wheel_options: 

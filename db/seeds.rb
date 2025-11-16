@@ -10,6 +10,20 @@
 # -----------------------------------
 # Test complet : 8 générations de filleuls
 # -----------------------------------
+# global setting
+SpinSetting.first_or_create!(enabled: true, spins_per_day: 1, point_value_in_francs: 1, goal_points: 100)
+
+# default wheel (will not duplicate if already exist)
+if SpinConfiguration.count == 0
+  SpinConfiguration.create!([
+    { label: "+5 pts", value: "5", probability: 30, active: true },
+    { label: "+10 pts", value: "10", probability: 25, active: true },
+    { label: "+20 pts", value: "20", probability: 15, active: true },
+    { label: "+25 pts", value: "25", probability: 5, active: true },
+    { label: "1 Spin Bonus", value: "bonus", probability: 5, active: true },
+    { label: "Réessayer demain", value: "retry_tomorrow", probability: 20, active: true }
+  ])
+end
 
 # Création ou mise à jour de l'admin racine
 admin = User.find_or_create_by!(email: "admin@cashliquid.com") do |u|

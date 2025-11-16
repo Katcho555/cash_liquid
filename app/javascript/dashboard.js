@@ -110,6 +110,8 @@ function initUXFeatures() {
         .catch(err => console.error('Erreur de copie :', err));
     });
   }
+
+
 }
 
 document.addEventListener('turbo:load', initUXFeatures);

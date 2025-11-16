@@ -1,0 +1,52 @@
+<!-- ===== DASHBOARD USER – COMPLET ===== -->
+<div class="ux-dashboard">
+  <!-- Sidebar -->
+  
+      <%if current_user.admin?%>
+          <%= render partial: "layouts/sidebar/admin" %>
+      <%else%>
+          <%= render partial: "layouts/sidebar/utilisateur" %>
+      <%end%>
+
+      <!-- Main -->
+      <main class="ux-main">
+
+          <%= render partial: "layouts/card_entete"%>
+
+          <!-- Contenu -->
+          <div class="ux-content">
+            <!-- Contenu -->
+
+            <div class="container mt-4">
+            <h2 class="fw-bold mb-3">Historique des Récompenses</h2>
+
+            <% if @claims.any? %>
+                <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                    <th>Utilisateur</th>
+                    <th>Montant (F CFA)</th>
+                    <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @claims.each do |claim| %>
+                    <tr>
+                        <td><%= claim.user.name rescue claim.user.email %></td>
+                        <td><strong><%= number_with_delimiter(claim.amount, delimiter: ' ') %></strong></td>
+                        <td><%= claim.claimed_at.strftime("%d/%m/%Y %H:%M") %></td>
+                    </tr>
+                    <% end %>
+                </tbody>
+                </table>
+            <% else %>
+                <div class="alert alert-info">
+                Aucune récompense n’a encore été réclamée.
+                </div>
+            <% end %>
+            </div>
+
+            <!--FIN  Contenu -->
+          </div>
+      </main>
+  </div>

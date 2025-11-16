@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  amount: 1
+  claimed_at: 2025-11-16 04:48:50
+
+two:
+  user: two
+  amount: 1
+  claimed_at: 2025-11-16 04:48:50

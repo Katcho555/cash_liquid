@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    get 'reward_claims/index'
+  end
   resource :parametrage
 
 post  '/parametrage/add_generation', to: 'parametrages#create_generation', as: 'add_generation'
@@ -38,6 +41,17 @@ end
       get :arbre
     end
   end
+  
+
+  namespace :users do
+    post 'spin', to: 'spin#create'
+    post 'redeem_reward', to: 'spin#redeem_reward'
+    get 'spin/index' # optional: page showing wheel
+  end
+
+  post '/spin', to: 'users/spin#create' # API convenience
+
+  resource :spin, only: [:show]
 
 
   namespace :admin do
@@ -47,12 +61,18 @@ end
         patch :unblock
       end
     end
+    resources :spin_configurations
+    resource :spin_setting, only: [:show, :edit, :update]
+    resources :spin_logs, only: [:index, :show]
+    resources :reward_claims, only: [:index]
+    get '/', to: 'dashboard#index', as: :dashboard
+    get 'bonus', to: 'bonus#index', as: :bonus_root
   end
 
- get 'mon_profil', to: 'users#show', as: :user_profile
 
+  get 'bonus_recompenses/index'
 
-
+  get 'mon_profil', to: 'users#show', as: :user_profile
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root "homes#accueil"

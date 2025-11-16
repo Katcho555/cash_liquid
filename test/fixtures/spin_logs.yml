@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  result_label: MyString
+  value: MyString
+  ip_address: MyString
+
+two:
+  user: two
+  result_label: MyString
+  value: MyString
+  ip_address: MyString

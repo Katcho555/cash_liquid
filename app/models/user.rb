@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_many :filleuls, class_name: "User", foreign_key: :parrain_id
   has_many :retraits
   before_create :generate_referral_code
+  has_many :reward_claims, dependent: :destroy
 
 
   # Exemple pour obtenir tous les descendants récursivement
@@ -149,6 +150,103 @@ def filleuls_par_niveau(max_levels = 10)
   end
 
   niveaux
+end
+
+
+# app/models/user.rb
+has_many :spin_logs, dependent: :nullify
+has_many :user_spin_dailies, dependent: :delete_all
+
+# Record des spins du jour
+def today_spin_record
+  user_spin_dailies.find_or_create_by(date: Date.current)
+end
+
+# Spins restants (exclut bonus)
+def spins_left
+  setting = SpinSetting.instance
+  return 0 unless setting.enabled
+  remaining = setting.spins_per_day - today_spin_record.spins_used
+  remaining < 0 ? 0 : remaining
+end
+
+# Peut faire un spin ?
+def can_spin?
+  return false if reached_goal?                # ← nouveau
+  setting = SpinSetting.instance
+  return false unless setting.enabled
+  spins_left > 0 || bonus_spins.to_i > 0
+end
+
+# Consommer un spin
+# use_bonus: true => consomme un spin bonus
+def consume_spin!(use_bonus: false)
+  transaction do
+    if bonus_spins.to_i > 0 && use_bonus
+      self.bonus_spins -= 1
+      save!
+    else
+      r = today_spin_record
+      r.increment!(:spins_used)
+    end
+  end
+end
+
+# Ajouter des points
+def add_points!(amount)
+  self.points = (points || 0) + amount.to_i
+  save!
+end
+
+# Appliquer le résultat d'un spin
+def apply_spin_result!(value)
+  case value
+  when /\A\d+\z/
+    add_points!(value.to_i)
+  when "bonus"
+    # Gagne 1 spin bonus
+    self.bonus_spins = (bonus_spins || 0) + 1
+    save!
+  when "retry_tomorrow"
+    # Bloque tous les spins normaux pour aujourd'hui
+    today_spin_record.update!(spins_used: SpinSetting.instance.spins_per_day)
+  else
+    # fallback : si numérique
+    add_points!(value.to_i) rescue nil
+  end
+end
+
+# Objectif atteint ?
+def reached_goal?
+  points.to_i >= SpinSetting.instance.goal_points.to_i
+end
+
+# Rédemption des points
+
+def redeem_goal!
+  raise "Goal not reached" unless reached_goal?
+  setting = SpinSetting.instance
+  francs = setting.goal_points.to_i * setting.point_value_in_francs.to_i
+   transaction do
+    # 🎁 Ajouter l’argent
+    self.balance = (balance || 0) + francs
+    self.points = 0
+    self.bonus_spins = 0
+
+    # Remettre le spin du jour à zéro
+    today_spin_record.update!(spins_used: SpinSetting.instance.spins_per_day)
+
+    save!
+
+    # 📌 Historiser la récompense
+    RewardClaim.create!(
+      user: self,
+      amount: francs,
+      claimed_at: Time.current
+    )
+  end
+
+  francs
 end
 
 

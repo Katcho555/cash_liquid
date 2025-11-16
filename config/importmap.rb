@@ -8,3 +8,4 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 
 # Custom JS
 pin "dashboard", to: "dashboard.js", preload: true
+pin "spin_game", to: "spin_game.js", preload: true

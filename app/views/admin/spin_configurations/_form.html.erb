@@ -1,0 +1,31 @@
+<%= form_with model: [:admin, @spin_configuration], local: true, class: "card p-4" do |f| %>
+
+  <div class="mb-3">
+    <%= f.label :label, "Nom affiché" %>
+    <%= f.text_field :label, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :value, "Valeur" %>
+    <small class="text-muted d-block">
+      Peut être :<br>
+      - un nombre (points : "5")<br>
+      - "bonus" (spin bonus)<br>
+      - "retry_tomorrow" (0pts réessayer)
+    </small>
+    <%= f.text_field :value, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :probability, "Probabilité" %>
+    <%= f.number_field :probability, step: 0.01, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-check mb-3">
+    <%= f.check_box :active, class: "form-check-input" %>
+    <%= f.label :active, "Actif ?", class: "form-check-label" %>
+  </div>
+
+  <%= f.submit class: "btn btn-primary" %>
+
+<% end %>
