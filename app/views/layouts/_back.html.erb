@@ -1,0 +1,28 @@
+<style>
+    .back-wrapper {
+        margin: 1.2rem;
+        }
+
+        .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.9rem;
+        color: #6b7280;
+        background: rgba(107, 114, 128, 0.08);
+        padding: 0.5rem 1rem;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+        background: rgba(107, 114, 128, 0.15);
+        color: #4b5563;
+        }
+</style>
+<div class="back-wrapper">
+    <%= link_to :back, class: "back-btn" do %>
+    <i class="fa-solid fa-arrow-left"></i> Retour
+    <% end %>
+</div>

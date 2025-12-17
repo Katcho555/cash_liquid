@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :products
+  resources :payments, only: [:new, :create]
+
   namespace :admin do
     get 'reward_claims/index'
   end
@@ -101,6 +104,8 @@ delete '/dashboard/delete_subscription/:id', to: 'dashboard#delete_subscription'
       get :callback
       get :success
       get :failed
+      get :my_subscriptions
+      post :credit_daily
     end
   end
 

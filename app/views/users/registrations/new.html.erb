@@ -249,158 +249,83 @@
     </style>
 
     <div class="container-fluid py-4">
-        <div class="register-container">
-            <div class="row g-0">
-                <!-- Hero Section -->
-                <div class="col-lg-6 hero-section">
-                    <div class="text-center mb-5 floating-animation">
-                        <div class="sponsor-icon pulse-animation">
-                            <i class="fas fa-handshake"></i>
-                        </div>
-                        <h1 class="fw-bold">Programme de Parrainage</h1>
-                        <p class="lead">Gagnez jusqu'à <span class="fw-bold">20%</span> sur chaque filleul inscrit</p>
-                    </div>
-                    
-                    <div class="mt-5 mb-5">
-                        <h4 class="fw-bold mb-4"><i class="fas fa-gift me-2"></i> Avantages du parrainage</h4>
-                        
-                        <div class="benefit-card animate__animated animate__fadeInLeft">
-                            <div class="d-flex align-items-center">
-                                <div class="bg-white text-primary rounded-circle p-2 me-3">
-                                    <i class="fas fa-coins fa-lg"></i>
-                                </div>
-                                <div>
-                                    <h5 class="mb-1">Commission instantanée</h5>
-                                    <p class="mb-0">Recevez 10% immédiatement sur le premier dépôt</p>
-                                </div>
-                            </div>
+        <div class="row">
+            <div class="register-container col-md-7">
+                <div class="row g-0">
+                    <!-- Form Section -->
+                    <div class="col-md-12 form-section">
+                        <div class="form-header">
+                            <h2>Créez votre compte</h2>
+                            <p>Rejoignez notre communauté et commencez à parrainer dès aujourd'hui</p>
                         </div>
                         
-                        <div class="benefit-card animate__animated animate__fadeInLeft animate__delay-1s">
-                            <div class="d-flex align-items-center">
-                                <div class="bg-white text-primary rounded-circle p-2 me-3">
-                                    <i class="fas fa-chart-line fa-lg"></i>
+                        <%= form_for(resource, as: resource_name, url: registration_path(resource_name), id: "registerForm") do |f| %>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <%= f.text_field :prenom, autofocus: true,  id:"firstName", class: "form-control", placeholder: "Prénom", required: true %>
+                                        <label for="firstName"><i class="fas fa-user me-2"></i>Prénom</label>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h5 class="mb-1">Bonus de progression</h5>
-                                    <p class="mb-0">Atteignez des paliers pour augmenter votre commission jusqu'à 20%</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="benefit-card animate__animated animate__fadeInLeft animate__delay-2s">
-                            <div class="d-flex align-items-center">
-                                <div class="bg-white text-primary rounded-circle p-2 me-3">
-                                    <i class="fas fa-trophy fa-lg"></i>
-                                </div>
-                                <div>
-                                    <h5 class="mb-1">Récompenses exclusives</h5>
-                                    <p class="mb-0">Accédez à des cadeaux et avantages spéciaux en tant que parrain</p>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <%= f.text_field :nom, autofocus: true,  id:"lastName", class: "form-control", placeholder: "Nom", required: true %>
+                                        <label for="lastName"><i class="fas fa-user me-2"></i>Nom</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <div class="position-absolute bottom-0 start-0 w-100 p-3 text-center">
-                        <p class="mb-0">Déjà plus de <span class="fw-bold">25,000</span> parrains actifs sur notre plateforme</p>
-                    </div>
-                </div>
-                
-                <!-- Form Section -->
-                <div class="col-lg-6 form-section">
-                    <div class="form-header">
-                        <h2>Créez votre compte</h2>
-                        <p>Rejoignez notre communauté et commencez à parrainer dès aujourd'hui</p>
-                    </div>
-                    
-                    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), id: "registerForm") do |f| %>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
+                            
+                            <div class="mb-3">
                                 <div class="form-floating">
-                                    <%= f.text_field :prenom, autofocus: true,  id:"firstName", class: "form-control", placeholder: "Prénom", required: true %>
-                                    <label for="firstName"><i class="fas fa-user me-2"></i>Prénom</label>
+                                <%= f.email_field :email, autofocus: true,  id:"email", class: "form-control", placeholder: "Email", required: true %>
+                                <label for="email"><i class="fas fa-envelope me-2"></i>Adresse email</label>
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            
+                            <!-- Progress Bar -->
+                            <div class="progress-container">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Force du mot de passe</span>
+                                    <span id="password-strength-text">Faible</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div id="password-strength-bar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
                                 <div class="form-floating">
-                                    <%= f.text_field :nom, autofocus: true,  id:"lastName", class: "form-control", placeholder: "Nom", required: true %>
-                                    <label for="lastName"><i class="fas fa-user me-2"></i>Nom</label>
+                                    <%= f.password_field :password, class: "form-control", id: "password", placeholder: "Mot de passe", required: true %> 
+                                    <label for="password"><i class="fas fa-lock me-2"></i>Mot de passe</label>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <div class="form-floating">
-                              <%= f.email_field :email, autofocus: true,  id:"email", class: "form-control", placeholder: "Email", required: true %>
-                              <label for="email"><i class="fas fa-envelope me-2"></i>Adresse email</label>
+                            
+                            <div class="mb-3">
+                                <div class="form-floating">
+                                    <%= f.password_field :password_confirmation, class: "form-control", id: "confirmPassword", placeholder: "Confirmez le mot de passe", required: true %>
+                                    <label for="confirmPassword"><i class="fas fa-lock me-2"></i>Confirmez le mot de passe</label>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <!-- Progress Bar -->
-                        <div class="progress-container">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Force du mot de passe</span>
-                                <span id="password-strength-text">Faible</span>
-                            </div>
-                            <div class="progress" style="height: 8px;">
-                                <div id="password-strength-bar" class="progress-bar" role="progressbar" style="width: 0%"></div>
-                            </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <div class="form-floating">
-                                <%= f.password_field :password, class: "form-control", id: "password", placeholder: "Mot de passe", required: true %> 
-                                <label for="password"><i class="fas fa-lock me-2"></i>Mot de passe</label>
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="terms" required>
+                                <label class="form-check-label small" for="terms">
+                                    J'accepte les <a href="#" class="text-primary">conditions d'utilisation</a> et la <a href="#" class="text-primary">politique de confidentialité</a>
+                                </label>
                             </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <div class="form-floating">
-                                <%= f.password_field :password_confirmation, class: "form-control", id: "confirmPassword", placeholder: "Confirmez le mot de passe", required: true %>
-                                <label for="confirmPassword"><i class="fas fa-lock me-2"></i>Confirmez le mot de passe</label>
+                            
+                            <div class="d-grid mb-4">
+                            <%= f.button type: :submit, class: "btn btn-primary btn-lg" do %>
+                                <i class="fas fa-user-plus me-2"></i>Créer mon compte
+                            <% end %>
                             </div>
-                        </div>
-
-                        <div class="form-check mb-4">
-                            <input class="form-check-input" type="checkbox" id="terms" required>
-                            <label class="form-check-label small" for="terms">
-                                J'accepte les <a href="#" class="text-primary">conditions d'utilisation</a> et la <a href="#" class="text-primary">politique de confidentialité</a>
-                            </label>
-                        </div>
-                        
-                        <div class="d-grid mb-4">
-                          <%= f.button type: :submit, class: "btn btn-primary btn-lg" do %>
-                            <i class="fas fa-user-plus me-2"></i>Créer mon compte
-                          <% end %>
-                        </div>
-                        
-                        <div class="text-center mb-4 position-relative">
-                            <div class="position-absolute top-50 start-0 end-0 border-top"></div>
-                            <span class="bg-white px-3 position-relative">Ou inscrivez-vous avec</span>
-                        </div>
-                        
-                        <div class="row social-login">
-                            <div class="col-md-4 mb-2">
-                                <button type="button" class="btn btn-outline-dark w-100">
-                                    <i class="fab fa-google me-2"></i>Google
-                                </button>
+                            
+                            
+                            <div class="text-center mt-4">
+                                <p class="mb-0">Déjà inscrit? <a href="<%=login_path%>" class="text-primary fw-bold">Connectez-vous</a></p>
                             </div>
-                            <div class="col-md-4 mb-2">
-                                <button type="button" class="btn btn-outline-primary w-100">
-                                    <i class="fab fa-facebook me-2"></i>Facebook
-                                </button>
-                            </div>
-                            <div class="col-md-4 mb-2">
-                                <button type="button" class="btn btn-outline-dark w-100">
-                                    <i class="fab fa-apple me-2"></i>Apple
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="text-center mt-4">
-                            <p class="mb-0">Déjà inscrit? <a href="<%=login_path%>" class="text-primary fw-bold">Connectez-vous</a></p>
-                        </div>
-                    <%end%>
+                        <%end%>
+                    </div>
                 </div>
             </div>
         </div>

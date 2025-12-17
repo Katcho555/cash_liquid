@@ -4,67 +4,68 @@ class SubscriptionsController < ApplicationController
   def index
     @taux_dollar = Parametre.find_by(cle: 'taux_dollar')&.valeur.to_i
     @frais_souscription = Parametre.find_by(cle: 'frais_souscription')&.valeur.to_i
-    if params[:id]
-        @subscription = Subscription.find_by(id: params[:id])
-    end
+
+  @taux_dollar = Parametre.find_by(cle: 'taux_dollar')&.valeur.to_i
+  @frais_souscription = Parametre.find_by(cle: 'frais_souscription')&.valeur.to_i
+
+  if params[:product_id]
+    @product = Product.find(params[:product_id])
+  end
+
+    # if params[:id]
+    #     @subscription = Subscription.find_by(id: params[:id])
+    # end
     @show_payment_modal = params[:show_modal] == "true"
   end
 
- def create
-    # Calcul du montant
-    @taux_dollar = Parametre.find_by(cle: 'taux_dollar')&.valeur.to_i
-    @frais_souscription = Parametre.find_by(cle: 'frais_souscription')&.valeur.to_i
-    @amount = @frais_souscription * @taux_dollar
+def create
+  @product = Product.find(params[:product_id])
+  
+  # Calcul du montant = prix du produit
+  @amount = @product.purchase_price
 
-     # 🔹 Vérifier s'il existe déjà une souscription en attente
+  # Vérifier s'il existe déjà une souscription en attente
   @subscription = current_user.subscriptions.find_by(status: 'en_attente')
 
   unless @subscription
     @subscription = current_user.subscriptions.create(
       amount: @amount,
+      product_id: @product.id,   # <-- utiliser product_id ici
       status: 'en_attente',
       payment_method: 'moneroo'
     )
   else
-    # Mettre à jour le montant si les paramètres ont changé
-    @subscription.update(amount: @amount)
+    @subscription.update(amount: @amount, product_id: @product.id)  # <-- idem ici
   end
 
+  if @subscription.persisted?
+    moneroo = MonerooService.new
 
-    if @subscription.persisted?
-      moneroo = MonerooService.new
+    response = moneroo.create_payment(
+      amount: @subscription.amount,
+      currency: 'XOF',
+      email: current_user.email,
+      first_name: current_user.nom || "",
+      last_name: current_user.prenom || "",
+      description: "Souscription pour #{@product.name}",
+      return_url: callback_subscriptions_url,
+      metadata: { subscription_id: @subscription.id }
+    )
 
-      # Créer le paiement Moneroo
-      response = moneroo.create_payment(
-        amount: @subscription.amount,
-        currency: 'XOF',
-        email: current_user.email,
-        first_name: current_user.nom || "",
-        last_name: current_user.prenom || "",
-        description: "Souscription premium",
-        return_url: callback_subscriptions_url,
-        metadata: { subscription_id: @subscription.id }
-      )
-
-      Rails.logger.info "=== MONEROO RESPONSE ==="
-      Rails.logger.info response.inspect
-      Rails.logger.info "========================"
-
-
-      
-      # Redirection vers le checkout
-      checkout_url = response.dig("data", "checkout_url")
-      if checkout_url.present?
-        redirect_to checkout_url, allow_other_host: true
-      else
-        flash[:alert] = "Erreur lors de la création du paiement Moneroo : #{response}"
-        redirect_to subscriptions_path
-      end
+    checkout_url = response.dig("data", "checkout_url")
+    if checkout_url.present?
+      redirect_to checkout_url, allow_other_host: true
     else
-      flash[:alert] = @subscription.errors.full_messages.join(", ")
-      redirect_to subscriptions_path
+      flash[:alert] = "Erreur lors de la création du paiement Moneroo : #{response}"
+      redirect_to souscriptions_path(product_id: @product.id)
     end
+  else
+    flash[:alert] = @subscription.errors.full_messages.join(", ")
+    redirect_to souscriptions_path(product_id: @product.id)
   end
+end
+
+
 
   # Callback Moneroo
   def callback
@@ -100,43 +101,68 @@ class SubscriptionsController < ApplicationController
   # Considère le paiement réussi si :
   # - le statut API est "success" ou
   # - le paramètre URL est "success"
-  if api_status == "success" || payment_status == "success"
-    @souscription.update(
-      status: "payé",
-      payment_method: "moneroo",
-      reference: payment_id,
-      paid_at: Time.current
-    )
+ if api_status == "success" || payment_status == "success"
+  @souscription.update(
+    status: "payé",
+    payment_method: "moneroo",
+    reference: payment_id,
+    paid_at: Time.current
+  )
 
-    @user = @souscription.user
-    @user.generate_referral_code if @user.referral_code.blank?
+  @user = @souscription.user
+  @user.generate_referral_code if @user.referral_code.blank?
 
-    # 🔹 Étape 1 : Trouver le bon parrain avant d’activer le compte
-    parrain_actuel = @user.parrain
-    if parrain_actuel.nil? || !parrain_actuel.parrain_disponible?(3)
-      parrain_initial = parrain_actuel || User.racine_parrain
-      nouveau_parrain = parrain_initial.premier_parrain_disponible(3)
-      @user.update(parrain: nouveau_parrain) if nouveau_parrain
-    end
+  # Parrainage : 5% sur le premier paiement seulement
+  if @user.parrain && !@souscription.parrain_reward_given
+    reward_amount = (@souscription.amount * 0.05).to_i
+    @user.parrain.wallet_balance += reward_amount
+    @user.parrain.save
 
-    # 🔹 Éviter une boucle : ne jamais être son propre parrain
-    @user.update(parrain: nil) if @user.parrain_id == @user.id
-
-    # 🔹 Étape 2 : Activer le compte une fois le parrain fixé
-    @user.update(compte_status: true, vip_status: "open")
-
-    # 🔹 Étape 3 : Distribuer les gains
-    distribuer_gains(@user)
-
-    flash[:success] = "Souscription effectuée avec succès via Moneroo ✅"
-    session.delete(:souscription_amount)
-    redirect_to dashboard_index_path
-  else
-    @souscription.update(status: "en_attente")
-    flash[:error] = "Le paiement a échoué ou a été annulé ❌"
-    redirect_to failed_subscriptions_path
+    # Marquer que la récompense a été donnée pour cette souscription
+    @souscription.update(parrain_reward_given: true)
   end
+
+  flash[:success] = "Souscription réussie !"
+  redirect_to dashboard_index_path
+else
+  @souscription.update(status: "en_attente")
+  flash[:error] = "Le paiement a échoué."
+  redirect_to failed_subscriptions_path
 end
+
+
+
+end
+
+def credit_daily
+  credits = []
+
+  current_user.subscriptions.where(status: "payé").each do |sub|
+    next unless sub.dividend_today?
+
+    # Verser le dividende
+    current_user.balance += sub.product.daily_revenue
+    sub.update(last_credit_at: Time.current)
+
+    credits << {
+      id: sub.id,
+      product_name: sub.product.name,
+      earned: sub.product.daily_revenue
+    }
+  end
+
+  current_user.save
+
+  render json: {
+    balance: current_user.balance,
+    credits: credits
+  }
+end
+
+def my_subscriptions
+  @subscriptions = current_user.subscriptions.includes(:product)
+end
+
 
 
   # Pages de résultat

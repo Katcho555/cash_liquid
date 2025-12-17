@@ -1,0 +1,50 @@
+ <!-- Mobile Bottom Navigation Améliorée -->
+    <nav class="mobile-nav">
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <a href="/" class="mobile-nav-item active">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span>Accueil</span>
+                    </a>
+                </div>
+                <div class="col-3">
+                    <a href="<%=products_path%>" class="mobile-nav-item">
+                        <i class="bi bi-box-seam"></i>
+                        <span>Produits</span>
+                    </a>
+                </div>
+                <div class="col-3">
+                    <a href="<%=dashboard_list_utilisateur_path%>" class="mobile-nav-item">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Équipes</span>
+                        <span class="nav-notification">3</span>
+                    </a>
+                </div>
+                <div class="col-3">
+                    <a href="<%=user_profile_path%>" class="mobile-nav-item">
+                        <i class="bi bi-person-circle"></i>
+                        <span>Compte</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <script>
+        // Animation au clic sur les éléments de la nav
+    // Remplace TON bloc existant par celui-ci :
+        document.querySelectorAll('.mobile-nav-item').forEach(item => {
+        item.addEventListener('click', function (e) {
+            // On laisse le lien suivre son href => plus de e.preventDefault()
+
+            // 1. Effet visuel
+            document.querySelectorAll('.mobile-nav-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+
+            // 2. Petite vibration
+            if ('vibrate' in navigator) navigator.vibrate(50);
+        });
+        });
+    </script>

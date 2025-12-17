@@ -1,0 +1,14 @@
+<h2><%= @product.name %></h2>
+
+<% if @product.image.attached? %>
+  <%= image_tag @product.image, class: "img-fluid rounded mb-3" %>
+<% end %>
+
+<p><strong>Prix d'achat :</strong> <%= @product.purchase_price %> FCFA</p>
+<p><strong>Revenu journalier :</strong> <%= @product.daily_revenue %> FCFA</p>
+<p><strong>Gain total :</strong> <%= @product.total_gain %> FCFA</p>
+<p><strong>Contrat :</strong> <%= @product.contract_days %> jours</p>
+
+<p><%= @product.description %></p>
+
+<%= link_to "Retour", products_path, class: "btn btn-secondary mt-3" %>

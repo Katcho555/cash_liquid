@@ -1,0 +1,169 @@
+<style>
+  .investment-wrapper {
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .investment-card {
+    border-radius: 20px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0px 4px 25px rgba(0,0,0,0.08);
+    transition: all 0.25s ease-in-out;
+    border: 1px solid #f0f0f0;
+  }
+
+  .investment-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.12);
+  }
+
+  .investment-image {
+    height: 220px;
+    width: 100%;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* TITRE */
+  .product-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+  }
+
+  /* Badges */
+  .badge-contract {
+    background: #0d6efd;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* Infos ligne */
+  .info-section {
+    margin-top: 15px;
+  }
+
+  .info-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+
+  .info-label {
+    color: #666;
+  }
+
+  .info-value {
+    font-weight: 700;
+    color: #222;
+  }
+
+  /* Bouton */
+  .btn-invest {
+    background: linear-gradient(135deg, #0d6efd, #0048b7);
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 15px;
+    transition: 0.2s ease-in-out;
+  }
+
+  .btn-invest:hover {
+    opacity: 0.9;
+  }
+
+  .btn-invest:active {
+    transform: scale(0.97);
+  }
+
+  /* GRID RESPONSIVE */
+  @media (min-width: 768px) {
+    .col-md-custom {
+      flex: 0 0 50%;
+      max-width: 50%;
+      padding: 10px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .col-md-custom {
+      flex: 0 0 33.33%;
+      max-width: 33.33%;
+    }
+  }
+</style>
+
+<div class="dash-body">
+  <%= render partial: "layouts/header_admin"%>
+
+<h2 class="mb-4 text-center fw-bold">Investissements Pétroliers</h2>
+
+<div class="investment-wrapper">
+  <div class="row">
+
+    <% @products.each do |product| %>
+      <div class="col-12 col-md-custom mb-4">
+
+        <div class="investment-card">
+
+          <% if product.image.attached? %>
+            <%= image_tag product.image, class: "investment-image" %>
+          <% else %>
+            <div class="investment-image bg-secondary d-flex justify-content-center align-items-center text-white">
+              Pas d'image
+            </div>
+          <% end %>
+
+          <div class="p-3">
+
+            <h5 class="product-title"><%= product.name %></h5>
+
+            <div class="mt-2">
+              <span class="badge-contract">
+                <i class="bi bi-clock-history"></i>
+                Contrat : <%= product.contract_days %> jours
+              </span>
+            </div>
+
+            <div class="info-section">
+              <div class="info-line">
+                <span class="info-label">Achat :</span>
+                <span class="info-value"><%= number_with_delimiter(product.purchase_price) %> FCFA</span>
+              </div>
+
+              <div class="info-line">
+                <span class="info-label">Revenu journalier :</span>
+                <span class="info-value"><%= number_with_delimiter(product.daily_revenue) %> FCFA</span>
+              </div>
+
+              <div class="info-line">
+                <span class="info-label">Gain total :</span>
+                <span class="info-value"><%= number_with_delimiter(product.total_gain) %> FCFA</span>
+              </div>
+            </div>
+
+            <%= link_to "Souscrire maintenant",
+              subscriptions_path(product_id: product.id),
+              class: "btn btn-invest w-100" %>
+
+
+
+          </div>
+        </div>
+
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+ <%= render partial: "layouts/footer_admin"%>
+
+ </div>

@@ -1,533 +1,218 @@
+ <div class="dash-admin">
+    
+    <%=render "layouts/back"%>
 
-    <style>
-        :root {
-            --primary: #6a11cb;
-            --secondary: #2575fc;
-            --accent: #ff6b6b;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --success: #20bf6b;
-            --premium: #ff9d00;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e3e8ff 100%);
-            min-height: 100vh;
-            color: var(--dark);
-            padding-top: 20px;
-        }
-        
-        .premium-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            background: white;
-        }
-        
-        .premium-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 3rem 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .premium-header::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .premium-header::after {
-            content: '';
-            position: absolute;
-            bottom: -80px;
-            left: -30px;
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.07);
-        }
-        
-        .premium-badge {
-            background: linear-gradient(135deg, var(--premium) 0%, #ff6b00 100%);
-            display: inline-block;
-            padding: 8px 25px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(255, 157, 0, 0.3);
-            animation: pulse 2s infinite;
-        }
-        
-        .benefit-card {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(106, 17, 203, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .benefit-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(106, 17, 203, 0.15);
-        }
-        
-        .benefit-card.premium {
-            border-top: 4px solid var(--premium);
-        }
-        
-        .pricing-card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(106, 17, 203, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .pricing-card.popular {
-            border: 2px solid var(--premium);
-            transform: scale(1.03);
-        }
-        
-        .pricing-card.popular::before {
-            content: 'POPULAIRE';
-            position: absolute;
-            top: 15px;
-            right: -30px;
-            background: var(--premium);
-            color: white;
-            font-weight: 700;
-            padding: 5px 30px;
-            transform: rotate(45deg);
-            font-size: 0.8rem;
-        }
-        
-        .pricing-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(106, 17, 203, 0.2);
-        }
-        
-        .pricing-card.popular:hover {
-            transform: translateY(-10px) scale(1.03);
-        }
-        
-        .form-control {
-            padding: 12px 15px;
-            border-radius: 10px;
-            border: 2px solid #e1e5ee;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
-        }
-        
-        .btn-premium {
-            background: linear-gradient(to right, var(--premium), #ff6b00);
-            border: none;
-            border-radius: 10px;
-            padding: 15px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255, 157, 0, 0.3);
-            color: white;
-            width: 100%;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .btn-premium:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 157, 0, 0.4);
-            color: white;
-        }
-        
-        .btn-premium:active {
-            transform: translateY(1px);
-        }
-        
-        .referral-card {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            border-radius: 15px;
-            padding: 2rem;
-            color: white;
-            box-shadow: 0 10px 30px rgba(106, 17, 203, 0.2);
-        }
-        
-        .referral-code {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            padding: 15px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-align: center;
-            margin: 20px 0;
-            /*backdrop-filter: blur(5px);*/
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            /*filter: blur(0.5rem);*/
-        }
-        
-        .social-share {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .social-share .btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            background: white;
-            color: var(--primary);
-            transition: all 0.3s ease;
-        }
-        
-        .social-share .btn:hover {
-            transform: translateY(-5px);
-        }
-        
-        .floating-animation {
-            animation: floating 3s ease-in-out infinite;
-        }
-        
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 157, 0, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(255, 157, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 157, 0, 0); }
-        }
-        
-        .step-card {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            height: 100%;
-        }
-        
-        .step-number_souscription {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.3rem;
-            margin: 0 auto 20px;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 991.98px) {
-            .premium-header {
-                padding: 2rem;
-            }
-            
-            .premium-container {
-                margin: 1rem;
-            }
-        }
-        
-        @media (max-width: 767.98px) {
-            .premium-header, .premium-content {
-                padding: 1.5rem;
-            }
-        }
-    </style>
+      <% if @product %>
+        <div class="investment-wrapper">
+          <div class="invest-card">
+            <header class="invest-header">
+              <h1><%= @product.name %></h1>
+              <span class="tag">Investissement Pétrole - <%= @product.contract_days %> jours</span>
+            </header>
 
-    <div class="container">
-        <div class="premium-container">
-            <!-- Header -->
-            <div class="premium-header">
-                <div class="premium-badge floating-animation">
-                    <i class="fas fa-crown me-2"></i>ABONNEMENT PREMIUM
-                </div>
-                <h1 class="fw-bold display-4">Félicitations pour votre inscription !</h1>
-                <p class="lead fs-3">Activez votre compte premium pour débloquer votre code de parrainage et accéder à tous les avantages</p>
+            <div class="invest-body">
+              <div class="row-data">
+                <span class="label">Montant de l'investissement</span>
+                <span class="value"><%= number_with_delimiter @product.purchase_price %> <small>FCFA</small></span>
+              </div>
+              <div class="row-data">
+                <span class="label">Revenu journalier estimé</span>
+                <span class="value"><%= number_with_delimiter @product.daily_revenue %> <small>FCFA</small></span>
+              </div>
+              <div class="row-data">
+                <span class="label">Retour total estimé</span>
+                <span class="value"><%= number_with_delimiter @product.total_gain %> <small>FCFA</small></span>
+              </div>
+              <div class="row-data">
+                <span class="label">Durée du contrat</span>
+                <span class="value"><%= @product.contract_days %> <small>jours</small></span>
+              </div>
             </div>
-            
-            <!-- Content -->
-            <div class="premium-content p-4 p-md-5">
-                <div class="row mb-5">
-                    <div class="col-lg-8">
-                        <h2 class="fw-bold mb-4">Votre code de parrainage exclusif</h2>
-                        
-                        <div class="referral-card">
-                            <p class="mb-3">Partagez ce code avec vos contacts pour gagner des récompenses à chaque nouvelle inscription</p>
-                            <div class="referral-code" id="referralCode"><%= root_url %>inscription?ref=<%= current_user.referral_code %></div>
-                            <p>Pour chaque filleul qui s'inscrit avec votre code, vous gagnez <span class="fw-bold">des pourcentages</span> de ses transactions</p>
-                        </div>
-                        
-                        <div class="mt-5">
-                            <h3 class="fw-bold mb-4">Comment fonctionne le parrainage ?</h3>
-                            <div class="row">
-                                <div class="col-md-4 mb-4">
-                                    <div class="step-card">
-                                        <div class="step-number_souscription">1</div>
-                                        <h5>Partagez votre code</h5>
-                                        <p class="mb-0">Envoyez votre code unique à vos contacts</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <div class="step-card">
-                                        <div class="step-number_souscription">2</div>
-                                        <h5>Ils s'inscrivent</h5>
-                                        <p class="mb-0">Vos filleuls utilisent votre code à l'inscription</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <div class="step-card">
-                                        <div class="step-number_souscription">3</div>
-                                        <h5>Gagnez des récompenses</h5>
-                                        <p class="mb-0">Recevez Jusqu'à 15% de chaque transaction de vos filleuls</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-4">
-                        <div class="sticky-top" style="top: 20px;">
-                            <div class="pricing-card popular">
-                                <h3 class="fw-bold text-center mb-4">Abonnement Premium</h3>
-                                
-                                <div class="text-center mb-4">
-                                    <span class="display-3 fw-bold"><%=@frais_souscription%> $</span>
-                                   <!-- <span class="text-muted">/mois</span>-->
-                                </div>
-                                
-                                <ul class="list-unstyled mb-4">
-                                    <li class="mb-3 d-flex align-items-center">
-                                        <i class="fas fa-check-circle text-success me-2"></i>
-                                        <span>Accès complet à la plateforme</span>
-                                    </li>
-                                    <li class="mb-3 d-flex align-items-center">
-                                        <i class="fas fa-check-circle text-success me-2"></i>
-                                        <span>Code de parrainage personnel</span>
-                                    </li>
-                                    <li class="mb-3 d-flex align-items-center">
-                                        <i class="fas fa-check-circle text-success me-2"></i>
-                                        <span>Jusqu'à 10% de commission sur votre premier dépôt</span>
-                                    </li>
-                                    <li class="mb-3 d-flex align-items-center">
-                                        <i class="fas fa-check-circle text-success me-2"></i>
-                                        <span>Tableau de bord analytique avancé</span>
-                                    </li>
-                                    <li class="mb-3 d-flex align-items-center">
-                                        <i class="fas fa-check-circle text-success me-2"></i>
-                                        <span>Support prioritaire 24/7</span>
-                                    </li>
-                                    <li class="mb-3 d-flex align-items-center">
-                                        <i class="fas fa-check-circle text-success me-2"></i>
-                                        <span>Formations exclusives</span>
-                                    </li>
-                                </ul>
-                                
-                                <h5 class="fw-bold mb-3">Méthode de paiement</h5>
-                                
-                                <div class="mb-3">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" checked>
-                                        <label class="form-check-label" for="creditCard">
-                                            <i class="fab fa-cc-visa me-1"></i>
-                                            <i class="fab fa-cc-mastercard me-1"></i>
-                                            Fedapay
-                                        </label>
-                                    </div>
-                                    <div class="form-check form-check-inline d-none">
-                                        <input class="form-check-input" type="radio" name="paymentMethod" id="paypal">
-                                        <label class="form-check-label" for="paypal">
-                                            <i class="fab fa-cc-paypal me-1"></i>
-                                            PayPal
-                                        </label>
-                                    </div>
-                                </div>
-                                
-             
-                                    <%= form_with url: subscriptions_path, method: :post, data: { turbo: "false" }, html: { id: "subscription-form" } do %>
-                                        <button type="submit" class="btn-premium mt-3" id="pay-button">
-                                            <i class="fas fa-lock me-2"></i> Activer mon compte premium
-                                        </button>
-                                        <% end %>
 
-                                        <script>
-                                        document.addEventListener("DOMContentLoaded", () => {
-                                        const form = document.querySelector("#subscription-form");
-                                        const button = document.querySelector("#pay-button");
-
-                                        form.addEventListener("submit", () => {
-                                            button.disabled = true;
-                                            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Redirection vers Moneroo...';
-                                        });
-                                        });
-                                        </script>
-
-
-
-
-                                
-                                <div class="text-center mt-3 small text-muted">
-                                    <p class="mb-0">Votre code de parrainage sera debloqué une fois l'abonnement fait.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-5">
-                    <h3 class="fw-bold mb-4">Pourquoi passer Premium ?</h3>
-                    <div class="row">
-                        <div class="col-md-4 mb-4">
-                            <div class="benefit-card premium">
-                                <div class="d-flex align-items-start">
-                                    <div class="bg-primary text-white rounded-circle p-2 me-3">
-                                        <i class="fas fa-chart-line fa-lg"></i>
-                                    </div>
-                                    <div>
-                                        <h5 class="mb-1">Revenus garantis</h5>
-                                        <p class="mb-0">Gagnez jusqu'à 500€/mois avec notre programme de parrainage</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="benefit-card premium">
-                                <div class="d-flex align-items-start">
-                                    <div class="bg-primary text-white rounded-circle p-2 me-3">
-                                        <i class="fas fa-gift fa-lg"></i>
-                                    </div>
-                                    <div>
-                                        <h5 class="mb-1">Bonus exclusifs</h5>
-                                        <p class="mb-0">Accédez à des cadeaux et récompenses mensuelles</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="benefit-card premium">
-                                <div class="d-flex align-items-start">
-                                    <div class="bg-primary text-white rounded-circle p-2 me-3">
-                                        <i class="fas fa-headset fa-lg"></i>
-                                    </div>
-                                    <div>
-                                        <h5 class="mb-1">Support prioritaire</h5>
-                                        <p class="mb-0">Notre équipe vous accompagne 24h/24 et 7j/7</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-5">
-                    <div class="alert alert-warning d-inline-block">
-                        <i class="fas fa-exclamation-circle me-2"></i>
-                        Votre compte est actuellement inactif. Activez votre abonnement premium pour l'activer.
-                    </div>
-                </div>
-            </div>
+            <%= form_with url: subscriptions_path, method: :post, html: { id: "subscription-form" }, data: { turbo: false } do %>
+              <%= hidden_field_tag :product_id, @product.id %>
+              <button type="submit" class="invest-btn" id="pay-button">
+                <i class="fa-solid fa-lock"></i> J'investis maintenant
+              </button>
+            <% end %>
+          </div>
         </div>
-    </div>
+      <% end %>
+      <style>
+        /* Background subtil avec dégradé léger */
+        .investment-wrapper {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2rem;
+          background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+          background-attachment: fixed;
+        }
 
-    <% if @show_payment_modal %>
-  
-        <%if session[:souscription_amount]
-            #@current_souscription_amount = session[:souscription_amount]
-            # converted_amount contient maintenant votre valeur en XOF
+        .invest-card {
+          width: 100%;
+          max-width: 480px;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 24px;
+          padding: 2.5rem;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-            @current_souscription_amount = @frais_souscription * @taux_dollar
-        end%>
-        
-    <% end %>
+        .invest-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Copier le code de parrainage
-            $('#copyBtn').click(function() {
-                const code = $('#referralCode').text();
-                navigator.clipboard.writeText(code)
-                    .then(() => {
-                        $(this).html('<i class="fas fa-check"></i>');
-                        $(this).addClass('btn-success').removeClass('btn-light');
-                        setTimeout(() => {
-                            $(this).html('<i class="fas fa-copy"></i>');
-                            $(this).addClass('btn-light').removeClass('btn-success');
-                        }, 2000);
-                    });
-            });
-            
-            // Soumission du formulaire de paiement
-            $('#paymentForm').submit(function(e) {
-                e.preventDefault();
-                
-                const btn = $(this).find('button[type="submit"]');
-                btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Traitement...');
-                
-                // Simulation de traitement de paiement
-                setTimeout(() => {
-                    // Animation de succès
-                    $('.premium-header').css('background', 'linear-gradient(135deg, #20bf6b 0%, #01baef 100%)');
-                    $('.premium-badge').css('background', 'linear-gradient(135deg, #20bf6b 0%, #01baef 100%)');
-                    $('.premium-badge').html('<i class="fas fa-check me-2"></i>ABONNEMENT ACTIVÉ');
-                    
-                    // Message de succès
-                    const successHTML = `
-                        <div class="text-center py-5">
-                            <i class="fas fa-check-circle display-1 text-success mb-4"></i>
-                            <h2 class="fw-bold mb-3">Votre compte premium est activé !</h2>
-                            <p class="lead mb-4">Félicitations ! Vous avez maintenant accès à toutes les fonctionnalités premium.</p>
-                            <a href="dashboard.html" class="btn btn-primary btn-lg px-5">
-                                <i class="fas fa-tachometer-alt me-2"></i>Accéder à votre tableau de bord
-                            </a>
-                        </div>
-                    `;
-                    
-                    $('.premium-content').html(successHTML);
-                }, 2000);
-            });
-        });
-    </script>
-    <% if @show_payment_modal %>
-    <script>
-        document.addEventListener("turbo:load", function () {
-        const modal = new bootstrap.Modal(document.getElementById("premiumModal"));
-        modal.show();
-        });
-    </script>
-    <% end %>
+        .invest-header {
+          text-align: center;
+          margin-bottom: 2.5rem;
+        }
+
+        .invest-header h1 {
+          font-size: 1.8rem;
+          font-weight: 600;
+          color: #1a1a1a;
+          margin-bottom: 0.5rem;
+          letter-spacing: -0.5px;
+        }
+
+        .tag {
+          display: inline-block;
+          font-size: 0.8rem;
+          color: #6b7280;
+          background: rgba(107, 114, 128, 0.1);
+          border-radius: 16px;
+          padding: 0.4rem 1rem;
+          font-weight: 500;
+        }
+
+        .invest-body {
+          margin-bottom: 2rem;
+        }
+
+        .row-data {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem 0;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+          transition: background-color 0.2s ease;
+        }
+
+        .row-data:hover {
+          background-color: rgba(107, 114, 128, 0.02);
+          border-radius: 8px;
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
+
+        .row-data:last-child {
+          border-bottom: none;
+        }
+
+        .label {
+          font-size: 0.9rem;
+          color: #6b7280;
+          font-weight: 400;
+        }
+
+        .value {
+          font-size: 1rem;
+          font-weight: 600;
+          color: #111827;
+        }
+
+        .value small {
+          font-weight: 400;
+          color: #9ca3af;
+          font-size: 0.85rem;
+          margin-left: 0.2rem;
+        }
+
+        .invest-btn {
+          width: 100%;
+          border: none;
+          border-radius: 16px;
+          padding: 1rem;
+          font-size: 1.05rem;
+          font-weight: 500;
+          color: #fff;
+          background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
+          cursor: pointer;
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .invest-btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: left 0.5s;
+        }
+
+        .invest-btn:hover::before {
+          left: 100%;
+        }
+
+        .invest-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
+        }
+
+        .invest-btn:active {
+          transform: translateY(0);
+        }
+
+        .invest-btn i {
+          margin-right: 0.5rem;
+          font-size: 0.9rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+          .investment-wrapper {
+            padding: 1rem;
+          }
+          
+          .invest-card {
+            padding: 2rem 1.5rem;
+            border-radius: 20px;
+          }
+          
+          .invest-header h1 {
+            font-size: 1.5rem;
+          }
+          
+          .row-data {
+            padding: 0.8rem 0;
+          }
+        }
+
+        /* Animation d'entrée */
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .invest-card {
+          animation: fadeInUp 0.6s ease-out;
+        }
+      </style>
+
+    <%= render partial: "layouts/footer_admin"%>
+  </div> 

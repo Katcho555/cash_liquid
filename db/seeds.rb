@@ -11,19 +11,83 @@
 # Test complet : 8 générations de filleuls
 # -----------------------------------
 # global setting
-SpinSetting.first_or_create!(enabled: true, spins_per_day: 1, point_value_in_francs: 1, goal_points: 100)
 
-# default wheel (will not duplicate if already exist)
-if SpinConfiguration.count == 0
-  SpinConfiguration.create!([
-    { label: "+5 pts", value: "5", probability: 30, active: true },
-    { label: "+10 pts", value: "10", probability: 25, active: true },
-    { label: "+20 pts", value: "20", probability: 15, active: true },
-    { label: "+25 pts", value: "25", probability: 5, active: true },
-    { label: "1 Spin Bonus", value: "bonus", probability: 5, active: true },
-    { label: "Réessayer demain", value: "retry_tomorrow", probability: 20, active: true }
-  ])
+
+puts "🌱 Création des produits..."
+
+products = [
+  {
+    name: "Pack Starter",
+    purchase_price: 10000,
+    daily_revenue: 500,
+    total_gain: 15000,
+    contract_days: 30,
+    description: "Idéal pour débuter l’investissement sécurisé avec un petit capital.",
+    image: "starter.jpg"
+  },
+  {
+    name: "Pack Silver",
+    purchase_price: 50000,
+    daily_revenue: 3000,
+    total_gain: 90000,
+    contract_days: 30,
+    description: "Le choix parfait pour commencer à générer de vrais revenus quotidiens.",
+    image: "silver.jpg"
+  },
+  {
+    name: "Pack Gold",
+    purchase_price: 100000,
+    daily_revenue: 7000,
+    total_gain: 180000,
+    contract_days: 30,
+    description: "Un excellent pack pour booster vos gains avec un rendement plus élevé.",
+    image: "gold.jpg"
+  },
+  {
+    name: "Pack Premium",
+    purchase_price: 250000,
+    daily_revenue: 20000,
+    total_gain: 500000,
+    contract_days: 30,
+    description: "Pour les investisseurs sérieux qui souhaitent maximiser leur retour.",
+    image: "premium.jpg"
+  },
+  {
+    name: "Pack Diamond",
+    purchase_price: 500000,
+    daily_revenue: 45000,
+    total_gain: 1000000,
+    contract_days: 30,
+    description: "Le meilleur pack avec un rendement exceptionnel.",
+    image: "diamond.jpg"
+  }
+]
+
+products.each do |product_data|
+  product = Product.create!(
+    name: product_data[:name],
+    purchase_price: product_data[:purchase_price],
+    daily_revenue: product_data[:daily_revenue],
+    total_gain: product_data[:total_gain],
+    contract_days: product_data[:contract_days],
+    description: product_data[:description]
+  )
+
+  # 📌 Ajout image via Active Storage (si tu as des images locales dans /db/seed_images)
+  begin
+    file_path = Rails.root.join("db", "seed_images", product_data[:image])
+    if File.exist?(file_path)
+      product.image.attach(io: File.open(file_path), filename: product_data[:image])
+    end
+  rescue
+    puts "⚠️ Image introuvable pour : #{product.name}"
+  end
+
+  puts "👉 Produit créé : #{product.name}"
 end
+
+puts "✅ Seed terminé avec succès !"
+
 
 # Création ou mise à jour de l'admin racine
 admin = User.find_or_create_by!(email: "admin@cashliquid.com") do |u|

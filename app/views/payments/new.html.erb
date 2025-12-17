@@ -1,0 +1,44 @@
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-primary text-white text-center rounded-top-4">
+          <h3 class="mt-2 mb-2">Effectuer un Paiement</h3>
+        </div>
+
+        <div class="card-body p-4">
+
+          <%= form_with model: @payment, url: payments_path, class: "needs-validation" do |f| %>
+
+            <% if @product %>
+              <div class="alert alert-info">
+                Paiement pour : <strong><%= @product.name %></strong><br>
+                Gain quotidien : <%= @product.daily_revenue %> FCFA<br>
+              </div>
+
+              <%= f.hidden_field :product_id, value: @product.id %>
+            <% else %>
+              <div class="mb-3">
+                <label class="form-label">Choisir un produit</label>
+                <%= f.collection_select :product_id, Product.all, :id, :name, {}, class: "form-select" %>
+              </div>
+            <% end %>
+
+            <div class="mb-3">
+              <label class="form-label">Montant (FCFA)</label>
+              <%= f.number_field :amount, class: "form-control", placeholder: "Entrez le montant" %>
+            </div>
+
+            <div class="text-center mt-4">
+              <%= f.submit "Payer maintenant", class: "btn btn-primary px-4 py-2 rounded-pill shadow-sm" %>
+            </div>
+
+          <% end %>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

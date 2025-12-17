@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  purchase_price: 1
+  daily_revenue: 1
+  total_gain: 1
+  contract_days: 1
+  description: MyText
+  image: MyString
+
+two:
+  name: MyString
+  purchase_price: 1
+  daily_revenue: 1
+  total_gain: 1
+  contract_days: 1
+  description: MyText
+  image: MyString

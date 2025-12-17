@@ -1,0 +1,49 @@
+<%= form_with(model: product, local: true, html: { multipart: true }) do |f| %>
+  <% if product.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(product.errors.count, "erreur") %> :</h4>
+      <ul>
+        <% product.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :name, "Nom du produit" %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :purchase_price, "Prix d'achat (FCFA)" %>
+    <%= f.number_field :purchase_price, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :daily_revenue, "Revenu journalier (FCFA)" %>
+    <%= f.number_field :daily_revenue, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :total_gain, "Gain total (FCFA)" %>
+    <%= f.number_field :total_gain, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :contract_days, "Durée du contrat (jours)" %>
+    <%= f.number_field :contract_days, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description, "Description" %>
+    <%= f.text_area :description, rows: 3, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :image, "Image du produit" %>
+    <%= f.file_field :image, class: "form-control" %>
+  </div>
+
+  <%= f.submit "Enregistrer", class: "btn btn-primary w-100" %>
+<% end %>

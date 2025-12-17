@@ -71,67 +71,17 @@
       background-color: #e9ecef;
     }
 
-    .ux-coming-pop{
-        position: fixed; inset: 0; background: rgba(0,0,0,.55);
-        z-index: 9999; display: flex; align-items: center; justify-content: center;
-        opacity: 0; visibility: hidden; transition: opacity .4s, visibility .4s;
-        }
-        .ux-coming-pop.show{ opacity: 1; visibility: visible; }
-
-        .ux-coming-inner{
-        background: linear-gradient(135deg, #8b53ff 0%, #ff6b6b 100%);
-        color: #fff; border-radius: 24px; padding: 2.5rem 2rem;
-        max-width: 420px; width: 90%; text-align: center;
-        box-shadow: 0 20px 40px rgba(139, 83, 255, .3);
-        position: relative; overflow: hidden;
-        }
-        .ux-illustration{
-        position: absolute; inset: 0; pointer-events: none;
-        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Ccircle cx='20' cy='20' r='4' fill='%23ffffff' opacity='.8'%3E%3Canimate attributeName='cy' values='20;110;20' dur='6s' repeatCount='indefinite'/%3E%3C/circle%3E%3Ccircle cx='50' cy='10' r='5' fill='%23ffffff' opacity='.7'%3E%3Canimate attributeName='cy' values='10;120;10' dur='7s' repeatCount='indefinite'/%3E%3C/circle%3E%3Ccircle cx='90' cy='15' r='3' fill='%23ffffff' opacity='.9'%3E%3Canimate attributeName='cy' values='15;115;15' dur='5s' repeatCount='indefinite'/%3E%3C/circle%3E%3C/svg%3E") no-repeat center/cover;
-        }
-        .ux-coming-title{ font-size: 1.6rem; font-weight: 700; margin-bottom: .5rem; }
-        .ux-coming-text{ font-size: .95rem; line-height: 1.5; margin-bottom: 1rem; }
-        .ux-coming-close{
-        position: absolute; top: 1rem; right: 1rem; background: none; border: none;
-        font-size: 1.5rem; color: #fff; cursor: pointer;
-        }
+   
   </style>
   </head>
 
     <body class="position-relative">
-      
-      <!-- ===== BLOC UNIQUE – COMING SOON ===== -->
-      <div class="ux-coming-pop <%= 'd-none' if request.path == root_path  %>" id="uxComingPop">
-        <div class="ux-coming-inner">
-          <div class="ux-illustration"></div>
-          <h4 class="ux-coming-title">Prochainement</h4>
-          <p class="ux-coming-text">
-            Nous préparons une expérience encore plus fluide.<br>
-            Restez connecté, la surprise arrive très vite !
-          </p>
-          <button class="ux-coming-close" aria-label="Fermer">×</button>
-        </div>
-      </div>
+    
 
     <%= yield %>
 
     <%= javascript_importmap_tags %>
 
-    <script>
-      // Ouvre le bloc UNIQUE depuis n’importe quel élément portant la classe
-      document.querySelectorAll('.ux-coming-soon-link').forEach(link => {
-        link.addEventListener('click', e => {
-          e.preventDefault();
-          const pop = document.getElementById('uxComingPop');
-          pop.classList.add('show');
-        });
-      });
-
-      // Fermeture
-      document.querySelector('.ux-coming-close').addEventListener('click', () => {
-        document.getElementById('uxComingPop').classList.remove('show');
-      });
-    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -139,9 +89,5 @@
       AOS.init();
     </script>   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-
-
-  <script src="https://cdn.botpress.cloud/webchat/v3.3/inject.js"></script>
-  <script src="https://files.bpcontent.cloud/2025/10/24/08/20251024085951-7M0K4JB1.js" defer></script>
   </body>
 </html>

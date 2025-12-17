@@ -1,449 +1,144 @@
 
-
-<div class="ux-dashboard">
-  <!-- Sidebar -->
-     <%if current_user.admin?%>
-        <%= render partial: "layouts/sidebar/admin" %>
-    <%else%>
-        <%= render partial: "layouts/sidebar/utilisateur" %>
-    <%end%>
-
-    <!-- Main -->
-        <main class="ux-main">
-                
-                <%= render partial: "layouts/card_entete"%>
-
-            <!-- Contenu -->
-            <div class="ux-content p-3 p-lg-4">
-
-                    <!-- Cartes résumé : DESIGN CAPTIVANT -->
-                    <div class="bg-white rounded-3 card-margin">
-                    <div class="row gy-4">
-                        <div class="col-lg-6">
-                            <!-- app/views/shared/_balance_card.html.erb -->
-                                <!-- app/views/shared/_balance_card.html.erb -->
-                            <div class="ux-balance-card" data-theme="light">
-                                <!-- Icône animée (portefeuille) -->
-                                <div class="ux-wallet-icon"></div>
-
-                                <!-- Solde cliquable -->
-                                <div class="ux-balance-amount ux-clickable" data-bs-toggle="modal" data-bs-target="#uxGainModal">
-                                    <% if current_user.admin? %>
-                                    <%= number_with_delimiter(@total_gain + User.first.balance) %> <span class="ux-currency">FCFA</span>
-                                    <% else %>
-                                    <%= number_with_delimiter(current_user.balance) %> <span class="ux-currency">FCFA</span>
-                                    <% end %>
-                                </div>
-
-                                <!-- Libellé -->
-                                <div class="ux-balance-label">Solde disponible</div>
-
-                                <!-- CTA discret -->
-                                <a href="#" class="ux-balance-link" data-bs-toggle="modal" data-bs-target="#uxGainModal">Voir détails</a>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="referral-card">
-                                <p class="mb-3">Partagez ce code avec vos contacts pour gagner des récompenses à chaque nouvelle inscription</p>
-                                <div class="referral-code" id="referralCode"><%= root_url %>inscription?ref=<%= current_user.referral_code %></div>
-                                <p>Pour chaque filleul qui s'inscrit avec votre code, vous gagnez <span class="fw-bold">10%</span> de ses transactions</p>
-                                
-                                <div class="social-share">
-                                    <button class="btn" title="Copier le code" id="copyBtn">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                    <button class="btn" title="Partager sur WhatsApp">
-                                        <i class="fab fa-whatsapp"></i>
-                                    </button>
-                                    <button class="btn" title="Partager sur Facebook">
-                                        <i class="fab fa-facebook-f"></i>
-                                    </button>
-                                    <button class="btn" title="Partager par email">
-                                        <i class="fas fa-envelope"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-
-                    <!-- Modal « Comment gagner » -->
-                <div class="modal fade" id="uxGainModal" tabindex="-1" aria-labelledby="uxGainModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="uxGainModalLabel">Comment gagner ?</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
-                        </div>
-                        <div class="modal-body">
-                            <ul class="ux-gain-list">
-                            <li><i class="fa fa-share-nodes"></i> Parrainez → bonus par filleul</li>
-                            <li><i class="fa fa-bag-shopping"></i> Ajoutez des produits → commissions</li>
-                            <li><i class="fa fa-bolt"></i> Faites des micro-tâches → gains instantanés</li>
-                            <li><i class="fa fa-gift"></i> Participez aux événements → cadeaux</li>
-                            </ul>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-
-                    <div class="row g-4 mb-4">
-                        <div class="col-12 col-md-6">
-                            <div class="ux-card-new ux-card-glow-green">
-                            <div class="ux-card-icon-float"><i class="fas fa-users text-primary"></i></div>
-                            <div class="ux-card-data">
-                                <div class="ux-card-val" data-target=<%=@generation_count %>><%=@generation_count %></div>
-                                <div class="ux-card-label">Utilisateurs inscrits</div>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <div class="ux-card-new ux-card-glow-orange">
-                            <div class="ux-card-icon-float"><i class="fa fa-bag-shopping"></i></div>
-                            <div class="ux-card-data">
-                                <div class="ux-card-val" data-target="0">0</div>
-                                <div class="ux-card-label">Produits</div>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <div class="ux-card-new ux-card-glow-purple">
-                            <div class="ux-card-icon-float"><i class="fa fa-list-check"></i></div>
-                            <div class="ux-card-data">
-                                <div class="ux-card-val" data-target="0">0</div>
-                                <div class="ux-card-label">Tâches</div>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <div class="ux-card-new ux-card-glow-purple">
-                            <div class="ux-card-icon-float"><i class="fas fa-credit-card text-danger"></i></div>
-                            <div class="ux-card-data">
-                                <% @total_retraits_utilisateur = current_user.retraits.where(statut: 'Validé').sum(:montant)%>
-                                <div class="ux-card-val" data-target=<%=@total_retraits_utilisateur%>><%=@total_retraits_utilisateur%></div>
-                                <div class="ux-card-label">Retrait total</div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-
-                
-                    <div class="bg-white tw-px-8 tw-py-8 rounded-3 card-margin">
-
-                       <!--Section produit-->
-                        <section class="py-5 bg-light section-products" id="marketplace">
-                            <div class="container">
-                                <!-- Titre avec effet -->
-                                <div class="text-center mb-5" data-aos="fade-up">
-                                <h2 class="fw-bold display-6 title-gradient">
-                                    🤑 Gagne avec ces produits tendance
-                                </h2>
-                                <p class="text-muted mt-3 mb-4 subtitle">
-                                    Ajoute-les à ton espace et touche une commission à chaque vente. <br>
-                                    Zéro stock, zéro frais, juste des gains.
-                                </p>
-                                <span class="badge bg-light text-dark px-3 py-2 shadow-sm">
-                                    <i class="fa fa-lightbulb text-warning me-1"></i> Mise à jour quotidiennement
-                                </span>
-                                </div>
-                                <div class="body_product">
-                                    <div class="wrapper">
-                                        <i id="left" class="fa-solid fa-angle-left"></i>
-                                        <ul class="carousel">
-                                            <li class="card product-card h-100 shadow-sm position-relative">
-                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
-                                                <%= image_tag 'product.jpg', class:"card-img-top", alt: "Mini imprimante portable" %>
-                                                <div class="card-body">
-                                                    <span class="badge bg-warning text-dark mb-2">Tech</span>
-                                                    <h5 class="card-title">Mini imprimante portable</h5>
-                                                    <p class="card-text small">Imprime tes photos où que tu sois. Compacte, sans encre.</p>
-                                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                                        <span class="fw-bold text-success fs-5">59 €</span>
-                                                        <small class="text-muted">Vendu par <strong>TechStore</strong></small>
-                                                    </div>
-                                                    <div class="d-flex gap-2 flex-wrap">
-                                                        <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
-                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
-                                                        <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
-                                                    <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Mini imprimante portable"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="card product-card h-100 shadow-sm position-relative">
-                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
-                                                <%= image_tag 'product.jpg', class:"card-img-top" %>
-                                                <div class="card-body">
-                                                    <span class="badge bg-info text-white mb-2">Maison</span>
-                                                    <h5 class="card-title">Lampe LED tactile</h5>
-                                                    <p class="card-text small">Change de couleur selon ton humeur. Design moderne.</p>
-                                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                                        <span class="fw-bold text-success fs-5">29 €</span>
-                                                        <small class="text-muted">Vendu par <strong>HomeVibe</strong></small>
-                                                    </div>
-                                                    <div class="d-flex gap-2 flex-wrap">
-                                                        <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
-                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
-                                                        <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
-                                                        <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Lampe LED Tactile"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="card product-card h-100 shadow-sm position-relative">
-                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
-                                                <%= image_tag 'product.jpg', class:"card-img-top" %>
-                                                <div class="card-body">
-                                                    <span class="badge bg-danger text-white mb-2">Fitness</span>
-                                                    <h5 class="card-title">Corde à sauter connectée</h5>
-                                                    <p class="card-text small">Compte tes sauts, brûle des calories, synchronise avec ton téléphone.</p>
-                                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                                        <span class="fw-bold text-success fs-5">39 €</span>
-                                                        <small class="text-muted">Vendu par <strong>FitGear</strong></small>
-                                                    </div>
-                                                    <div class="d-flex gap-2 flex-wrap">
-                                                        <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
-                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
-                                                        <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
-                                                        <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Corde à sauter connectée"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="card product-card h-100 shadow-sm position-relative">
-                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
-                                                <%= image_tag 'product.jpg', class:"card-img-top" %>
-                                                <div class="card-body">
-                                                    <span class="badge bg-success text-white mb-2">Beauté</span>
-                                                    <h5 class="card-title">Kit soins visage bio</h5>
-                                                    <p class="card-text small">3 soins naturels pour une peau éclatante. Végan, cruelty-free.</p>
-                                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                                        <span class="fw-bold text-success fs-5">45 €</span>
-                                                        <small class="text-muted">Vendu par <strong>GlowLab</strong></small>
-                                                    </div>
-                                                    <div class="d-flex gap-2 flex-wrap">
-                                                        <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
-                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
-                                                        <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
-                                                        <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Kit soin visage bio"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="card product-card h-100 shadow-sm position-relative">
-                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">Gagne 10 %</span>
-                                                <%= image_tag 'product.jpg', class:"card-img-top" %>
-                                                <div class="card-body">
-                                                    <span class="badge bg-secondary text-white mb-2">Accessoires</span>
-                                                    <h5 class="card-title">Porte-clés GPS tracker</h5>
-                                                    <p class="card-text small">Retrouve tes clés en un clic. Localisation en temps réel via app.</p>
-                                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                                        <span class="fw-bold text-success fs-5">24 €</span>
-                                                        <small class="text-muted">Vendu par <strong>SmartTag</strong></small>
-                                                    </div>
-                                                    <div class="d-flex gap-2 flex-wrap">
-                                                        <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></button>
-                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-share-nodes"></i></button>
-                                                        <button class="btn btn-sm btn-outline-dark"><i class="fa fa-shopping-cart"></i></button>
-                                                        <button class="btn btn-sm btn-success flex-fill animate-pulse ux-add-btn" data-available="0" data-name="Porte-clés GPS tracker"> <i class="fa fa-plus-circle me-1"></i> Ajouter</button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <i id="right" class="fa-solid fa-angle-right"></i>
-                                    </div>                
-                                </div>
-                                <!-- CTA finale -->
-                                <div class="text-center mt-5 d-none" data-aos="fade-up">
-                                <a href="#" class="btn btn-gradient px-4 py-2 rounded-pill shadow-lg">
-                                    <i class="fa fa-rocket me-2"></i> Voir tous les produits
-                                </a>
-                                </div>
-                            </div>
-                        </section>
-                        
-                            <!-- ===== SECTION MICRO-TÂCHES – NIVEAUX ===== -->
-                        <section class="py-5 section-task-levels">
-                            <div class="container">
-
-                                <!-- Headline -->
-                                <div class="text-center mb-5" data-aos="fade-up">
-                                <h2 class="fw-bold display-6 text-level">
-                                    Choisissez votre <span class="text-primary">niveau</span> et gagnez
-                                </h2>
-                                <p class="text-muted subtitle">
-                                    Plus le niveau est élevé, plus le gain est gros.
-                                </p>
-                                </div>
-
-                                <!-- GRILLE DES CARTES -->
-                                <div class="row g-4">
-
-                                <!-- NIVEAU 1 – FACILE -->
-                                <div class="col-12 col-md-6 col-lg-4" data-aos="zoom-in">
-                                    <div class="level-card h-100 shadow-sm border-start border-success border-4">
-                                    <div class="card-header-level">
-                                        <span class="level-badge level-easy">Niveau 1 – Facile</span>
-                                        <span class="price-tag">25 FCFA</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="fw-bold">Liker 5 posts Instagram</h5>
-                                        <p class="small text-muted mb-3">
-                                        Cliquez sur « J’aime » sous 5 publications (liens fournis).
-                                        </p>
-                                        <div class="info-line">
-                                        <i class="fa fa-target text-danger"></i>
-                                        <span>Objectif : <strong>100 likes</strong></span>
-                                        </div>
-                                        <div class="info-line">
-                                        <i class="fa fa-link text-primary"></i>
-                                        <a href="#" target="_blank" class="small">Ouvrir le lien de la tâche</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer-level">
-                                        <a href="#" class="btn btn-success w-100 animate-pulse">
-                                        <i class="fa fa-play-circle me-1"></i> Commencer
-                                        </a>
-                                    </div>
-                                    </div>
-                                </div>
-
-                                <!-- NIVEAU 2 – MOYEN -->
-                                <div class="col-12 col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="100">
-                                    <div class="level-card h-100 shadow-sm border-start border-warning border-4">
-                                    <div class="card-header-level">
-                                        <span class="level-badge level-medium">Niveau 2 – Moyen</span>
-                                        <span class="price-tag">75 FCFA</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="fw-bold">Sondage Google Forms</h5>
-                                        <p class="small text-muted mb-3">
-                                        Répondez à 10 questions simples (avis consommateur).
-                                        </p>
-                                        <div class="info-line">
-                                        <i class="fa fa-target text-danger"></i>
-                                        <span>Objectif : <strong>50 réponses</strong></span>
-                                        </div>
-                                        <div class="info-line">
-                                        <i class="fa fa-link text-primary"></i>
-                                        <a href="#" target="_blank" class="small">Ouvrir le lien de la tâche</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer-level">
-                                        <a href="#" class="btn btn-warning w-100 text-white animate-pulse">
-                                        <i class="fa fa-play-circle me-1"></i> Commencer
-                                        </a>
-                                    </div>
-                                    </div>
-                                </div>
-
-                                <!-- NIVEAU 3 – DIFFICILE -->
-                                <div class="col-12 col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="200">
-                                    <div class="level-card h-100 shadow-sm border-start border-danger border-4">
-                                    <div class="card-header-level">
-                                        <span class="level-badge level-hard">Niveau 3 – Expert</span>
-                                        <span class="price-tag">150 FCFA</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="fw-bold">Rédiger un avis détaillé</h5>
-                                        <p class="small text-muted mb-3">
-                                        200 mots sur un produit + capture d’écran.
-                                        </p>
-                                        <div class="info-line">
-                                        <i class="fa fa-target text-danger"></i>
-                                        <span>Objectif : <strong>10 avis</strong></span>
-                                        </div>
-                                        <div class="info-line">
-                                        <i class="fa fa-link text-primary"></i>
-                                        <a href="#" target="_blank" class="small">Ouvrir le lien de la tâche</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer-level">
-                                        <a href="#" class="btn btn-danger w-100 animate-pulse">
-                                        <i class="fa fa-play-circle me-1"></i> Commencer
-                                        </a>
-                                    </div>
-                                    </div>
-                                </div>
-
-                                </div>
-
-                                
-                            </div>
-                        </section>
-
-                    </div>
-
-                </div>
+    <style>
+        /* Cards solde et retraits */
+        .balance-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+        }
         
-               <!--FIN  Contenu -->
-            </div>
-        </main>
-    </div>
+        .withdrawal-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+        }
+        
+        /* Cards navigation */
+        .nav-card {
+            height: 150px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+        }
+        
+        .nav-card-recharge {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=400&h=300&fit=crop') center/cover;
+        }
+        
+        .nav-card-retrait {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=300&fit=crop') center/cover;
+        }
+        
+        .nav-card-historique {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop') center/cover;
+        }
+        
+        .nav-card-service {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1556761175-b413da4baf72?w=400&h=300&fit=crop') center/cover;
+        }
+        
+        .nav-card-btn {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.9);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+    </style>
 
-        <!-- Popup Bienvenue + Guirlande -->
-    <div class="ux-welcome-modal" id="uxWelcomeModal">
-        <div class="ux-confetti"></div>
-        <div class="ux-welcome-content">
-            <h3 class="mb-3">🎉 Bienvenue dans votre espace !</h3>
-            <p class="mb-4">
-            Vous êtes à un clic de transformer votre temps en argent. <br>
-            Commencez dès maintenant : parrainez, vendez, effectuez des tâches.
-            </p>
-            <button class="btn btn-gradient px-4 py-2" id="uxCloseWelcome">
-            C'est parti !
-            </button>
+<div class="dash-body">
+
+
+<%= render partial: "layouts/header_admin"%>
+
+    <!-- Main Content -->
+    <div class="container my-4">
+        <!-- Cards Solde et Retraits -->
+        <div class="row mb-4">
+            <div class="col-md-6 col-6 mb-3">
+                <div class="card balance-card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-wallet2"></i> Mon Solde</h5>
+                        <h2 class="mb-0">
+                          <% if current_user.admin? %>
+                            <%= number_with_delimiter(@total_gain + User.first.balance) %> <span class="ux-currency">FCFA</span>
+                          <% else %>
+                            <%= number_with_delimiter(current_user.balance) %> <%=@total_retraits_utilisateur%>
+                          <% end %>
+                        </h2>
+                        <small>Disponible</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-6 mb-3">
+                <div class="card withdrawal-card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-cash-stack"></i> Mes Retraits</h5>
+                        <h2 class="mb-0">
+                          <%= current_user.retraits.where(statut: 'Validé').sum(:montant) %> <span class="ux-currency">FCFA</span>
+                        </h2>
+                        <small>retrait effectué</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Séparation -->
+        <hr class="my-4">
+
+        <!-- Cards Navigation -->
+        <div class="row">
+            <div class="col-6 col-md-3 mb-3">
+                <div class="card nav-card nav-card-recharge">
+                    <a href="<%=products_path%>" class="nav-card-btn">
+                        <i class="bi bi-plus-circle"></i> Recharger
+                    </a>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-3">
+                <div class="card nav-card nav-card-retrait">
+                    <a href="<%=new_retrait_path%>" class="nav-card-btn">
+                        <i class="bi bi-arrow-down-circle"></i> Retrait
+                    </a>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-3">
+                <div class="card nav-card nav-card-historique">
+                    <a href="<%=my_subscriptions_subscriptions_path%>" class="nav-card-btn">
+                        <i class="bi bi-clock-history"></i> Historique
+                    </a>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-3">
+                <div class="card nav-card nav-card-service">
+                    <button class="nav-card-btn">
+                        <i class="bi bi-headset"></i> Contact
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-        <!-- Modale unique -->
-    <div id="uxRuptureModal" class="ux-modal">
-        <div class="ux-modal-content">
-            <button class="ux-modal-close">&times;</button>
-            <div class="ux-modal-icon">
-            <i class="fa fa-box-open"></i>
-            </div>
-            <h4 class="ux-modal-title">Rupture de stock</h4>
-            <p class="ux-modal-text">
-            Impossible d’ajouter « <span id="uxProductName"></span> » à votre espace.<br>
-            Le produit est momentanément indisponible.
-            </p>
-            <button class="ux-modal-ok">Compris</button>
-        </div>
-    </div>
+   <%= render partial: "layouts/footer_admin"%>
 
-
-        <script>
-        // app/assets/javascripts/modal-rupture.js
-        document.querySelectorAll('.ux-add-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            const available = this.dataset.available === 'true';
-            const name = this.dataset.name;
-
-            if (!available) {
-            openRuptureModal(name);
-            return; // bloque tout traitement
-            }
-
-            // Ici ton traitement normal (API, ajout, etc.)
-        });
-        });
-
-        function openRuptureModal(productName) {
-        const modal = document.getElementById('uxRuptureModal');
-        const nameSpan = document.getElementById('uxProductName');
-        nameSpan.textContent = productName;
-        modal.classList.add('show');
-
-        // ferme auto après 4s
-        setTimeout(() => closeRuptureModal(), 4000);
-        }
-
-        function closeRuptureModal() {
-        document.getElementById('uxRuptureModal').classList.remove('show');
-        }
-
-        // Fermetures manuelles
-        document.querySelector('.ux-modal-close').addEventListener('click', closeRuptureModal);
-        document.querySelector('.ux-modal-ok').addEventListener('click', closeRuptureModal);
-    </script>
+</div>
