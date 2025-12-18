@@ -40,13 +40,8 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label fw-semibold"><i class="bi bi-currency-dollar me-1 text-success"></i> Frais souscription (USD)</label>
-                            <input type="number" step="0.01" min="0" name="frais_souscription" value="<%= @frais_souscription.valeur %>" class="form-control w-100">
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold"><i class="bi bi-gift-fill me-1 text-warning"></i> Prime d’inscription (FCFA)</label>
-                            <input type="number" min="0" name="prime_inscription" value="<%= @prime_inscription.valeur %>" class="form-control w-100">
+                            <label class="form-label fw-semibold"><i class="bi bi-gift-fill me-1 text-warning"></i> Prime parrainage (%)</label>
+                            <input type="number" min="0" name="prime_parrainage" value="<%= @prime_parrainage.valeur %>" class="form-control w-100">
                         </div>
 
                         <div class="mb-4">
@@ -64,57 +59,6 @@
                         </button>
                     <% end %>
 
-                    <hr>
-
-                    <!-- Table des générations -->
-                    <h5 class="mt-4 mb-3 text-primary"><i class="bi bi-diagram-3 me-1"></i> Commissions par génération</h5>
-
-                    <table class="table table-bordered align-middle">
-                        <thead class="table-light">
-                            <tr>
-                            <th>Génération</th>
-                            <th>Commission (FCFA)</th>
-                            <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% @commissions.each do |c| %>
-                            <tr>
-                                <!-- Formulaire d'édition par ligne -->
-                                <%= form_with url: update_generation_path(c), method: :patch, local: true, class: "d-flex align-items-center" do %>
-                                <td>
-                                    <input type="number" name="niveau" value="<%= c.niveau %>" class="form-control" required>
-                                </td>
-                                <td>
-                                    <input type="number" name="commission" value="<%= c.commission %>" class="form-control" required>
-                                </td>
-                                <td class="d-flex gap-2">
-                                    <button type="submit" class="btn btn-sm btn-primary">💾</button>
-                                <% end %>
-                                    <!-- Bouton suppression indépendant -->
-                                    <%= button_to "🗑️", delete_generation_path(c), method: :delete, data: { confirm: "Supprimer cette génération ?" }, class: "btn btn-sm btn-danger" %>
-                                </td>
-                            </tr>
-                            <% end %>
-                        </tbody>
-                    </table>
-
-                    <hr>
-
-                    <!-- Ajouter nouvelle génération -->
-                    <%= form_with url: add_generation_path, method: :post, local: true, class: "row g-2" do %>
-                    <div class="col-md-4">
-                        <input type="number" min="1" name="niveau" placeholder="Niveau (ex: 9)" class="form-control" required>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="number" min="0" name="commission" placeholder="Commission (ex: 50)" class="form-control" required>
-                    </div>
-                    <div class="col-md-4">
-                        <button type="submit" class="btn btn-success w-100">
-                        <i class="bi bi-plus-circle me-1"></i> Ajouter Génération
-                        </button>
-                    </div>
-                    <% end %>
                     </div>
                     </div>
                 </div>

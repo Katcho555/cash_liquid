@@ -105,8 +105,8 @@ puts "Admin racine créé : #{admin.email}"
 
 
 
-Parametre.find_or_create_by!(cle: 'frais_souscription') do |p|
-  p.valeur = '6'
+Parametre.find_or_create_by!(cle: 'prime_parrainage') do |p|
+  p.valeur = '5'
 end
 
 

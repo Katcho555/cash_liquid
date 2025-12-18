@@ -22,11 +22,7 @@ class Users::SessionsController < Devise::SessionsController
       if resource.admin?
         dashboard_admin_path
       else
-        if resource.subscriptions.present?
-          dashboard_index_path
-        else
-          souscriptions_path
-        end
+        dashboard_index_path
       end
     end
 

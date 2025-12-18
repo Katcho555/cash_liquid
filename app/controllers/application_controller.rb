@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
     # Prime d'inscription
     #user.increment!(:balance, 600)
     
-  prime = Parametre.find_by(cle: 'prime_inscription')&.valeur.to_i
+  prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_i
   user.increment!(:balance, prime)
 
     # 🔹 Chargement dynamique depuis la base de données

@@ -73,11 +73,10 @@ end
 
    # Redirection après inscription
   def after_sign_up_path_for(resource)
-    # Exemple : rediriger vers une page de bienvenue
-    if resource.subscriptions.present?
-      dashboard_index_path
+    if resource.admin?
+      dashboard_admin_path
     else
-      souscriptions_path
+      dashboard_index_path
     end
   end
 

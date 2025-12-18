@@ -55,9 +55,113 @@
       margin-top: 0.25rem;
     }
   }
+
+  .investment-wrapper {
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .investment-card {
+    border-radius: 20px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0px 4px 25px rgba(0,0,0,0.08);
+    transition: all 0.25s ease-in-out;
+    border: 1px solid #f0f0f0;
+  }
+
+  .investment-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.12);
+  }
+
+  .investment-image {
+    height: 220px;
+    width: 100%;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* TITRE */
+  .product-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+  }
+
+  /* Badges */
+  .badge-contract {
+    background: #0d6efd;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* Infos ligne */
+  .info-section {
+    margin-top: 15px;
+  }
+
+  .info-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+
+  .info-label {
+    color: #666;
+  }
+
+  .info-value {
+    font-weight: 700;
+    color: #222;
+  }
+
+  /* Bouton */
+  .btn-invest {
+    background: linear-gradient(135deg, #0d6efd, #0048b7);
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 15px;
+    transition: 0.2s ease-in-out;
+  }
+
+  .btn-invest:hover {
+    opacity: 0.9;
+  }
+
+  .btn-invest:active {
+    transform: scale(0.97);
+  }
+
+  /* GRID RESPONSIVE */
+  @media (min-width: 768px) {
+    .col-md-custom {
+      flex: 0 0 50%;
+      max-width: 50%;
+      padding: 10px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .col-md-custom {
+      flex: 0 0 33.33%;
+      max-width: 33.33%;
+    }
+  }
 </style>
 
-<div class="ux-dashboard">
+
+
+<%if current_user.admin?%>
+
+  <div class="ux-dashboard">
   <!-- Sidebar -->
      <%if current_user.admin?%>
         <%= render partial: "layouts/sidebar/admin" %>
@@ -74,8 +178,7 @@
             <div class="ux-content p-3 p-lg-4">
               <!-- Contenu -->
 
-
-                <div class="bg-white tw-px-8 tw-py-8 rounded-3">
+                <div class="">
 
                     <div class="container py-5">
                         <div class="card shadow-sm profile-card">
@@ -117,9 +220,66 @@
 
                 </div>
 
-                         <!--FIN  Contenu -->
+              <!--FIN  Contenu -->
             </div>
+
         </main>
     </div>
 
+
+<%else%>
+  <div class="dash-body">
+    <%= render partial: "layouts/header_admin"%>
+
+    <div class="investment-wrapper">
+      <div class="row">
+        <div class="">
+
+          <div class="container py-5">
+              <div class="card shadow-sm profile-card">
+                  <div class="card-header bg-primary text-white">
+                      <h2 class="h4 mb-0">Mon profil</h2>
+                  </div>
+                  
+                  <div class="card-body">
+                      <div class="user-details">
+                          <div class="detail-item py-3 border-bottom">
+                          <span class="detail-label font-weight-bold text-muted">Nom complet :</span>
+                          <span class="detail-value"><%= current_user.nom %> <%= current_user.prenom %></span>
+                          </div>
+                          
+                          <div class="detail-item py-3 border-bottom">
+                          <span class="detail-label font-weight-bold text-muted">Email :</span>
+                          <span class="detail-value"><%= current_user.email %></span>
+                          </div>
+                          
+                          <div class="detail-item py-3 border-bottom">
+                          <span class="detail-label font-weight-bold text-muted">Téléphone :</span>
+                          <span class="detail-value"><%= current_user.telephone %></span>
+                          </div>
+                          
+                          <div class="detail-item py-3">
+                          <span class="detail-label font-weight-bold text-muted">Statut du compte :</span>
+                          <span class="detail-value badge <%= current_user.compte_status ? 'badge-success' : 'badge-secondary' %>">
+                              <%= current_user.compte_status ? "Actif" : "Inactif" %>
+                          </span>
+                          </div>
+                      </div>
+                      
+                      <div class="text-center mt-4">
+                          <%= link_to "Modifier mon profil", edit_user_registration_path, class: "btn btn-primary px-4" %>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <%= render partial: "layouts/footer_admin"%>
+
+  </div>
+<%end%>
 

@@ -1,49 +1,85 @@
-<%= form_with(model: product, local: true, html: { multipart: true }) do |f| %>
-  <% if product.errors.any? %>
-    <div class="alert alert-danger">
-      <h4><%= pluralize(product.errors.count, "erreur") %> :</h4>
-      <ul>
-        <% product.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            <i class="bi bi-box-seam"></i>
+            Nouveau produit d’investissement
+          </h5>
+        </div>
+
+        <div class="card-body">
+          <%= form_with(model: product, local: true, html: { multipart: true }) do |f| %>
+
+            <% if product.errors.any? %>
+              <div class="alert alert-danger">
+                <strong><%= pluralize(product.errors.count, "erreur") %> :</strong>
+                <ul class="mb-0">
+                  <% product.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <!-- Nom -->
+            <div class="mb-3">
+              <%= f.label :name, "Nom du produit", class: "form-label fw-semibold" %>
+              <%= f.text_field :name, class: "form-control", placeholder: "Ex : Pack Bronze" %>
+            </div>
+
+            <!-- Prix / Revenus -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :purchase_price, "Prix d'achat (FCFA)", class: "form-label fw-semibold" %>
+                <%= f.number_field :purchase_price, class: "form-control", placeholder: "Ex : 50 000" %>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <%= f.label :daily_revenue, "Revenu journalier (FCFA)", class: "form-label fw-semibold" %>
+                <%= f.number_field :daily_revenue, class: "form-control", placeholder: "Ex : 1 500" %>
+              </div>
+            </div>
+
+            <!-- Gain / Durée -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :total_gain, "Gain total (FCFA)", class: "form-label fw-semibold" %>
+                <%= f.number_field :total_gain, class: "form-control", placeholder: "Ex : 90 000" %>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <%= f.label :contract_days, "Durée du contrat (jours)", class: "form-label fw-semibold" %>
+                <%= f.number_field :contract_days, class: "form-control", placeholder: "Ex : 60" %>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <%= f.label :description, "Description du produit", class: "form-label fw-semibold" %>
+              <%= f.text_area :description, rows: 4, class: "form-control",
+                    placeholder: "Décrivez brièvement le fonctionnement et les avantages du produit…" %>
+            </div>
+
+            
+            <!-- Image -->
+            <div class="mb-4 d-none">
+              <%= f.label :image, "Image du produit", class: "form-label fw-semibold" %>
+              <%= f.file_field :image, class: "form-control" %>
+              <small class="text-muted">Format recommandé : JPG / PNG</small>
+            </div>
+
+            <!-- Bouton -->
+            <div class="d-grid">
+              <%= f.submit "Créer le produit", class: "btn btn-primary btn-lg" %>
+            </div>
+
+          <% end %>
+        </div>
+      </div>
+
     </div>
-  <% end %>
-
-  <div class="mb-3">
-    <%= f.label :name, "Nom du produit" %>
-    <%= f.text_field :name, class: "form-control" %>
   </div>
-
-  <div class="mb-3">
-    <%= f.label :purchase_price, "Prix d'achat (FCFA)" %>
-    <%= f.number_field :purchase_price, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= f.label :daily_revenue, "Revenu journalier (FCFA)" %>
-    <%= f.number_field :daily_revenue, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= f.label :total_gain, "Gain total (FCFA)" %>
-    <%= f.number_field :total_gain, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= f.label :contract_days, "Durée du contrat (jours)" %>
-    <%= f.number_field :contract_days, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= f.label :description, "Description" %>
-    <%= f.text_area :description, rows: 3, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= f.label :image, "Image du produit" %>
-    <%= f.file_field :image, class: "form-control" %>
-  </div>
-
-  <%= f.submit "Enregistrer", class: "btn btn-primary w-100" %>
-<% end %>
+</div>

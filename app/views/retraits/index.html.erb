@@ -1,4 +1,6 @@
-<!-- ===== DASHBOARD USER – COMPLET ===== -->
+
+<% if current_user.admin? %>
+    <!-- ===== DASHBOARD USER – COMPLET ===== -->
 <div class="ux-dashboard">
   <!-- Sidebar -->
   
@@ -118,7 +120,110 @@
         </main>
     </div>
 
+<%else%>
 
+    <div class="dash-body"></div>
+    <%=render "layouts/back"%>
+    <div class="container py-4">
+      <!-- Contenu -->
+        <div class="bg-white tw-px-8 tw-py-8 rounded-3 tw-mb-6">
+                    <h4 class="fw-normal text-dark-600">Gestion des Demandes de retrait</h4>
+                    <% flash.each do |k,v| %>
+                        <div class="alert alert-<%= k == 'notice' ? 'success' : 'danger' %>"><%= v %></div>
+                    <% end %>
+
+                    <div>
+                        <form action="#" class="">
+                            <input type="text" id="searchInput" class="form-control mb-3 tw-px-3 tw-py-3 bg-neutral-10 rounded-3 border-0 max-w-500-px w-100 fw-normal tw-text-lg text-dark-600" placeholder="Rechercher un utilisateur, email, parrain...">
+                        </form>
+                    </div>
+                </div>
+
+                <div class="tw-px-8 tw-py-8 rounded-3">
+
+                    <h5 class="fw-normal text-dark-600">Toutes les demandes</h5>
+                    <span class="border-neutral-200 border-bottom tw-border-dashed w-100 tw-mt-6 tw-mb-6"></span>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered align-middle" id="retraitsTable">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Utilisateur</th>
+                                <th>Méthode</th>
+                                <th>Numéro Retrait</th>
+                                <th>Nom Percepteur</th>
+                                <th>Montant brut</th>
+                                <th>Retenue (%)</th>
+                                <th>Montant net</th>
+                                <th>Statut</th>
+                                <th>Demandé le</th>
+                                <% if current_user.admin? %>
+                                <th>Actions</th>
+                                <% end %>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <% @retraits.each do |retrait| %>
+                                <% taux = Parametre.find_by(cle: 'taux_retrait')&.valeur.to_f || 10 %>
+                                <% montant_net = retrait.montant - (retrait.montant * taux / 100) %>
+
+                                <tr>
+                                <td><%= retrait.id %></td>
+                                <td><%= retrait.user ? "#{retrait.user.prenom} #{retrait.user.nom}" : "Utilisateur supprimé" %></td>
+                                <td><%= retrait.methode %></td>
+                                <td><%= retrait.numero_retrait %></td>
+                                <td><%= retrait.nom_percepteur %></td>
+                                <td><%= number_to_currency(retrait.montant, unit: "XOF", delimiter: " ") %></td>
+                                <td><%= taux %> %</td>
+                                <td><%= number_to_currency(montant_net, unit: "XOF", delimiter: " ") %></td>
+
+                                <td>
+                                    <% case retrait.statut %>
+                                    <% when "Validé" %>
+                                    <span class="badge bg-success">Validé</span>
+                                    <% when "En attente" %>
+                                    <span class="badge bg-warning text-dark">En attente</span>
+                                    <% else %>
+                                    <span class="badge bg-secondary"><%= retrait.statut %></span>
+                                    <% end %>
+                                </td>
+
+                                <td><%= l(retrait.created_at, format: :short) %></td>
+
+                                <% if current_user.admin? %>
+                                    <td>
+                                    <% if retrait.statut == "En attente" %>
+                                        <div class="d-flex gap-1">
+                                        <%= form_with url: valider_retrait_path(retrait), method: :patch, local: true do |f| %>
+                                            <%= f.hidden_field :taux, value: taux %>
+                                            <%= f.hidden_field :montant_net, value: montant_net %>
+                                            <%= f.submit "Valider", class: "btn btn-sm btn-success", data: { confirm: "Confirmer la validation et débiter le compte ?" } %>
+                                        <% end %>
+
+                                        <%= form_with url: rejeter_retrait_path(retrait), method: :patch, local: true do |f| %>
+                                            <%= f.submit "Rejeter", class: "btn btn-sm btn-danger", data: { confirm: "Confirmer le rejet de cette demande ?" } %>
+                                        <% end %>
+                                        </div>
+                                    <% else %>
+                                        <span class="text-muted">-</span>
+                                    <% end %>
+                                    </td>
+                                <% end %>
+                                </tr>
+                            <% end %>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+       <!--FIN  Contenu -->
+    <div>
+    <%= render partial: "layouts/footer_admin"%>
+  </div>
+<%end%>
 
 
 <script>

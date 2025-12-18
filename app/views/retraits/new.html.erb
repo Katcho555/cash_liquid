@@ -1,4 +1,7 @@
-<div class="ux-dashboard">
+
+<%if current_user.admin?%>
+
+  <div class="ux-dashboard">
   <!-- Sidebar -->
      <%if current_user.admin?%>
         <%= render partial: "layouts/sidebar/admin" %>
@@ -6,86 +9,174 @@
         <%= render partial: "layouts/sidebar/utilisateur" %>
     <%end%>
 
-    <!-- Main -->
-        <main class="ux-main">
+<!-- Main -->
+    <main class="ux-main">
 
-            <%= render partial: "layouts/card_entete"%>
+        <%= render partial: "layouts/card_entete"%>
 
-            <!-- Contenu -->
-            <div class="ux-content p-3 p-lg-4">
-              <!-- Contenu -->
+        <!-- Contenu -->
+        <div class="ux-content p-3 p-lg-4">
+          <!-- Contenu -->
 
-                <!-- ===== FORMULAIRE RETRAIT – DESIGN ATTRACTIF ===== -->
-                <div class="ux-retrait-card">
-                <div class="ux-retrait-header">
-                    <i class="fa fa-wallet ux-icon-wallet"></i>
-                    <h4 class="ux-title">Nouveau retrait</h4>
-                    <p class="ux-subtitle">Transformez vos gains en argent réel</p>
-                </div>
+            <!-- ===== FORMULAIRE RETRAIT – DESIGN ATTRACTIF ===== -->
+            <div class="ux-retrait-card">
+              <div class="ux-retrait-header">
+                  <i class="fa fa-wallet ux-icon-wallet"></i>
+                  <h4 class="ux-title">Nouveau retrait</h4>
+                  <p class="ux-subtitle">Transformez vos gains en argent réel</p>
+              </div>
 
-                <%= form_with(model: @retrait, local: true, html: { class: "ux-retrait-form" }) do |form| %>
-                    <% if @retrait.errors.any? %>
-                    <div class="ux-alert-error">
-                        <h5>Merci de corriger les erreurs :</h5>
-                        <ul>
-                        <% @retrait.errors.full_messages.each do |msg| %>
-                            <li><%= msg %></li>
-                        <% end %>
-                        </ul>
-                    </div>
-                    <% end %>
+              <%= form_with(model: @retrait, local: true, html: { class: "ux-retrait-form" }) do |form| %>
+                  <% if @retrait.errors.any? %>
+                  <div class="ux-alert-error">
+                      <h5>Merci de corriger les erreurs :</h5>
+                      <ul>
+                      <% @retrait.errors.full_messages.each do |msg| %>
+                          <li><%= msg %></li>
+                      <% end %>
+                      </ul>
+                  </div>
+                  <% end %>
 
-                    <!-- Champ : Méthode -->
-                    <div class="ux-field">
-                    <%= form.label :methode, "Méthode de retrait", class: "ux-label" %>
-                    <div class="ux-select-wrapper">
-                        <%= form.select :methode, ["MTN", "CELTIS", "MOOV", "Orange Money", "Autre"], { prompt: "Sélectionnez une méthode" }, class: "ux-select" %>
-                        <i class="fa fa-chevron-down ux-select-icon"></i>
-                    </div>
-                    </div>
+                  <!-- Champ : Méthode -->
+                  <div class="ux-field">
+                  <%= form.label :methode, "Méthode de retrait", class: "ux-label" %>
+                  <div class="ux-select-wrapper">
+                      <%= form.select :methode, ["MTN", "CELTIS", "MOOV", "Orange Money", "Autre"], { prompt: "Sélectionnez une méthode" }, class: "ux-select" %>
+                      <i class="fa fa-chevron-down ux-select-icon"></i>
+                  </div>
+                  </div>
 
-                    <!-- Champ : Numéro -->
-                    <div class="ux-field">
-                    <%= form.label :numero_retrait, "Numéro de retrait", class: "ux-label" %>
-                    <%= form.text_field :numero_retrait, class: "ux-input", placeholder: "Ex : 90123456", required: true %>
-                    </div>
+                  <!-- Champ : Numéro -->
+                  <div class="ux-field">
+                  <%= form.label :numero_retrait, "Numéro de retrait", class: "ux-label" %>
+                  <%= form.text_field :numero_retrait, class: "ux-input", placeholder: "Ex : 90123456", required: true %>
+                  </div>
 
-                    <!-- Champ : Nom -->
-                    <div class="ux-field">
-                    <%= form.label :nom_percepteur, "Nom du percepteur", class: "ux-label" %>
-                    <%= form.text_field :nom_percepteur, class: "ux-input", placeholder: "Jean DUPONT" %>
-                    </div>
+                  <!-- Champ : Nom -->
+                  <div class="ux-field">
+                  <%= form.label :nom_percepteur, "Nom du percepteur", class: "ux-label" %>
+                  <%= form.text_field :nom_percepteur, class: "ux-input", placeholder: "Jean DUPONT" %>
+                  </div>
 
-                    <!-- Champ : Montant -->
-                    <div class="ux-field">
-                    <%= form.label :montant, "Montant à retirer (XOF)", class: "ux-label" %>
-                    <small class="ux-hint">Minimum : 1 000 FCFA</small>
-                    <%= form.number_field :montant, step: 100, min: 1000, id: "montant_retrait", class: "ux-input", placeholder: "Votre solde : #{number_with_delimiter(current_user.balance || 0)} XOF" %>
-                    <p class="ux-net">
-                        Montant net estimé : <span id="montant_net_affiche" class="ux-net-val">0</span> XOF
-                        <span class="ux-taux">(frais : <%= @taux_retrait || 10 %>%)</span>
-                    </p>
-                    </div>
+                  <!-- Champ : Montant -->
+                  <div class="ux-field">
+                  <%= form.label :montant, "Montant à retirer (XOF)", class: "ux-label" %>
+                  <small class="ux-hint">Minimum : 1 000 FCFA</small>
+                  <%= form.number_field :montant, step: 100, min: 1000, id: "montant_retrait", class: "ux-input", placeholder: "Votre solde : #{number_with_delimiter(current_user.balance || 0)} XOF" %>
+                  <p class="ux-net">
+                      Montant net estimé : <span id="montant_net_affiche" class="ux-net-val">0</span> XOF
+                      <span class="ux-taux">(frais : <%= @taux_retrait || 10 %>%)</span>
+                  </p>
+                  </div>
 
-                    <!-- Bouton : Envoyer -->
-                    <div class="ux-actions">
-                    <% if current_user.compte_status == true %>
-                        <%= form.submit "Envoyer la demande", class: "ux-btn-submit" %>
-                    <% else %>
-                        <button type="button" class="ux-btn-blocked" data-bs-toggle="modal" data-bs-target="#inactifModal">
-                        ⚠️ Vous devez souscrire pour effectuer un retrait
-                        </button>
-                    <% end %>
-                    </div>
-                <% end %>
-                </div>
-
-
-                         <!--FIN  Contenu -->
+                  <!-- Bouton : Envoyer -->
+                  <div class="ux-actions">
+                  <% if current_user.compte_status == true %>
+                      <%= form.submit "Envoyer la demande", class: "ux-btn-submit" %>
+                  <% else %>
+                      <button type="button" class="ux-btn-blocked" data-bs-toggle="modal" data-bs-target="#inactifModal">
+                      ⚠️ Vous devez souscrire pour effectuer un retrait
+                      </button>
+                  <% end %>
+                  </div>
+              <% end %>
             </div>
-        </main>
-    </div>
- 
+
+
+                      <!--FIN  Contenu -->
+        </div>
+    </main>
+</div>
+
+
+<%else%>
+  <div class="dash-body">
+    <%=render "layouts/back"%>
+    <div class="container py-4">
+      <!-- Contenu -->
+        <!-- ===== FORMULAIRE RETRAIT – DESIGN ATTRACTIF ===== -->
+            <div class="ux-retrait-card">
+              <div class="ux-retrait-header">
+                  <i class="fa fa-wallet ux-icon-wallet"></i>
+                  <h4 class="ux-title">Nouveau retrait</h4>
+                  <p class="ux-subtitle">Transformez vos gains en argent réel</p>
+              </div>
+
+              <%= form_with(model: @retrait, local: true, html: { class: "ux-retrait-form" }) do |form| %>
+                  <% if @retrait.errors.any? %>
+                  <div class="ux-alert-error">
+                      <h5>Merci de corriger les erreurs :</h5>
+                      <ul>
+                      <% @retrait.errors.full_messages.each do |msg| %>
+                          <li><%= msg %></li>
+                      <% end %>
+                      </ul>
+                  </div>
+                  <% end %>
+
+                  <!-- Champ : Méthode -->
+                  <div class="ux-field">
+                  <%= form.label :methode, "Méthode de retrait", class: "ux-label" %>
+                  <div class="ux-select-wrapper">
+                      <%= form.select :methode, ["MTN", "CELTIS", "MOOV", "Orange Money", "Autre"], { prompt: "Sélectionnez une méthode" }, class: "ux-select" %>
+                      <i class="fa fa-chevron-down ux-select-icon"></i>
+                  </div>
+                  </div>
+
+                  <!-- Champ : Numéro -->
+                  <div class="ux-field">
+                  <%= form.label :numero_retrait, "Numéro de retrait", class: "ux-label" %>
+                  <%= form.text_field :numero_retrait, class: "ux-input", placeholder: "Ex : 90123456", required: true %>
+                  </div>
+
+                  <!-- Champ : Nom -->
+                  <div class="ux-field">
+                  <%= form.label :nom_percepteur, "Nom du percepteur", class: "ux-label" %>
+                  <%= form.text_field :nom_percepteur, class: "ux-input", placeholder: "Jean DUPONT" %>
+                  </div>
+
+                  <!-- Champ : Montant -->
+                  <div class="ux-field">
+                  <%= form.label :montant, "Montant à retirer (XOF)", class: "ux-label" %>
+                  <small class="ux-hint">Minimum : 1 000 FCFA</small>
+                  <%= form.number_field :montant, step: 100, min: 1000, id: "montant_retrait", class: "ux-input", placeholder: "Votre solde : #{number_with_delimiter(current_user.balance || 0)} XOF" %>
+                  <p class="ux-net">
+                      Montant net estimé : <span id="montant_net_affiche" class="ux-net-val">0</span> XOF
+                      <span class="ux-taux">(frais : <%= @taux_retrait || 10 %>%)</span>
+                  </p>
+                  </div>
+
+                  <!-- Bouton : Envoyer -->
+                  <div class="ux-actions">
+                  <% if current_user.compte_status == true %>
+                      <%= form.submit "Envoyer la demande", class: "ux-btn-submit" %>
+                  <% else %>
+                      <button type="button" class="ux-btn-blocked" data-bs-toggle="modal" data-bs-target="#inactifModal">
+                      ⚠️ Vous devez souscrire pour effectuer un retrait
+                      </button>
+                  <% end %>
+                  </div>
+              <% end %>
+            </div>
+            <hr>
+            <div class="text-center mt-4 mb-4">
+              <a href="<%=retraits_path%>" class="ux-btn-submit" style="text-decoration:none;">
+                Historique de mes retraits
+              </a>
+            </div>
+        <!--FIN  Contenu -->
+    <div>
+    <%= render partial: "layouts/footer_admin"%>
+  </div>
+
+
+<%end%>
+
+
+
+
+
 <!-- Modal blocage -->
 <div class="modal fade" id="inactifModal" tabindex="-1" aria-labelledby="inactifModalLabel" aria-hidden="true">
   <div class="modal-dialog">

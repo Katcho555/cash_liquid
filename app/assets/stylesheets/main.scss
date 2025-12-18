@@ -816,24 +816,29 @@
             padding-bottom: 80px; /* Espace pour la nav mobile améliorée */
         }
         
-        /* Navbar desktop */
-        .navbar-desktop {
-            display: none;
-        }
-        
-        /* Banner */
-        .banner {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-                        url('https://images.unsplash.com/photo-1620835085981-251dbffd9f4b?w=1200&h=300&fit=crop') center/cover;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-        }        
+        .navbar-desktop .nav-link {
+            position: relative;
+            font-weight: 500;
+          }
+
+          .navbar-desktop .nav-link.active {
+            color: #ffc107 !important;
+          }
+
+          .navbar-desktop .nav-link.active::after {
+            content: "";
+            position: absolute;
+            left: 10%;
+            bottom: 0;
+            width: 80%;
+            height: 2px;
+            background-color: #ffc107;
+          }
+
+          .market-banner {
+            font-size: 0.95rem;
+          }
+      
         /* Cards solde et retraits */
         .balance-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

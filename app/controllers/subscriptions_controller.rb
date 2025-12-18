@@ -3,10 +3,6 @@ class SubscriptionsController < ApplicationController
 
   def index
     @taux_dollar = Parametre.find_by(cle: 'taux_dollar')&.valeur.to_i
-    @frais_souscription = Parametre.find_by(cle: 'frais_souscription')&.valeur.to_i
-
-  @taux_dollar = Parametre.find_by(cle: 'taux_dollar')&.valeur.to_i
-  @frais_souscription = Parametre.find_by(cle: 'frais_souscription')&.valeur.to_i
 
   if params[:product_id]
     @product = Product.find(params[:product_id])
@@ -111,19 +107,23 @@ end
 
   @user = @souscription.user
   @user.generate_referral_code if @user.referral_code.blank?
+  prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_f || 0
 
-  # Parrainage : 5% sur le premier paiement seulement
+  # Parrainage : X% sur le premier paiement seulement
   if @user.parrain && !@souscription.parrain_reward_given
-    reward_amount = (@souscription.amount * 0.05).to_i
-    @user.parrain.wallet_balance += reward_amount
-    @user.parrain.save
-
+    reward_amount = (@souscription.amount * prime / 100).to_i
+    if reward_amount > 0
+      @user.parrain.increment!(:balance, reward_amount)
+      @souscription.update!(parrain_reward_given: true)
+    end
     # Marquer que la récompense a été donnée pour cette souscription
     @souscription.update(parrain_reward_given: true)
   end
 
+  @user.update(compte_status: true, vip_status: "open")
+
   flash[:success] = "Souscription réussie !"
-  redirect_to dashboard_index_path
+  redirect_to my_subscriptions_subscriptions_path
 else
   @souscription.update(status: "en_attente")
   flash[:error] = "Le paiement a échoué."

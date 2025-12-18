@@ -100,70 +100,159 @@
   }
 </style>
 
-<div class="dash-body">
-  <%= render partial: "layouts/header_admin"%>
+<%if current_user.admin?%>
 
-<h2 class="mb-4 text-center fw-bold">Investissements Pétroliers</h2>
+<!-- ===== DASHBOARD USER – COMPLET ===== -->
+<div class="ux-dashboard">
+  <!-- Sidebar -->
+  
 
-<div class="investment-wrapper">
-  <div class="row">
+     <%if current_user.admin?%>
+        <%= render partial: "layouts/sidebar/admin" %>
+    <%else%>
+        <%= render partial: "layouts/sidebar/utilisateur" %>
+    <%end%>
 
-    <% @products.each do |product| %>
-      <div class="col-12 col-md-custom mb-4">
+    <!-- Main -->
+        <main class="ux-main">
 
-        <div class="investment-card">
+            <%= render partial: "layouts/card_entete"%>
 
-          <% if product.image.attached? %>
-            <%= image_tag product.image, class: "investment-image" %>
-          <% else %>
-            <div class="investment-image bg-secondary d-flex justify-content-center align-items-center text-white">
-              Pas d'image
+            <!-- Contenu -->
+            <div class="ux-content p-3 p-lg-4">
+              <!-- Contenu -->
+                <div class="investment-wrapper">
+                  <div class="row">
+
+                    <% @products.each do |product| %>
+                      <div class="col-12 col-md-custom mb-4">
+
+                        <div class="investment-card">
+
+                          <% if product.image.attached? %>
+                            <%= image_tag product.image, class: "investment-image" %>
+                          <% else %>
+                            <%= image_tag 'starter.jpg', class: 'investment-image' %>
+                          <% end %>
+
+                          <div class="p-3">
+
+                            <h5 class="product-title"><%= product.name %></h5>
+
+                            <div class="mt-2">
+                              <span class="badge-contract">
+                                <i class="bi bi-clock-history"></i>
+                                Contrat : <%= product.contract_days %> jours
+                              </span>
+                            </div>
+
+                            <div class="info-section">
+                              <div class="info-line">
+                                <span class="info-label">Achat :</span>
+                                <span class="info-value"><%= number_with_delimiter(product.purchase_price) %> FCFA</span>
+                              </div>
+
+                              <div class="info-line">
+                                <span class="info-label">Revenu journalier :</span>
+                                <span class="info-value"><%= number_with_delimiter(product.daily_revenue) %> FCFA</span>
+                              </div>
+
+                              <div class="info-line">
+                                <span class="info-label">Gain total :</span>
+                                <span class="info-value"><%= number_with_delimiter(product.total_gain) %> FCFA</span>
+                              </div>
+                            </div>
+                          <div>
+                            <%= link_to "Souscrire maintenant",
+                              subscriptions_path(product_id: product.id),
+                              class: "btn btn-primary" %>
+
+                            <%= link_to "Modifier",
+                              edit_product_path(product),
+                              class: "btn btn-warning" %>
+                          </div>
+                            
+                          </div>
+                        </div>
+
+                      </div>
+                    <% end %>
+
+                  </div>
+                </div>
+              <!--FIN  Contenu -->
             </div>
-          <% end %>
+        </main>
+    </div>
 
-          <div class="p-3">
 
-            <h5 class="product-title"><%= product.name %></h5>
+<%else%>
 
-            <div class="mt-2">
-              <span class="badge-contract">
-                <i class="bi bi-clock-history"></i>
-                Contrat : <%= product.contract_days %> jours
-              </span>
+  <div class="dash-body">
+    <%= render partial: "layouts/header_admin"%>
+
+    <h2 class="mb-4 text-center fw-bold">Investissements Pétroliers</h2>
+
+    <div class="investment-wrapper">
+      <div class="row">
+
+        <% @products.each do |product| %>
+          <div class="col-12 col-md-custom mb-4">
+
+            <div class="investment-card">
+
+              <% if product.image.attached? %>
+                <%= image_tag product.image, class: "investment-image" %>
+              <% else %>
+                <%= image_tag 'starter.jpg', class: 'investment-image' %>
+              <% end %>
+
+              <div class="p-3">
+
+                <h5 class="product-title"><%= product.name %></h5>
+
+                <div class="mt-2">
+                  <span class="badge-contract">
+                    <i class="bi bi-clock-history"></i>
+                    Contrat : <%= product.contract_days %> jours
+                  </span>
+                </div>
+
+                <div class="info-section">
+                  <div class="info-line">
+                    <span class="info-label">Achat :</span>
+                    <span class="info-value"><%= number_with_delimiter(product.purchase_price) %> FCFA</span>
+                  </div>
+
+                  <div class="info-line">
+                    <span class="info-label">Revenu journalier :</span>
+                    <span class="info-value"><%= number_with_delimiter(product.daily_revenue) %> FCFA</span>
+                  </div>
+
+                  <div class="info-line">
+                    <span class="info-label">Gain total :</span>
+                    <span class="info-value"><%= number_with_delimiter(product.total_gain) %> FCFA</span>
+                  </div>
+                </div>
+
+                <%= link_to "Souscrire maintenant",
+                  subscriptions_path(product_id: product.id),
+                  class: "btn btn-invest w-100" %>
+
+
+
+              </div>
             </div>
-
-            <div class="info-section">
-              <div class="info-line">
-                <span class="info-label">Achat :</span>
-                <span class="info-value"><%= number_with_delimiter(product.purchase_price) %> FCFA</span>
-              </div>
-
-              <div class="info-line">
-                <span class="info-label">Revenu journalier :</span>
-                <span class="info-value"><%= number_with_delimiter(product.daily_revenue) %> FCFA</span>
-              </div>
-
-              <div class="info-line">
-                <span class="info-label">Gain total :</span>
-                <span class="info-value"><%= number_with_delimiter(product.total_gain) %> FCFA</span>
-              </div>
-            </div>
-
-            <%= link_to "Souscrire maintenant",
-              subscriptions_path(product_id: product.id),
-              class: "btn btn-invest w-100" %>
-
-
 
           </div>
-        </div>
+        <% end %>
 
       </div>
-    <% end %>
+    </div>
+
+    <%= render partial: "layouts/footer_admin"%>
 
   </div>
-</div>
 
- <%= render partial: "layouts/footer_admin"%>
+<%end%>
 
- </div>

@@ -1,30 +1,323 @@
-<!-- ===== DASHBOARD USER – COMPLET ===== -->
-<div class="ux-dashboard">
-  <!-- Sidebar -->
-  
 
-     <%if current_user.admin?%>
-        <%= render partial: "layouts/sidebar/admin" %>
-    <%else%>
-        <%= render partial: "layouts/sidebar/utilisateur" %>
-    <%end%>
+<% if current_user.admin? %>
 
-    <!-- Main -->
-        <main class="ux-main">
+    <!-- ===== DASHBOARD USER – COMPLET ===== -->
 
-            <%= render partial: "layouts/card_entete"%>
+    <div class="ux-dashboard">
+    <!-- Sidebar -->
+    
 
-            <!-- Contenu -->
-            <div class="ux-content p-3 p-lg-4">
-              <!-- Contenu -->
-            <!-- ========================= my profile account tabe section start ======================== -->
-            <div class="flex-grow-1">
+        <%if current_user.admin?%>
+            <%= render partial: "layouts/sidebar/admin" %>
+        <%else%>
+            <%= render partial: "layouts/sidebar/utilisateur" %>
+        <%end%>
 
-                <div class="bg-white shadow-sm rounded-4 p-5 mb-5">
+        <!-- Main -->
+            <main class="ux-main">
+
+                <%= render partial: "layouts/card_entete"%>
+
+                <!-- Contenu -->
+                <div class="ux-content p-3 p-lg-4">
+                <!-- Contenu -->
+                <!-- ========================= my profile account tabe section start ======================== -->
+                <div class="flex-grow-1">
+
+                    <div class="bg-white shadow-sm rounded-4 p-2 mb-5">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="fw-bold text-dark mb-0">
+                                <i class="bi bi-people-fill text-primary me-2"></i>
+                                Gestion des Utilisateurs & Parrainages
+                            </h4>
+                            <form class="d-flex" style="max-width: 400px;">
+                                <input 
+                                type="text" 
+                                id="searchInput" 
+                                class="form-control me-2 shadow-sm" 
+                                placeholder="🔍 Rechercher un nom, email ou parrain..."
+                                >
+                            </form>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle table-borderless" id="usersTable">
+                                <thead class="bg-primary text-white rounded-top">
+                                <tr>
+                                    <th>Utilisateur</th>
+                                    <th>Email</th>
+                                    <th>Parrain</th>
+                                    <th>Statut</th>
+                                    <% if current_user.admin? %>
+                                    <th>Balance</th>
+                                    <th>Filleuls directs</th>
+                                    <th>Filleuls totaux</th>
+                                    <th>Détails</th>
+                                    <%end%>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <% @users.each do |user| %>
+                                    <% total_filleuls = user.filleuls.count %>
+                                    <% active_filleuls = user.filleuls.where(compte_status: true).count %>
+                                    <% total_recursifs = user.total_filleuls_recursifs %>
+
+                                    <% filleuls_directs = user.filleuls %>
+                                    <% filleuls_actifs = filleuls_directs.where(compte_status: true) %>
+
+
+                                    <tr class="border-bottom">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
+                                                <%= user.prenom[0].upcase %>
+                                            </div>
+                                            <div>
+                                                <strong class="text-dark">
+                                                <%= link_to arbre_user_path(user), class: "text-dark", data: { turbo: false } do %>
+                                                        <%= user.nom_complet %>
+                                                    <% end %>
+
+                                                    </strong><br>
+                                                <small class="text-muted">ID: <%= user.id %></small>
+                                            </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="text-muted"><%= user.email %></td>
+                                        <td>
+                                            <% if user.parrain %>
+                                            <span class="badge bg-light text-dark border">
+                                                <i class="bi bi-person-check-fill text-success me-1"></i>
+                                                <%= user.parrain.nom_complet %>
+                                            </span>
+                                            <% else %>
+                                            <em class="text-secondary">Aucun</em>
+                                            <% end %>
+                                        </td>
+
+                                        <td>
+                                            <% if user.compte_status %>
+                                            <span class="badge bg-success bg-opacity-75">Actif</span>
+                                            <% else %>
+                                            <span class="badge bg-secondary bg-opacity-75">Inactif</span>
+                                            <% end %>
+                                        </td>
+                                        <% if current_user.admin? %>
+                                        <td>
+                                            <% if current_user.admin? %>
+                                                <a href="#" 
+                                                class="edit-balance" 
+                                                data-user-id="<%= user.id %>" 
+                                                data-balance="<%= user.balance || 0 %>">
+                                                <%= number_to_currency(user.balance || 0, unit: "XOF", delimiter: " ", format: "%n %u") %>
+                                                </a>
+                                            <% else %>
+                                                <%= number_to_currency(user.balance || 0, unit: "XOF", delimiter: " ", format: "%n %u") %>
+                                            <% end %>
+                                        </td>
+
+                                        <td><span class="fw-semibold text-primary">
+                                            <span class="fw-semibold text-success">
+                                                <%= filleuls_actifs.count %>
+                                            </span>
+                                        </td>
+                                        <td><span class="fw-semibold text-dark">
+                                            <span class="fw-semibold text-dark">
+                                                <%= filleuls_directs.count %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <% if filleuls_directs.any? %>
+                                                <button class="btn btn-outline-primary btn-sm"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#filleulsModal-<%= user.id %>">
+                                                <i class="bi bi-eye"></i> Voir
+                                                </button>
+                                            <% else %>
+                                                <em class="text-muted">Aucun</em>
+                                            <% end %>
+                                        </td>
+                                        <%end%>
+                                    </tr>
+
+                                    <div class="modal fade" id="filleulsModal-<%= user.id %>" tabindex="-1">
+                                        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="modal-content">
+
+                                            <!-- HEADER -->
+                                            <div class="modal-header bg-primary text-white">
+                                                <div>
+                                                <h5 class="modal-title mb-1">
+                                                    Filleuls directs
+                                                </h5>
+                                                <small>
+                                                    Parrain : <strong><%= user.nom_complet %></strong>
+                                                </small>
+                                                </div>
+                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <!-- STATS -->
+                                            <div class="px-4 py-3 border-bottom bg-light d-flex justify-content-between">
+                                                <div>
+                                                <span class="fw-semibold">Total :</span>
+                                                <span class="badge bg-dark"><%= filleuls_directs.count %></span>
+                                                </div>
+                                                <div>
+                                                <span class="fw-semibold">Actifs :</span>
+                                                <span class="badge bg-success"><%= filleuls_directs.where(compte_status: true).count %></span>
+                                                </div>
+                                                <div>
+                                                <span class="fw-semibold">Inactifs :</span>
+                                                <span class="badge bg-secondary"><%= filleuls_directs.where(compte_status: false).count %></span>
+                                                </div>
+                                            </div>
+
+                                            <!-- LISTE -->
+                                            <div class="modal-body p-0">
+                                                <div class="list-group list-group-flush">
+
+                                                <% filleuls_directs.each do |f| %>
+                                                    <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3"
+                                                            style="width:42px;height:42px;">
+                                                        <%= f.prenom[0].upcase %>
+                                                        </div>
+
+                                                        <div>
+                                                        <div class="fw-semibold"><%= f.nom_complet %></div>
+                                                        <small class="text-muted"><%= f.email %></small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="text-end">
+                                                        <% if f.compte_status %>
+                                                        <span class="badge bg-success mb-1">Actif</span>
+                                                        <% else %>
+                                                        <span class="badge bg-secondary mb-1">Inactif</span>
+                                                        <% end %>
+
+                                                        <div class="fw-semibold text-primary">
+                                                        <%= number_to_currency(f.balance || 0, unit: "XOF", delimiter: " ", format: "%n %u") %>
+                                                        </div>
+                                                    </div>
+
+                                                    </div>
+                                                <% end %>
+
+                                                <% if filleuls_directs.empty? %>
+                                                    <div class="p-4 text-center text-muted">
+                                                    Aucun filleul direct
+                                                    </div>
+                                                <% end %>
+
+                                                </div>
+                                            </div>
+
+                                            <!-- FOOTER -->
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary w-100" data-bs-dismiss="modal">
+                                                Fermer
+                                                </button>
+                                            </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                <% end %>
+                                </tbody>
+                            </table>
+                            <%if current_user.admin?%>
+                                <div class="d-flex justify-content-center mt-3">
+                                    <%= paginate @users %>
+                                </div>
+                            <%end%>
+                        </div>
+                    </div>
+            
+                <!--FIN  Contenu -->
+                </div>
+            </main>
+        </div>
+
+    <div class="modal fade" id="editBalanceModal" tabindex="-1" aria-labelledby="editBalanceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBalanceModalLabel">Modifier la balance</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editBalanceForm">
+                <input type="hidden" id="user_id" name="user_id">
+                <div class="mb-3">
+                    <label for="balance" class="form-label">Nouvelle balance (XOF)</label>
+                    <input type="number" class="form-control" id="balance" name="balance" required>
+                </div>
+                <div class="mb-3">
+                    <label for="admin_password" class="form-label">Mot de passe administrateur</label>
+                    <input type="password" class="form-control" id="admin_password" name="admin_password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Confirmer</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+<%else%>
+<div class="dash-body">
+    <%=render "layouts/back"%>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                 <div class="bg-white rounded-3 card-margin">
+                    <div class="row gy-4" style="align-items: center;">
+                        <div class="col-lg-12">
+                            <div class="referral-card">
+                                <p class="mb-3">Partagez ce code avec vos contacts pour gagner des récompenses à chaque nouvelle inscription</p>
+                                <div class="referral-code" id="referralCode"><%= root_url %>inscription?ref=<%= current_user.referral_code %></div>
+                                <p>Pour chaque filleul qui s'inscrit avec votre code, vous gagnez <span class="fw-bold">10%</span> de ses transactions</p>
+                                
+                                <div class="social-share">
+                                    <button class="btn" title="Copier le code" id="copyBtn">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button class="btn" title="Partager sur WhatsApp">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </button>
+                                    <button class="btn" title="Partager sur Facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </button>
+                                    <button class="btn" title="Partager par email">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container py-4">
+      <!-- Contenu -->
+
+             <div class="flex-grow-1">
+
+                <div class="bg-white shadow-sm rounded-4 p-2 mb-5">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h4 class="fw-bold text-dark mb-0">
                             <i class="bi bi-people-fill text-primary me-2"></i>
-                            Gestion des Utilisateurs & Parrainages
+                            Mon réseau
                         </h4>
                         <form class="d-flex" style="max-width: 400px;">
                             <input 
@@ -37,17 +330,13 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle table-borderless" id="usersTable">
+                        <table class="table table-hover align-middle table-borderless table-striped " id="usersTable">
                             <thead class="bg-primary text-white rounded-top">
                             <tr>
                                 <th>Utilisateur</th>
                                 <th>Email</th>
                                 <th>Parrain</th>
                                 <th>Statut</th>
-                                <th>Balance</th>
-                                <th>Filleuls directs</th>
-                                <th>Filleuls totaux</th>
-                                <th>Détails</th>
                             </tr>
                             </thead>
 
@@ -57,102 +346,87 @@
                                 <% active_filleuls = user.filleuls.where(compte_status: true).count %>
                                 <% total_recursifs = user.total_filleuls_recursifs %>
 
+                                <% filleuls_directs = user.filleuls %>
+                                <% filleuls_actifs = filleuls_directs.where(compte_status: true) %>
+
+
                                 <tr class="border-bottom">
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
-                                        <%= user.prenom[0].upcase %>
-                                    </div>
-                                    <div>
-                                        <strong class="text-dark">
-                                        <%= link_to arbre_user_path(user), class: "text-dark", data: { turbo: false } do %>
-                                                <%= user.nom_complet %>
-                                            <% end %>
-
-                                            </strong><br>
-                                        <small class="text-muted">ID: <%= user.id %></small>
-                                    </div>
-                                    </div>
-                                </td>
-
-                                <td class="text-muted"><%= user.email %></td>
-
-                                <td>
-                                    <% if user.parrain %>
-                                    <span class="badge bg-light text-dark border">
-                                        <i class="bi bi-person-check-fill text-success me-1"></i>
-                                        <%= user.parrain.nom_complet %>
-                                    </span>
-                                    <% else %>
-                                    <em class="text-secondary">Aucun</em>
-                                    <% end %>
-                                </td>
-
-                                <td>
-                                    <% if user.compte_status %>
-                                    <span class="badge bg-success bg-opacity-75">Actif</span>
-                                    <% else %>
-                                    <span class="badge bg-secondary bg-opacity-75">Inactif</span>
-                                    <% end %>
-                                </td>
-
-                                <td>
-                                    <% if current_user.admin? %>
-                                        <a href="#" 
-                                        class="edit-balance" 
-                                        data-user-id="<%= user.id %>" 
-                                        data-balance="<%= user.balance || 0 %>">
-                                        <%= number_to_currency(user.balance || 0, unit: "XOF", delimiter: " ", format: "%n %u") %>
-                                        </a>
-                                    <% else %>
-                                        <%= number_to_currency(user.balance || 0, unit: "XOF", delimiter: " ", format: "%n %u") %>
-                                    <% end %>
-                                </td>
-
-                            
-
-
-
-                                <td><span class="fw-semibold text-primary"><%= active_filleuls %> / <%= total_filleuls %></span></td>
-                                <td><span class="fw-semibold text-dark"><%= user.total_filleuls_recursifs %></span></td>
-
-
-                                <td>
-                                    <% if total_recursifs > 0 %>
-                                    <button class="btn btn-outline-primary btn-sm" 
-                                            type="button" 
-                                            data-bs-toggle="collapse" 
-                                            data-bs-target="#filleuls-<%= user.id %>">
-                                        <i class="bi bi-diagram-3"></i> Voir
-                                    </button>
-
-                                    <div class="collapse mt-3" id="filleuls-<%= user.id %>">
-                                        <div class="card card-body border-0 bg-light">
-                                        <% user.filleuls.each do |f| %>
-                                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                                            <div>
-                                                <strong><%= f.prenom %> <%= f.nom %></strong>
-                                                <small class="text-muted d-block"><%= f.email %></small>
-                                            </div>
-                                            <div class="text-end">
-                                                <% if f.compte_status %>
-                                                <span class="badge bg-success">Actif</span>
-                                                <% else %>
-                                                <span class="badge bg-secondary">Inactif</span>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
+                                            <%= user.prenom[0].upcase %>
+                                        </div>
+                                        <div>
+                                            <strong class="text-dark">
+                                            <%= link_to arbre_user_path(user), class: "text-dark", data: { turbo: false } do %>
+                                                    <%= user.nom_complet %>
                                                 <% end %>
-                                                <div class="text-primary small mt-1">
-                                                <%= number_to_currency(f.balance || 0, unit: "XOF", delimiter: " ", format: "%n %u") %>
-                                                </div>
-                                            </div>
-                                            </div>
+
+                                                </strong><br>
+                                            <small class="text-muted">ID: <%= user.id %></small>
+                                        </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-muted"><%= user.email %></td>
+                                    <td>
+                                        <% if user.parrain %>
+                                        <span class="badge bg-light text-dark border">
+                                            <i class="bi bi-person-check-fill text-success me-1"></i>
+                                            <%= user.parrain.nom_complet %>
+                                        </span>
+                                        <% else %>
+                                        <em class="text-secondary">Aucun</em>
                                         <% end %>
+                                    </td>
+
+                                    <td>
+                                        <% if user.compte_status %>
+                                        <span class="badge bg-success bg-opacity-75">Actif</span>
+                                        <% else %>
+                                        <span class="badge bg-secondary bg-opacity-75">Inactif</span>
+                                        <% end %>
+                                    </td>
+                                </tr>
+
+                                <div class="modal fade" id="filleulsModal-<%= user.id %>" tabindex="-1">
+                                    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+
+                                        <!-- HEADER -->
+                                        <div class="modal-header bg-primary text-white">
+                                            <div>
+                                            <h5 class="modal-title mb-1">
+                                                Filleuls directs
+                                            </h5>
+                                            <small>
+                                                Parrain : <strong><%= user.nom_complet %></strong>
+                                            </small>
+                                            </div>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <!-- STATS -->
+                                        <div class="px-4 py-3 border-bottom bg-light d-flex justify-content-between">
+                                            <div>
+                                            <span class="fw-semibold">Total :</span>
+                                            <span class="badge bg-dark"><%= filleuls_directs.count %></span>
+                                            </div>
+                                            <div>
+                                            <span class="fw-semibold">Actifs :</span>
+                                            <span class="badge bg-success"><%= filleuls_directs.where(compte_status: true).count %></span>
+                                            </div>
+                                            <div>
+                                            <span class="fw-semibold">Inactifs :</span>
+                                            <span class="badge bg-secondary"><%= filleuls_directs.where(compte_status: false).count %></span>
+                                            </div>
+                                        </div>
+
                                         </div>
                                     </div>
-                                    <% else %>
-                                    <em class="text-muted">Aucun filleul</em>
-                                    <% end %>
-                                </td>
-                                </tr>
+                                </div>
+
+
                             <% end %>
                             </tbody>
                         </table>
@@ -166,33 +440,19 @@
          
               <!--FIN  Contenu -->
             </div>
-        </main>
-    </div>
 
- <div class="modal fade" id="editBalanceModal" tabindex="-1" aria-labelledby="editBalanceModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="editBalanceModalLabel">Modifier la balance</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form id="editBalanceForm">
-            <input type="hidden" id="user_id" name="user_id">
-            <div class="mb-3">
-                <label for="balance" class="form-label">Nouvelle balance (XOF)</label>
-                <input type="number" class="form-control" id="balance" name="balance" required>
-            </div>
-            <div class="mb-3">
-                <label for="admin_password" class="form-label">Mot de passe administrateur</label>
-                <input type="password" class="form-control" id="admin_password" name="admin_password" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Confirmer</button>
-            </form>
-        </div>
-        </div>
-    </div>
-</div>
+      <!--FIN  Contenu -->
+    <div>
+    <%= render partial: "layouts/footer_admin"%>
+  </div>
+
+<%end%>
+
+
+
+
+
+
 
 <script>
   document.addEventListener("turbo:load", function() {

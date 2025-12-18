@@ -24,20 +24,17 @@
                 <span>Dashboard</span>
                 </a>
             </li>
+             <!-- Dropdown Boutique -->
             <li class="ux-nav-item has-dropdown">
                 <a href="#" class="ux-nav-link">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>Configuration Générale</span>
-                    <i class="fa fa-chevron-down ms-auto"></i>
+                <i class="fa fa-store"></i>
+                <span>Produits</span>
+                <i class="fa fa-chevron-down ms-auto"></i>
                 </a>
                 <ul class="ux-dropdown">
-                    <li><a href="<%=parametrage_path%>"><i class="fa-solid fa-gear"></i> Config. systeme</a></li>
-                    <li class="ux-nav-item"> 
-                        <%= link_to admin_bonus_root_path, class: 'ux-nav-link' do %>
-                            <i class="nav-icon fas fa-gift"></i>
-                            Config. Bonus
-                        <% end %>
-                    </li>
+                <li><a href="<%=new_product_path%>"><i class="fa fa-plus"></i> Ajouter un produit</a></li>
+                <li><a href="<%=products_path%>"><i class="fa fa-bag-shopping"></i> Mes produits <span class="ux-badge"><%=Product.count%></span></a></li>
+                <li><a href="#" class="ux-coming-soon-link" data-page="produits"><i class="fa fa-chart-pie"></i> Ventes</a></li>
                 </ul>
             </li>
             <li class="ux-nav-item has-dropdown">
@@ -49,34 +46,6 @@
                 <ul class="ux-dropdown">
                 <!--<li><a href="#"><i class="fa fa-link"></i> Lien de parrainage</a></li>-->
                 <li><a href="<%=dashboard_list_utilisateur_path%>"><i class="fa fa-users"></i> Les parrainages <span class="ux-badge"><%=User.count - 1%></span></a></li>
-                </ul>
-            </li>
-
-            <!-- Dropdown Boutique -->
-            <li class="ux-nav-item has-dropdown">
-                <a href="#" class="ux-nav-link">
-                <i class="fa fa-store"></i>
-                <span>Boutique</span>
-                <i class="fa fa-chevron-down ms-auto"></i>
-                </a>
-                <ul class="ux-dropdown">
-                <li><a href="#" class="ux-coming-soon-link" data-page="produits"><i class="fa fa-plus"></i> Ajouter un produit</a></li>
-                <li><a href="#" class="ux-coming-soon-link" data-page="produits"><i class="fa fa-bag-shopping"></i> Mes produits <span class="ux-badge">0</span></a></li>
-                <li><a href="#" class="ux-coming-soon-link" data-page="produits"><i class="fa fa-chart-pie"></i> Ventes</a></li>
-                </ul>
-            </li>
-
-            <!-- Dropdown Tâches -->
-            <li class="ux-nav-item has-dropdown">
-                <a href="#" class="ux-nav-link">
-                <i class="fa fa-list-check"></i>
-                <span>Micro-tâches</span>
-                <i class="fa fa-chevron-down ms-auto"></i>
-                </a>
-                <ul class="ux-dropdown">
-                <li><a href="#" class="ux-coming-soon-link" data-page="produits"><i class="fa fa-bolt"></i> Tâches disponibles <span class="ux-badge">0</span></a></li>
-                <li><a href="#" class="ux-coming-soon-link" data-page="produits"><i class="fa fa-check-double"></i> Tâches terminées</a></li>
-                <li><a href="#" class="ux-coming-soon-link" data-page="produits"><i class="fa fa-trophy"></i> Classement</a></li>
                 </ul>
             </li>
 
@@ -107,18 +76,24 @@
                     <li><a href="<%=edit_user_registration_path%>"><i class="ph ph-pencil-simple-line"></i> Modifier compte</a></li>
                 </ul>
             </li>
-            <li class="ux-nav-item"> 
-                <%= link_to bonus_recompenses_index_path, class: 'ux-nav-link' do %>
+            
+            <li class="ux-nav-item has-dropdown">
+                <a href="#" class="ux-nav-link">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Configuration Générale</span>
+                    <i class="fa fa-chevron-down ms-auto"></i>
+                </a>
+                <ul class="ux-dropdown">
+                    <li><a href="<%=parametrage_path%>"><i class="fa-solid fa-gear"></i> Config. systeme</a></li>
+                </ul>
+            </li>
+            <!-- <li class="ux-nav-item"> 
                     <i class="nav-icon fas fa-gift"></i>
-                    Centre de recompense
-                <% end %>
             </li>
             <li class="ux-nav-item"> 
-                <%= link_to admin_reward_claims_index_path, class: 'ux-nav-link' do %>
                     <i class="nav-icon fas fa-gift"></i>
                     hist. recompense
-                <% end %>
-            </li>
+            </li> -->
         </ul>
 
         <div class="ux-sidebar-foot">

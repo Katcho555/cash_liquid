@@ -1,9 +1,36 @@
-<h1>New product</h1>
+<!-- ===== DASHBOARD USER – COMPLET ===== -->
+<div class="ux-dashboard">
+  <!-- Sidebar -->
+  
 
-<%= render "form", product: @product %>
+     <%if current_user.admin?%>
+        <%= render partial: "layouts/sidebar/admin" %>
+    <%else%>
+        <%= render partial: "layouts/sidebar/utilisateur" %>
+    <%end%>
 
-<br>
+    <!-- Main -->
+        <main class="ux-main">
 
-<div>
-  <%= link_to "Back to products", products_path %>
-</div>
+            <%= render partial: "layouts/card_entete"%>
+
+            <!-- Contenu -->
+            <div class="ux-content p-3 p-lg-4">
+
+              <h1 class="text-center">Nouveau produit</h1>
+
+              <%= render "form", product: @product %>
+
+              <br>
+
+              <div>
+                <%= link_to "Back to products", products_path %>
+              </div>
+            
+             <!--FIN  Contenu -->
+            </div>
+        </main>
+    </div>
+
+
+

@@ -4,8 +4,7 @@ class ParametragesController < ApplicationController
   def show
     @taux_dollar = Parametre.find_or_create_by(cle: 'taux_dollar')
     @email_admin = Parametre.find_or_create_by(cle: 'email_admin')
-    @frais_souscription = Parametre.find_or_create_by(cle: 'frais_souscription')
-    @prime_inscription = Parametre.find_or_create_by(cle: 'prime_inscription')
+    @prime_parrainage = Parametre.find_or_create_by(cle: 'prime_parrainage')
     @taux_retrait = Parametre.find_or_create_by(cle: 'taux_retrait')
     @commissions = GenerationCommission.order(:niveau)
   end
@@ -13,14 +12,12 @@ class ParametragesController < ApplicationController
   def update
     @taux_dollar = Parametre.find_by(cle: 'taux_dollar')
     @email_admin = Parametre.find_by(cle: 'email_admin')
-    @frais_souscription = Parametre.find_by(cle: 'frais_souscription')
-    @prime_inscription = Parametre.find_by(cle: 'prime_inscription')
+    @prime_parrainage = Parametre.find_by(cle: 'prime_parrainage')
     @taux_retrait = Parametre.find_by(cle: 'taux_retrait')
 
     success = @taux_dollar.update(valeur: params[:taux_dollar]) &&
               @email_admin.update(valeur: params[:email_admin]) &&
-              @frais_souscription.update(valeur: params[:frais_souscription]) &&
-              @prime_inscription.update(valeur: params[:prime_inscription]) &&
+              @prime_parrainage.update(valeur: params[:prime_parrainage]) &&
               @taux_retrait.update(valeur: params[:taux_retrait])
 
     if success
