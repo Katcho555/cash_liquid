@@ -97,8 +97,42 @@ end
   # Considère le paiement réussi si :
   # - le statut API est "success" ou
   # - le paramètre URL est "success"
- if api_status == "success" || payment_status == "success"
-  @souscription.update(
+#  if api_status == "success" || payment_status == "success"
+#   @souscription.update(
+#     status: "payé",
+#     payment_method: "moneroo",
+#     reference: payment_id,
+#     paid_at: Time.current
+#   )
+
+#   @user = @souscription.user
+#   @user.generate_referral_code if @user.referral_code.blank?
+#   prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_f || 0
+
+#   # Parrainage : X% sur le premier paiement seulement
+#   if @user.parrain && !@souscription.parrain_reward_given
+#     reward_amount = (@souscription.amount * prime / 100).to_i
+#     if reward_amount > 0
+#       @user.parrain.increment!(:balance, reward_amount)
+#       @souscription.update!(parrain_reward_given: true)
+#     end
+#     # Marquer que la récompense a été donnée pour cette souscription
+#     @souscription.update(parrain_reward_given: true)
+#   end
+
+#   @user.update(compte_status: true, vip_status: "open")
+
+#   flash[:success] = "Souscription réussie !"
+#   redirect_to my_subscriptions_subscriptions_path
+# else
+#   @souscription.update(status: "en_attente")
+#   flash[:error] = "Le paiement a échoué."
+#   redirect_to failed_subscriptions_path
+# end
+
+if api_status == "success" || payment_status == "success"
+
+  @souscription.update!(
     status: "payé",
     payment_method: "moneroo",
     reference: payment_id,
@@ -107,28 +141,34 @@ end
 
   @user = @souscription.user
   @user.generate_referral_code if @user.referral_code.blank?
+
   prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_f || 0
 
-  # Parrainage : X% sur le premier paiement seulement
-  if @user.parrain && !@souscription.parrain_reward_given
+  # 🔥 Parrainage : PREMIER paiement UNIQUEMENT
+  if @user.parrain.present? && !@user.parrain_rewarded?
+
     reward_amount = (@souscription.amount * prime / 100).to_i
-    if reward_amount > 0
+
+    if reward_amount.positive?
       @user.parrain.increment!(:balance, reward_amount)
-      @souscription.update!(parrain_reward_given: true)
+      @user.update!(parrain_rewarded: true)
     end
-    # Marquer que la récompense a été donnée pour cette souscription
-    @souscription.update(parrain_reward_given: true)
   end
 
-  @user.update(compte_status: true, vip_status: "open")
+  @user.update!(
+    compte_status: true,
+    vip_status: "open"
+  )
 
   flash[:success] = "Souscription réussie !"
   redirect_to my_subscriptions_subscriptions_path
+
 else
   @souscription.update(status: "en_attente")
   flash[:error] = "Le paiement a échoué."
   redirect_to failed_subscriptions_path
 end
+
 
 
 
