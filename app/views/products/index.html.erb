@@ -162,7 +162,7 @@
                                 <span class="info-value"><%= number_with_delimiter(product.total_gain) %> FCFA</span>
                               </div>
                             </div>
-                          <div>
+                          <div style="display: flex; justify-content: space-around">
                             <%= link_to "Souscrire maintenant",
                               subscriptions_path(product_id: product.id),
                               class: "btn btn-primary" %>
@@ -170,6 +170,10 @@
                             <%= link_to "Modifier",
                               edit_product_path(product),
                               class: "btn btn-warning" %>
+
+                            <%= button_to "🗑", product_path(product), method: :delete,
+                              form: { data: { turbo_confirm: "Supprimer ce produit ?" } },
+                              class: "btn btn-outline-danger" %>
                           </div>
                             
                           </div>
