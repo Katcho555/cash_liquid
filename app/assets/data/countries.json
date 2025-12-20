@@ -1,0 +1,10 @@
+[
+  { "name": "Bénin", "code": "BJ", "dial_code": "+229", "flag": "🇧🇯" },
+  { "name": "Togo", "code": "TG", "dial_code": "+228", "flag": "🇹🇬" },
+  { "name": "Côte d'Ivoire", "code": "CI", "dial_code": "+225", "flag": "🇨🇮" },
+  { "name": "Sénégal", "code": "SN", "dial_code": "+221", "flag": "🇸🇳" },
+  { "name": "Nigeria", "code": "NG", "dial_code": "+234", "flag": "🇳🇬" },
+  { "name": "France", "code": "FR", "dial_code": "+33", "flag": "🇫🇷" },
+  { "name": "Canada", "code": "CA", "dial_code": "+1", "flag": "🇨🇦" },
+  { "name": "États-Unis", "code": "US", "dial_code": "+1", "flag": "🇺🇸" }
+]

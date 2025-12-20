@@ -129,10 +129,9 @@
 
                         <div class="investment-card">
 
-                          
-                            <%= image_tag 'starter.jpg', class: 'investment-image' %>
-                          
-
+                          <%= image_tag product.image.attached? ? product.image : "starter.jpg",
+                            class: "investment-image", width: 60, alt: product.name %>
+                      
                           <div class="p-3">
 
                             <h5 class="product-title"><%= product.name %></h5>

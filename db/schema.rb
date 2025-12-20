@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_12_19_085812) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_20_002405) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,19 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_19_085812) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "bonus_campaigns", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "threshold", null: false
+    t.integer "reward_amount", null: false
+    t.string "reward_type"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.text "description"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "generation_commissions", force: :cascade do |t|
@@ -144,6 +157,19 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_19_085812) do
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
+  create_table "user_bonus_campaigns", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "bonus_campaign_id", null: false
+    t.integer "progress", default: 0
+    t.string "status", default: "in_progress"
+    t.boolean "locked", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bonus_campaign_id"], name: "index_user_bonus_campaigns_on_bonus_campaign_id"
+    t.index ["user_id", "bonus_campaign_id"], name: "index_user_bonus_campaigns_on_user_id_and_bonus_campaign_id", unique: true
+    t.index ["user_id"], name: "index_user_bonus_campaigns_on_user_id"
+  end
+
   create_table "user_spin_dailies", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "spins_used", default: 0, null: false
@@ -179,7 +205,13 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_19_085812) do
     t.integer "bonus_spins", default: 0, null: false
     t.integer "points", default: 0, null: false
     t.boolean "parrain_rewarded"
+    t.string "phone"
+    t.string "country"
+    t.string "city"
+    t.string "profession"
+    t.index ["country"], name: "index_users_on_country"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["phone"], name: "index_users_on_phone"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -191,5 +223,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_19_085812) do
   add_foreign_key "reward_claims", "users"
   add_foreign_key "spin_logs", "users"
   add_foreign_key "subscriptions", "users"
+  add_foreign_key "user_bonus_campaigns", "bonus_campaigns"
+  add_foreign_key "user_bonus_campaigns", "users"
   add_foreign_key "user_spin_dailies", "users"
 end

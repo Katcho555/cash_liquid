@@ -224,15 +224,181 @@
           Profitez dès maintenant des rendements journaliers
         </small>
       </div>
-      <a href="<%= products_path %>" class="btn btn-warning mt-3 mt-md-0">
-        Voir les produits
+      <a href="#" class="btn btn-warning mt-3 mt-md-0" data-bs-toggle="modal" data-bs-target="#cguModal">
+        Conditions d’utilisation
       </a>
     </div>
   </div>
 </section>
 
+<style>
+  .mission-card {
+    border-radius: 14px;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+
+  .mission-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,.1);
+  }
+
+</style>
+
+<div class="container my-5">
+  <h4 class="fw-bold mb-3">
+    🎯 Missions de bonus
+  </h4>
+
+ <% if @bonus_missions.any? %>
+  <div class="row g-3">
+    <% @bonus_missions.each do |mission| %>
+      <% campaign = mission.bonus_campaign %>
+      <% percent = [(mission.progress.to_f / campaign.threshold) * 100, 100].min %>
+
+      <div class="col-md-4">
+        <div class="card mission-card shadow-sm">
+          <div class="card-body">
+            <h6 class="fw-bold mb-2"><%= campaign.name %></h6>
+            <p class="small text-muted mb-2">
+              Parrainer <strong><%= campaign.threshold %></strong> filleuls actifs
+            </p>
+
+            <div class="progress mb-2" style="height: 8px;">
+              <div class="progress-bar bg-success" style="width: <%= percent %>%"></div>
+            </div>
+
+            <small class="text-muted"><%= mission.progress %> / <%= campaign.threshold %> filleuls</small>
+
+            <div class="mt-3 d-flex justify-content-between align-items-center">
+              <span class="badge bg-primary">🎁 <%= number_with_delimiter(campaign.reward_amount) %> FCFA</span>
+
+              <% if mission.locked %>
+                 <% if mission.ready_to_claim? %>
+                  <%= button_to "Obtenir ma récompense", claim_reward_bonus_mission_path(mission),
+                        method: :post, class: "btn btn-success mt-2" %>
+                <% elsif mission.rewarded? %>
+                  <span class="badge bg-primary mt-2">Récompense obtenue 🎉</span>
+                <% else %>
+                  <span class="badge bg-secondary mt-2">En cours</span>
+                <% end %>
+              <% else %>
+                <span class="text-secondary small">Nouvelle mission</span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+    <!-- Aucun mission -->
+    <div class="alert alert-light text-center py-5">
+      <i class="bi bi-emoji-neutral fs-1 text-muted"></i>
+      <p class="mt-3 mb-0 text-muted">
+        Aucune mission de bonus disponible aujourd’hui
+      </p>
+    </div>
+  <% end %>
+</div>
+
 
 
    <%= render partial: "layouts/footer_admin"%>
 
+</div>
+
+<div class="modal fade" id="cguModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content cgu-modal">
+
+      <!-- Header -->
+      <div class="modal-header cgu-header">
+        <h5 class="modal-title">
+          📜 Conditions Générales d’Utilisation
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        <ul class="nav nav-pills cgu-tabs mb-3" role="tablist">
+          <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-cgu">
+              A propos
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-privacy">
+              Fonctionnement
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-responsibility">
+              Parrainage
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+
+          <!-- CGU -->
+          <div class="tab-pane fade show active" id="tab-cgu">
+            <h6> Découvrez l'excellence pétrolière américaine ! </h6>
+
+              <p> Je suis ravi de vous inviter à investir en toute securité dans le pétrole. CASH LIQUID est une branche chargée de la gestion des investissements pétroliers de la raffinerie de Baytown, l'une des plus grandes et des plus modernes raffineries pétrolières des États-Unis, située au cœur du Texas.</p>  
+
+               <h6>À propos de la raffinerie de Baytown</h6>
+
+              La raffinerie de Baytown est l'une des plus grandes raffineries d'ExxonMobil, avec une capacité de production de 564 440 barils par jour. Elle est située sur la rivière San Jacinto, à proximité de la ville de Houston, et couvre une superficie de plus de 4 000 hectares.</p>
+
+              <h6>Ce que vous découvriez savoir sur CASH LIQUID </h6>
+
+             <p> Une nouvelle ère dans un nouveau monde c'est simplement l'idéal. Depuis sa création en 1920 par la société Humble Oil, la raffinerie de Baytown ne cesse d'innover dans le domaine pétrolier. Elle à depuis 1949 installé un système numérique international permettant à toute personne désireuse d'investir dans le pétrole d'avoir facilement accès face à la concurrence et vu la peine des habitants de certains États relativement à leurs emplacements. Ainsi , est née ''CASH LIQUID '' cette branche de la raffinerie de Baytown qui vient braver la peur, briser les frontières, faire disparaitre l'obligation du voyage avant d'avoir accès à un investissement sûr. 
+              Aujourd'hui, depuis chez vous investissez et gagner à travers CASH LIQUID dans le pétrole de la raffinerie américaine Baytown avec une vraie prise en charge par un service décentralisé et bien assuré. Avec des contrats différents à durée déterminée faites l'expérience la explosante de votre vie dans le pétrole américain.</p>
+
+          </div>
+
+          <!-- Confidentialité -->
+          <div class="tab-pane fade" id="tab-privacy">
+            <h6>Comment investir ?</h6>
+            <ul>
+              <li>Inscrivez-vous à la plateforme universelle www.cash-liquid.com</li>
+              <li>Choisissez votre investissement selon votre capacité </li>
+              <li>Recevez les retours sur investissement jusqu'à échéance du contrat renouvelable.</li>
+            </ul>
+
+            <h6> Sécurité</h6>
+            <ul>
+              <li>vos données et informations sont très bien stockées et protégées</li>
+              <li>votre investissement est impérativement suivi et servi jusqu'à échéance du contrat </li>
+            </ul>
+          </div>
+
+          <!-- Responsabilités -->
+          <div class="tab-pane fade" id="tab-responsibility">
+            <h6>Parrainage</h6>
+            <p>
+              Parrainer n'est pas nécessaire.Nonobstant,vu qu'invité un ami, un frère ou juste une connaissance à gagner des revenus en investissant dans un environnement de sûreté n'est rien de plus qu'un geste de fraternité et d'amour, nous vous renvoyons l'ascenseur en permettant à tous membres de gagner 5% du 1er  investissement de celui parrainer.
+              <br>
+              Nous sommes impatients de vous accueillir à la raffinerie de Baytown !
+              <br>
+              Cordialement😊
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer cgu-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Fermer
+        </button>
+        <button type="button" class="btn btn-success" id="acceptCGU">
+          J’accepte
+        </button>
+      </div>
+
+    </div>
+  </div>
 </div>

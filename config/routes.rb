@@ -2,10 +2,28 @@ Rails.application.routes.draw do
   resources :products
   resources :payments, only: [:new, :create]
 
+  resources :bonus_missions, only: [:index] do
+    member do
+      post :claim_reward
+    end
+  end
+
   namespace :admin do
     get 'reward_claims/index'
+    resources :bonus_campaigns do
+      member do
+        patch :activate    # pour activer une mission
+        patch :desactivate  # pour désactiver une mission
+      end
+    end
   end
   resource :parametrage
+
+   # Backend interne
+  post "/internal/bonus_campaigns/progress",
+       to: "internal/bonus_campaigns#progress"
+
+
 
 post  '/parametrage/add_generation', to: 'parametrages#create_generation', as: 'add_generation'
 delete '/parametrage/delete_generation/:id', to: 'parametrages#destroy_generation', as: 'delete_generation'

@@ -1,5 +1,6 @@
 class HomesController < ApplicationController
     def accueil
-       prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_i
+        @products = Product.all
+        @prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_f || 0
     end
 end

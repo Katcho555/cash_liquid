@@ -16,32 +16,46 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-  super do |user|
-    if session[:referral_code].present?
-      Rails.logger.info "Referral code present: #{session[:referral_code]}"
-      parrain_initial = User.find_by(referral_code: session[:referral_code])
+    super do |user|
+      if session[:referral_code].present?
+        Rails.logger.info "Referral code present: #{session[:referral_code]}"
+        parrain_initial = User.find_by(referral_code: session[:referral_code])
 
-      if parrain_initial
-        Rails.logger.info "Parrain trouvé : #{parrain_initial.id}"
+        if parrain_initial
+          Rails.logger.info "Parrain trouvé : #{parrain_initial.id}"
 
-        # On cherche le premier parrain dispo dans son arbre
-        parrain_dispo = parrain_initial.premier_parrain_disponible(3)
+          # Attribution du parrain simple
+          user.parrain = parrain_initial
+          user.save(validate: false)
+          Rails.logger.info "Parrain final attribué : #{parrain_initial.id}"
 
-        if parrain_dispo
-          user.parrain = parrain_dispo
-          Rails.logger.info "Parrain final attribué : #{parrain_dispo.id}"
+          # --- Mise à jour automatique des missions du parrain ---
+          parrain_initial.user_bonus_campaigns
+            .joins(:bonus_campaign)
+            .where(status: "in_progress")
+            .each do |mission|
+
+              # Incrémente la progression de 1 pour ce filleul
+              new_progress = parrain_initial.filleuls.count
+              mission.update(progress: new_progress)
+
+              # Débloque la mission si ce n'était pas le cas
+              mission.update(locked: true) unless mission.locked?
+
+              # Vérifie si l'objectif est atteint
+              if mission.progress >= mission.bonus_campaign.threshold
+                mission.update(status: "ready_to_claim")
+                # Crédite le solde du parrain
+                #parrain_initial.increment!(:balance, mission.bonus_campaign.reward_amount)
+                Rails.logger.info "Mission #{mission.bonus_campaign.name} récompensée à #{parrain_initial.id}"
+              end
+            end
         else
-          Rails.logger.warn "Aucun parrain disponible trouvé."
+          Rails.logger.warn "Aucun parrain trouvé pour le code : #{session[:referral_code]}"
         end
-
-        user.save(validate: false)
-      else
-        Rails.logger.warn "Aucun parrain trouvé pour le code : #{session[:referral_code]}"
       end
     end
   end
-end
-
 
 
 
@@ -113,11 +127,11 @@ end
     private
 
       def sign_up_params
-        params.require(:user).permit(:email, :password, :password_confirmation, :nom, :prenom, :role, :parrain_id)
+        params.require(:user).permit(:email, :password, :password_confirmation, :nom, :prenom, :role, :parrain_id, :phone, :country, :city, :profession)
       end
 
       def account_update_params
-        params.require(:user).permit(:nom, :prenom, :email, :telephone, :password, :password_confirmation, :current_password)
+        params.require(:user).permit(:nom, :prenom, :email, :telephone, :password, :password_confirmation, :current_password, :phone, :country, :city, :profession)
       end
 
   # def account_update_params

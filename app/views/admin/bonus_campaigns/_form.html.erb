@@ -1,0 +1,61 @@
+<%= form_with model: [:admin, @campaign], local: true do |f| %>
+
+  <div class="card">
+    <div class="card-body">
+
+      <div class="mb-3">
+        <%= f.label :name, "Titre de la mission" %>
+        <%= f.text_field :name, class: "form-control", placeholder: "Ex : Parrainer 10 personnes" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :description, "Description" %>
+        <%= f.text_area :description, rows: 3, class: "form-control",
+              placeholder: "Invitez 10 filleuls actifs et gagnez un bonus" %>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <%= f.label :threshold, "Objectif (nombre de filleuls)" %>
+          <%= f.number_field :threshold, class: "form-control", min: 1 %>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <%= f.label :reward_amount, "Récompense (FCFA)" %>
+          <%= f.number_field :reward_amount, class: "form-control", min: 0 %>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <%= f.label :reward_type, "Type de récompense" %>
+          <%= f.select :reward_type,
+                [["Cash", "cash"], ["Crédit", "credit"]],
+                {}, class: "form-select" %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <%= f.label :start_at, "Début de la mission" %>
+          <%= f.datetime_local_field :start_at, class: "form-control" %>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <%= f.label :end_at, "Fin de la mission (optionnel)" %>
+          <%= f.datetime_local_field :end_at, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="form-check mb-3">
+        <%= f.check_box :active, class: "form-check-input" %>
+        <%= f.label :active, "Mission active pour les nouveaux utilisateurs", class: "form-check-label" %>
+      </div>
+
+      <div class="d-flex justify-content-end gap-2">
+        <%= link_to "Annuler", admin_bonus_campaigns_path, class: "btn btn-outline-secondary" %>
+        <%= f.submit class: "btn btn-primary" %>
+      </div>
+
+    </div>
+  </div>
+
+<% end %>

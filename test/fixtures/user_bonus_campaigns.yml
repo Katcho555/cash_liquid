@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  bonus_campaign: one
+  progress: 1
+  status: MyString
+  locked: false
+
+two:
+  user: two
+  bonus_campaign: two
+  progress: 1
+  status: MyString
+  locked: false

@@ -65,9 +65,9 @@
 
             
             <!-- Image -->
-            <div class="mb-4 d-none">
+            <div class="mb-4">
               <%= f.label :image, "Image du produit", class: "form-label fw-semibold" %>
-              <%= f.file_field :image, class: "form-control" %>
+              <%= f.file_field :image, class: "form-control", accept: "image/*" %>
               <small class="text-muted">Format recommandé : JPG / PNG</small>
             </div>
 

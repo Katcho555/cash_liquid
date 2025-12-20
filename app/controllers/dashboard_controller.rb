@@ -5,9 +5,41 @@ class DashboardController < ApplicationController
     def index     
         @generations = current_user.filleuls_par_generation(2)
         @generation_count = current_user.filleuls_par_generation.count
+
+    # Crée automatiquement les missions actives pour l'utilisateur s'il n'en a pas encore
+    BonusCampaign.active_now.each do |campaign|
+      current_user.user_bonus_campaigns.find_or_create_by(bonus_campaign: campaign) do |ubc|
+        ubc.progress = 0
+        ubc.status = "in_progress"
+        ubc.locked = false  # Nouvelle mission
+      end
     end
 
+    # Récupère les missions assignées à l'utilisateur
+    @bonus_missions = current_user.user_bonus_campaigns
+                                  .includes(:bonus_campaign)
+                                  .where(status: ["in_progress", "new", "ready_to_claim"])
+  end
+
+  # Appelé lorsque l'utilisateur fait un progrès, par exemple parrainage
+  def progress
+    user_bonus = current_user.user_bonus_campaigns.find(params[:id])
+    user_bonus.increment!(:progress, params[:amount].to_i)
+
+    # Débloquer la mission si elle était verrouillée
+    user_bonus.update(locked: true) unless user_bonus.locked?
+
+    # Vérifier si l'objectif est atteint
+    if user_bonus.progress >= user_bonus.bonus_campaign.threshold
+      user_bonus.update(status: "ready_to_claim")
+      # Ici, tu peux également créditer la récompense sur le solde de l'utilisateur
+    end
+
+    head :ok
+  end
+
     def admin 
+        @prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_f || 0
         @generations = User.all
         if current_user.utilisateur?
          @total_balance = current_user.balance
@@ -19,6 +51,7 @@ class DashboardController < ApplicationController
     end
 
     def list_utilisateur
+        @prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_f || 0
         if current_user.admin?
             @users = User.includes(:parrain, :filleuls).order(:id)
             @users = @users.page(params[:page]).per(10)

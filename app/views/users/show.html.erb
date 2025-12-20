@@ -1,285 +1,1125 @@
 <style>
-  .profile-card {
-    max-width: 600px;
-    margin: 0 auto;
-    border-radius: 10px;
-    overflow: hidden;
-    border: none;
-  }
   
-  .card-header {
-    border-radius: 10px 10px 0 0 !important;
-    padding: 1.25rem;
-  }
-  
-  .user-details {
-    padding: 0 1rem;
-  }
-  
-  .detail-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .detail-label {
-    width: 40%;
-  }
-  
-  .detail-value {
-    width: 60%;
-    text-align: right;
-  }
-
-  .badge-success {
-    background-color: #28a745 !important;
-  }
-  
-  .badge-danger {
-    background-color: #dc3545 !important;
-  }
-  
-  @media (max-width: 576px) {
-    .detail-item {
-      flex-direction: column;
-      align-items: flex-start;
+    /* Styles spécifiques pour les sélecteurs de pays et téléphone */
+    .phone-input-group {
+        display: flex;
+        gap: 10px;
     }
-    
-    .detail-label, 
-    .detail-value {
+
+    .dial-code-select {
+        min-width: 120px;
+        border: 2px solid #e1e5ee;
+        border-radius: 10px;
+        padding: 12px 15px;
+        background: white;
+        color: var(--dark);
+    }
+
+    .phone-input {
+        flex: 1;
+        border: 2px solid #e1e5ee;
+        border-radius: 10px;
+        padding: 12px 15px;
+    }
+
+    .country-select-wrapper {
+        position: relative;
+    }
+
+    .country-select-wrapper i {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        pointer-events: none;
+    }
+
+    .country-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+    }
+
+    .country-flag {
+        width: 20px;
+        text-align: center;
+    }
+
+    @media (max-width: 768px) {
+        .phone-input-group {
+            flex-direction: column;
+        }
+        
+        .dial-code-select {
+            width: 100%;
+        }
+    }
+
+    :root {
+        --primary: #6a11cb;
+        --secondary: #2575fc;
+        --accent: #ff6b6b;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --success: #20bf6b;
+        --warning: #f39c12;
+        --info: #3498db;
+    }
+
+    /* Styles pour la page profil */
+    .profile-page {
+        min-height: 100vh;
+    }
+
+    .profile-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin: 2rem 0;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        padding: 3rem;
+        position: relative;
+        overflow: hidden;
+        margin: auto;
+    }
+
+    .profile-header::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .profile-header-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        border: 5px solid white;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        margin: auto;
+    }
+
+    .profile-name {
+        color: white;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .profile-role {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .profile-stats {
+        display: flex;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .stat-item {
+        text-align: center;
+        color: white;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        display: block;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    .profile-body {
+        padding: 3rem;
+    }
+
+    .section-title {
+        color: var(--primary);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid rgba(106, 17, 203, 0.1);
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 60px;
+        height: 2px;
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+    }
+
+    .info-card {
+        background: var(--light);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid var(--primary);
+        transition: transform 0.3s ease;
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    }
+    label{
+      display: block;
+    }
+
+    .info-label {
+        color: #666;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-value {
+        color: var(--dark);
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    .input-width{
       width: 100%;
-      text-align: left;
     }
-    
-    .detail-value {
-      margin-top: 0.25rem;
+
+    .badge-custom {
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
     }
-  }
 
-  .investment-wrapper {
-    max-width: 1200px;
-    margin: auto;
-  }
-
-  .investment-card {
-    border-radius: 20px;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0px 4px 25px rgba(0,0,0,0.08);
-    transition: all 0.25s ease-in-out;
-    border: 1px solid #f0f0f0;
-  }
-
-  .investment-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0px 10px 30px rgba(0,0,0,0.12);
-  }
-
-  .investment-image {
-    height: 220px;
-    width: 100%;
-    object-fit: cover;
-    border-bottom: 1px solid #eee;
-  }
-
-  /* TITRE */
-  .product-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #111;
-  }
-
-  /* Badges */
-  .badge-contract {
-    background: #0d6efd;
-    color: white;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-
-  /* Infos ligne */
-  .info-section {
-    margin-top: 15px;
-  }
-
-  .info-line {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 15px;
-  }
-
-  .info-label {
-    color: #666;
-  }
-
-  .info-value {
-    font-weight: 700;
-    color: #222;
-  }
-
-  /* Bouton */
-  .btn-invest {
-    background: linear-gradient(135deg, #0d6efd, #0048b7);
-    border: none;
-    border-radius: 12px;
-    padding: 14px;
-    font-weight: 700;
-    color: #fff;
-    margin-top: 15px;
-    transition: 0.2s ease-in-out;
-  }
-
-  .btn-invest:hover {
-    opacity: 0.9;
-  }
-
-  .btn-invest:active {
-    transform: scale(0.97);
-  }
-
-  /* GRID RESPONSIVE */
-  @media (min-width: 768px) {
-    .col-md-custom {
-      flex: 0 0 50%;
-      max-width: 50%;
-      padding: 10px;
+    .skill-tag {
+        display: inline-block;
+        background: rgba(106, 17, 203, 0.1);
+        color: var(--primary);
+        padding: 5px 15px;
+        border-radius: 20px;
+        margin: 5px;
+        font-size: 0.9rem;
+        border: 1px solid rgba(106, 17, 203, 0.2);
     }
-  }
 
-  @media (min-width: 1200px) {
-    .col-md-custom {
-      flex: 0 0 33.33%;
-      max-width: 33.33%;
+    .interest-tag {
+        display: inline-block;
+        background: rgba(37, 117, 252, 0.1);
+        color: var(--secondary);
+        padding: 5px 15px;
+        border-radius: 20px;
+        margin: 5px;
+        font-size: 0.9rem;
+        border: 1px solid rgba(37, 117, 252, 0.2);
     }
-  }
+
+    .language-tag {
+        display: inline-block;
+        background: rgba(32, 191, 107, 0.1);
+        color: var(--success);
+        padding: 5px 15px;
+        border-radius: 20px;
+        margin: 5px;
+        font-size: 0.9rem;
+        border: 1px solid rgba(32, 191, 107, 0.2);
+    }
+
+    .edit-btn {
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+    }
+
+    .edit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(106, 17, 203, 0.4);
+        color: white;
+    }
+
+    .tab-container {
+        margin-top: 2rem;
+    }
+
+    .nav-tabs-custom {
+        border-bottom: 2px solid #e1e5ee;
+    }
+
+    .nav-tabs-custom .nav-link {
+        color: #666;
+        font-weight: 600;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px 10px 0 0;
+        margin-right: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-tabs-custom .nav-link.active {
+        color: var(--primary);
+        background: rgba(106, 17, 203, 0.1);
+        border-bottom: 3px solid var(--primary);
+    }
+
+    .nav-tabs-custom .nav-link:hover:not(.active) {
+        background: rgba(106, 17, 203, 0.05);
+    }
+
+    .tab-pane {
+        padding: 2rem;
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-control-profile {
+        border: 2px solid #e1e5ee;
+        border-radius: 10px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control-profile:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
+    }
+
+    .password-toggle-group {
+        position: relative;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #6c757d;
+        cursor: pointer;
+        z-index: 10;
+        padding: 5px;
+    }
+
+    .completion-bar {
+        height: 8px;
+        background: #e1e5ee;
+        border-radius: 4px;
+        margin-top: 10px;
+        overflow: hidden;
+    }
+
+    .completion-progress {
+        height: 100%;
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+        border-radius: 4px;
+        transition: width 0.5s ease;
+    }
+
+    .profile-completion {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+        .profile-header {
+            padding: 2rem;
+        }
+
+        .profile-body {
+            padding: 2rem;
+        }
+
+        .profile-stats {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-tabs-custom .nav-link {
+            padding: 10px 15px;
+            font-size: 0.9rem;
+        }
+    }
 </style>
-
-
 
 <%if current_user.admin?%>
 
-  <div class="ux-dashboard">
-  <!-- Sidebar -->
-     <%if current_user.admin?%>
+    <div class="ux-dashboard">
         <%= render partial: "layouts/sidebar/admin" %>
-    <%else%>
-        <%= render partial: "layouts/sidebar/utilisateur" %>
-    <%end%>
-
-    <!-- Main -->
         <main class="ux-main">
+            <%= render partial: "layouts/card_entete" %>
 
-            <%= render partial: "layouts/card_entete"%>
 
-            <!-- Contenu -->
             <div class="ux-content p-3 p-lg-4">
-              <!-- Contenu -->
-
-                <div class="">
-
-                    <div class="container py-5">
-                        <div class="card shadow-sm profile-card">
-                            <div class="card-header bg-primary text-white">
-                                <h2 class="h4 mb-0">Mon profil</h2>
-                            </div>
-                            
-                            <div class="card-body">
-                                <div class="user-details">
-                                    <div class="detail-item py-3 border-bottom">
-                                    <span class="detail-label font-weight-bold text-muted">Nom complet :</span>
-                                    <span class="detail-value"><%= current_user.nom %> <%= current_user.prenom %></span>
-                                    </div>
-                                    
-                                    <div class="detail-item py-3 border-bottom">
-                                    <span class="detail-label font-weight-bold text-muted">Email :</span>
-                                    <span class="detail-value"><%= current_user.email %></span>
-                                    </div>
-                                    
-                                    <div class="detail-item py-3 border-bottom">
-                                    <span class="detail-label font-weight-bold text-muted">Téléphone :</span>
-                                    <span class="detail-value"><%= current_user.telephone %></span>
-                                    </div>
-                                    
-                                    <div class="detail-item py-3">
-                                    <span class="detail-label font-weight-bold text-muted">Statut du compte :</span>
-                                    <span class="detail-value badge <%= current_user.compte_status ? 'badge-success' : 'badge-secondary' %>">
-                                        <%= current_user.compte_status ? "Actif" : "Inactif" %>
-                                    </span>
+                <div class="profile-page">
+                    <div class="container">
+                        <div class="profile-card">
+                            <!-- En-tête du profil -->
+                            <div class="profile-header">
+                                <div class="profile-header-content">
+                                    <div class="" style="text-align: center;">
+                                        <div class="profile-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="ms-4">
+                                            <h1 class="profile-name"><%= "#{current_user.prenom} #{current_user.nom}" %></h1>
+                                            <p class="profile-role">
+                                                <i class="fas fa-briefcase me-2"></i>
+                                                <%= current_user.profession || "Profession non spécifiée" %>
+                                            </p>
+                                            <div class="d-flex align-items-center justify-content-center gap-3">
+                                                <span class="badge-custom">
+                                                    <i class="fas fa-star me-1"></i>
+                                                    <%= current_user.admin? ? "Administrateur" : "Utilisateur" %>
+                                                </span>
+                                                <span class="badge-custom" style="background: linear-gradient(to right, var(--success), var(--info));">
+                                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                                    <%= "#{current_user.city}, #{current_user.country}" if current_user.city %>
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                <div class="text-center mt-4">
-                                    <%= link_to "Modifier mon profil", edit_user_registration_path, class: "btn btn-primary px-4" %>
+                            </div>
+
+                            <!-- Barre de progression du profil -->
+                            <div class="profile-completion">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0 fw-bold">Complétion du profil</h6>
+                                    <span class="fw-bold text-primary">89%</span>
+                                </div>
+                                <div class="completion-bar">
+                                    <div class="completion-progress" style="width: 89%;"></div>
+                                </div>
+                                <p class="text-muted small mt-2 mb-0">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Complétez votre profil pour améliorer votre visibilité
+                                </p>
+                            </div>
+
+                            <!-- Contenu principal avec onglets -->
+                            <div class="tab-container">
+                                <ul class="nav nav-tabs nav-tabs-custom" id="profileTabs" role="tablist" style="display: flex; justify-content:center;">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">
+                                            <i class="fas fa-user-circle me-2"></i>Informations
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab">
+                                            <i class="fas fa-edit me-2"></i>Modifier
+                                        </button>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content" id="profileTabsContent">
+                                    <!-- Onglet Informations -->
+                                    <div class="tab-pane fade show active" id="info" role="tabpanel">
+                                        <div class="row">
+                                            <!-- Informations personnelles -->
+                                            <div class="col-lg-6">
+                                                <h4 class="section-title">Informations personnelles</h4>
+                                                
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-user"></i> Nom complet
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= "#{current_user.prenom} #{current_user.nom}" %>
+                                                    </div>
+                                                </div>
+
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-envelope"></i> Email
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= current_user.email %>
+                                                        <span class="badge bg-success ms-2">Vérifié</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-phone"></i> Téléphone
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= current_user.phone || "Non renseigné" %>
+                                                    </div>
+                                                </div>
+
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-briefcase"></i> Profession
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= current_user.profession || "Non renseignée" %>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Informations de localisation -->
+                                            <div class="col-lg-6">
+                                                <h4 class="section-title">Localisation</h4>
+                                                
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-globe"></i> Pays
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= current_user.country || "Non renseigné" %>
+                                                    </div>
+                                                </div>
+
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-city"></i> Ville
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= current_user.city || "Non renseignée" %>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-calendar-alt"></i> Date d'inscription
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= current_user.created_at.strftime("%d/%m/%Y") %>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Onglet Modification -->
+                                    <div class="tab-pane fade" id="edit" role="tabpanel">
+                                        <%= form_for(current_user, url: profil_path, html: { method: :put, class: "row g-3" }) do |f| %>
+
+                                            <% if current_user.errors.any? %>
+                                                <div class="alert alert-danger">
+                                                    <h5 class="alert-heading">Erreurs :</h5>
+                                                    <ul class="mb-0">
+                                                        <% current_user.errors.full_messages.each do |msg| %>
+                                                            <li><%= msg %></li>
+                                                        <% end %>
+                                                    </ul>
+                                                </div>
+                                            <% end %>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Nom</label>
+                                                <%= f.text_field :nom, class: "form-control-profile input-width" %>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Prénom</label>
+                                                <%= f.text_field :prenom, class: "form-control-profile input-width" %>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Profession</label>
+                                                <%= f.text_field :profession, class: "form-control-profile input-width" %>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Email</label>
+                                                <%= f.email_field :email, class: "form-control-profile input-width" %>
+                                            </div>
+
+                                            <!-- Champ téléphone avec indicatif -->
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Téléphone</label>
+                                                <div class="phone-input-group">
+                                                    <select id="dialCodeEdit" class="dial-code-select">
+                                                        <!-- Les options seront ajoutées dynamiquement -->
+                                                    </select>
+                                                    <%= f.text_field :phone, 
+                                                        class: "form-control-profile phone-input", 
+                                                        id: "phoneNumberEdit",
+                                                        placeholder: "Numéro de téléphone" %>
+                                                </div>
+                                                <%= f.hidden_field :phone, id: "phoneFullEdit" %>
+                                            </div>
+
+                                            <!-- Champ pays avec sélecteur -->
+                                            <div class="col-md-3">
+                                                <label class="form-label fw-bold">Pays</label>
+                                                <div class="country-select-wrapper input-width">
+                                                    <%= f.select :country, [], {}, 
+                                                        class: "form-control-profile w-100", 
+                                                        id: "countrySelectEdit" %>
+                                                    <i class="fas fa-chevron-down"></i>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="form-label fw-bold">Ville</label>
+                                                <%= f.text_field :city, class: "form-control-profile w-100" %>
+                                            </div>
+
+
+                                            <div class="col-12">
+                                                <hr class="my-4">
+                                                <h5 class="mb-3 text-primary fw-bold">Changer le mot de passe</h5>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Nouveau mot de passe</label>
+                                                <div class="password-toggle-group">
+                                                    <%= f.password_field :password, 
+                                                        class: "form-control-profile w-100", 
+                                                        autocomplete: "new-password", 
+                                                        placeholder: "Laisser vide si inchangé" %>
+                                                    <button type="button" class="toggle-password" data-target="password">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Confirmation</label>
+                                                <div class="password-toggle-group">
+                                                    <%= f.password_field :password_confirmation, 
+                                                        class: "form-control-profile w-100", 
+                                                        placeholder: "Confirmer le nouveau mot de passe" %>
+                                                    <button type="button" class="toggle-password" data-target="password_confirmation">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <label class="form-label fw-bold">Mot de passe actuel <span class="text-danger">*</span></label>
+                                                <div class="password-toggle-group">
+                                                    <%= f.password_field :current_password, 
+                                                        class: "form-control-profile w-100", 
+                                                        autocomplete: "current-password",
+                                                        placeholder: "Obligatoire pour toute modification" %>
+                                                    <button type="button" class="toggle-password" data-target="current_password">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
+                                                <small class="text-muted">Mot de passe actuel requis pour confirmer les modifications</small>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="d-flex justify-content-between mt-4">
+                                                    <button type="button" class="btn btn-outline-secondary" onclick="window.location.reload()">
+                                                        <i class="fas fa-times me-2"></i>Annuler
+                                                    </button>
+                                                    <%= f.submit "Mettre à jour", class: "edit-btn px-4" %>
+                                                </div>
+                                            </div>
+                                        <% end %>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
-
-              <!--FIN  Contenu -->
             </div>
+
 
         </main>
     </div>
-
-
 <%else%>
-  <div class="dash-body">
+
+ <div class="dash-body">
     <%= render partial: "layouts/header_admin"%>
 
-    <div class="investment-wrapper">
-      <div class="row">
-        <div class="">
+  <div class="ux-content p-3 p-lg-4">
+                <div class="profile-page">
+                    <div class="container">
+                        <div class="profile-card">
+                            <!-- En-tête du profil -->
+                            <div class="profile-header">
+                                <div class="profile-header-content">
+                                    <div class="" style="text-align: center;">
+                                        <div class="profile-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="ms-4">
+                                            <h1 class="profile-name"><%= "#{current_user.prenom} #{current_user.nom}" %></h1>
+                                            <p class="profile-role">
+                                                <i class="fas fa-briefcase me-2"></i>
+                                                <%= current_user.profession || "Profession non spécifiée" %>
+                                            </p>
+                                            <div class="d-flex align-items-center justify-content-center gap-3">
+                                                <span class="badge-custom">
+                                                    <i class="fas fa-star me-1"></i>
+                                                    <%= current_user.admin? ? "Administrateur" : "Utilisateur" %>
+                                                </span>
+                                                <span class="badge-custom" style="background: linear-gradient(to right, var(--success), var(--info));">
+                                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                                    <%= "#{current_user.city}, #{current_user.country}" if current_user.city %>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-          <div class="container py-5">
-              <div class="card shadow-sm profile-card">
-                  <div class="card-header bg-primary text-white">
-                      <h2 class="h4 mb-0">Mon profil</h2>
-                  </div>
-                  
-                  <div class="card-body">
-                      <div class="user-details">
-                          <div class="detail-item py-3 border-bottom">
-                          <span class="detail-label font-weight-bold text-muted">Nom complet :</span>
-                          <span class="detail-value"><%= current_user.nom %> <%= current_user.prenom %></span>
-                          </div>
-                          
-                          <div class="detail-item py-3 border-bottom">
-                          <span class="detail-label font-weight-bold text-muted">Email :</span>
-                          <span class="detail-value"><%= current_user.email %></span>
-                          </div>
-                          
-                          <div class="detail-item py-3 border-bottom">
-                          <span class="detail-label font-weight-bold text-muted">Téléphone :</span>
-                          <span class="detail-value"><%= current_user.telephone %></span>
-                          </div>
-                          
-                          <div class="detail-item py-3">
-                          <span class="detail-label font-weight-bold text-muted">Statut du compte :</span>
-                          <span class="detail-value badge <%= current_user.compte_status ? 'badge-success' : 'badge-secondary' %>">
-                              <%= current_user.compte_status ? "Actif" : "Inactif" %>
-                          </span>
-                          </div>
-                      </div>
-                      
-                      <div class="text-center mt-4">
-                          <%= link_to "Modifier mon profil", edit_user_registration_path, class: "btn btn-primary px-4" %>
-                      </div>
-                  </div>
-              </div>
-          </div>
+                            <!-- Barre de progression du profil -->
+                            <div class="profile-completion">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0 fw-bold">Complétion du profil</h6>
+                                    <span class="fw-bold text-primary">89%</span>
+                                </div>
+                                <div class="completion-bar">
+                                    <div class="completion-progress" style="width: 89%;"></div>
+                                </div>
+                                <p class="text-muted small mt-2 mb-0">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Complétez votre profil pour améliorer votre visibilité
+                                </p>
+                            </div>
 
-        </div>
+                            <!-- Contenu principal avec onglets -->
+                            <div class="tab-container">
+                                <ul class="nav nav-tabs nav-tabs-custom" id="profileTabs" role="tablist" style="display: flex; justify-content:center;">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">
+                                            <i class="fas fa-user-circle me-2"></i>Informations
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab">
+                                            <i class="fas fa-edit me-2"></i>Modifier
+                                        </button>
+                                    </li>
+                                </ul>
 
-      </div>
-    </div>
+                                <div class="tab-content" id="profileTabsContent">
+                                    <!-- Onglet Informations -->
+                                    <div class="tab-pane fade show active" id="info" role="tabpanel">
+                                        <div class="row">
+                                            <!-- Informations personnelles -->
+                                            <div class="col-lg-6">
+                                                <h4 class="section-title">Informations personnelles</h4>
+                                                
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-user"></i> Nom complet
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= "#{current_user.prenom} #{current_user.nom}" %>
+                                                    </div>
+                                                </div>
+
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-envelope"></i> Email
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= current_user.email %>
+                                                        <span class="badge bg-success ms-2">Vérifié</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-phone"></i> Téléphone
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= current_user.phone || "Non renseigné" %>
+                                                    </div>
+                                                </div>
+
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-briefcase"></i> Profession
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= current_user.profession || "Non renseignée" %>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Informations de localisation -->
+                                            <div class="col-lg-6">
+                                                <h4 class="section-title">Localisation</h4>
+                                                
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-globe"></i> Pays
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= current_user.country || "Non renseigné" %>
+                                                    </div>
+                                                </div>
+
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-city"></i> Ville
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= current_user.city || "Non renseignée" %>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="info-card">
+                                                    <div class="info-label">
+                                                        <i class="fas fa-calendar-alt"></i> Date d'inscription
+                                                    </div>
+                                                    <div class="info-value">
+                                                        <%= current_user.created_at.strftime("%d/%m/%Y") %>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Onglet Modification -->
+                                    <div class="tab-pane fade" id="edit" role="tabpanel">
+                                        <%= form_for(current_user, url: profil_path, html: { method: :put, class: "row g-3" }) do |f| %>
+
+                                            <% if current_user.errors.any? %>
+                                                <div class="alert alert-danger">
+                                                    <h5 class="alert-heading">Erreurs :</h5>
+                                                    <ul class="mb-0">
+                                                        <% current_user.errors.full_messages.each do |msg| %>
+                                                            <li><%= msg %></li>
+                                                        <% end %>
+                                                    </ul>
+                                                </div>
+                                            <% end %>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Nom</label>
+                                                <%= f.text_field :nom, class: "form-control-profile input-width" %>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Prénom</label>
+                                                <%= f.text_field :prenom, class: "form-control-profile input-width" %>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Profession</label>
+                                                <%= f.text_field :profession, class: "form-control-profile input-width" %>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Email</label>
+                                                <%= f.email_field :email, class: "form-control-profile input-width" %>
+                                            </div>
+
+                                            <!-- Champ téléphone avec indicatif -->
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Téléphone</label>
+                                                <div class="phone-input-group">
+                                                    <select id="dialCodeEdit" class="dial-code-select">
+                                                        <!-- Les options seront ajoutées dynamiquement -->
+                                                    </select>
+                                                    <%= f.text_field :phone, 
+                                                        class: "form-control-profile phone-input", 
+                                                        id: "phoneNumberEdit",
+                                                        placeholder: "Numéro de téléphone" %>
+                                                </div>
+                                                <%= f.hidden_field :phone, id: "phoneFullEdit" %>
+                                            </div>
+
+                                            <!-- Champ pays avec sélecteur -->
+                                            <div class="col-md-3">
+                                                <label class="form-label fw-bold">Pays</label>
+                                                <div class="country-select-wrapper input-width">
+                                                    <%= f.select :country, [], {}, 
+                                                        class: "form-control-profile w-100", 
+                                                        id: "countrySelectEdit" %>
+                                                    <i class="fas fa-chevron-down"></i>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="form-label fw-bold">Ville</label>
+                                                <%= f.text_field :city, class: "form-control-profile w-100" %>
+                                            </div>
+
+
+                                            <div class="col-12">
+                                                <hr class="my-4">
+                                                <h5 class="mb-3 text-primary fw-bold">Changer le mot de passe</h5>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Nouveau mot de passe</label>
+                                                <div class="password-toggle-group">
+                                                    <%= f.password_field :password, 
+                                                        class: "form-control-profile w-100", 
+                                                        autocomplete: "new-password", 
+                                                        placeholder: "Laisser vide si inchangé" %>
+                                                    <button type="button" class="toggle-password" data-target="password">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold">Confirmation</label>
+                                                <div class="password-toggle-group">
+                                                    <%= f.password_field :password_confirmation, 
+                                                        class: "form-control-profile w-100", 
+                                                        placeholder: "Confirmer le nouveau mot de passe" %>
+                                                    <button type="button" class="toggle-password" data-target="password_confirmation">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <label class="form-label fw-bold">Mot de passe actuel <span class="text-danger">*</span></label>
+                                                <div class="password-toggle-group">
+                                                    <%= f.password_field :current_password, 
+                                                        class: "form-control-profile w-100", 
+                                                        autocomplete: "current-password",
+                                                        placeholder: "Obligatoire pour toute modification" %>
+                                                    <button type="button" class="toggle-password" data-target="current_password">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
+                                                <small class="text-muted">Mot de passe actuel requis pour confirmer les modifications</small>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="d-flex justify-content-between mt-4">
+                                                    <button type="button" class="btn btn-outline-secondary" onclick="window.location.reload()">
+                                                        <i class="fas fa-times me-2"></i>Annuler
+                                                    </button>
+                                                    <%= f.submit "Mettre à jour", class: "edit-btn px-4" %>
+                                                </div>
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
     <%= render partial: "layouts/footer_admin"%>
 
   </div>
 <%end%>
 
+<script>
+    // Fonction pour charger les données JSON des pays
+    function loadCountries() {
+        fetch('/assets/countries.json')
+            .then(res => res.json())
+            .then(countries => {
+                const countrySelect = document.getElementById('countrySelectEdit');
+                const dialCodeSelect = document.getElementById('dialCodeEdit');
+                
+                // Extraire le numéro de téléphone actuel
+                const currentPhone = "<%= current_user.phone || '' %>";
+                let currentCountry = "<%= current_user.country || 'Bénin' %>";
+                let currentDialCode = "+229";
+                
+                // Nettoyer les sélecteurs
+                countrySelect.innerHTML = '';
+                dialCodeSelect.innerHTML = '';
+                
+                // Ajouter les options de pays
+                countries.forEach(country => {
+                    // Option pour le pays
+                    const countryOption = document.createElement('option');
+                    countryOption.value = country.name;
+                    countryOption.textContent = `${country.flag} ${country.name}`;
+                    countrySelect.appendChild(countryOption);
+                    
+                    // Option pour l'indicatif
+                    const dialOption = document.createElement('option');
+                    dialOption.value = country.dial_code;
+                    dialOption.textContent = `${country.flag} ${country.dial_code}`;
+                    dialOption.dataset.country = country.name;
+                    dialCodeSelect.appendChild(dialOption);
+                    
+                    // Déterminer le pays et l'indicatif actuels
+                    if (currentPhone.includes(country.dial_code)) {
+                        currentDialCode = country.dial_code;
+                        currentCountry = country.name;
+                    }
+                });
+                
+                // Définir les valeurs par défaut
+                countrySelect.value = currentCountry;
+                dialCodeSelect.value = currentDialCode;
+                
+                // Extraire le numéro sans l'indicatif
+                let phoneNumber = currentPhone;
+                if (currentDialCode && currentPhone.includes(currentDialCode)) {
+                    phoneNumber = currentPhone.replace(currentDialCode, '').trim();
+                }
+                document.getElementById('phoneNumberEdit').value = phoneNumber;
+                
+                // Mettre à jour le champ caché avec la valeur complète
+                updatePhoneFull();
+                
+                // Synchroniser les sélecteurs
+                countrySelect.addEventListener('change', function() {
+                    const selectedCountry = this.value;
+                    const dialOption = dialCodeSelect.querySelector(`option[data-country="${selectedCountry}"]`);
+                    if (dialOption) {
+                        dialCodeSelect.value = dialOption.value;
+                    }
+                    updatePhoneFull();
+                });
+                
+                dialCodeSelect.addEventListener('change', function() {
+                    const selectedDial = this.value;
+                    const countryOption = Array.from(dialCodeSelect.options)
+                        .find(opt => opt.value === selectedDial);
+                    if (countryOption && countryOption.dataset.country) {
+                        countrySelect.value = countryOption.dataset.country;
+                    }
+                    updatePhoneFull();
+                });
+                
+                // Mettre à jour le numéro complet quand le numéro change
+                document.getElementById('phoneNumberEdit').addEventListener('input', updatePhoneFull);
+            })
+            .catch(err => {
+                console.error('Erreur lors du chargement des pays:', err);
+                // Fallback en cas d'erreur
+                const countrySelect = document.getElementById('countrySelectEdit');
+                const dialCodeSelect = document.getElementById('dialCodeEdit');
+                
+                const fallbackCountries = [
+                    { name: "Bénin", flag: "🇧🇯", dial_code: "+229" },
+                    { name: "France", flag: "🇫🇷", dial_code: "+33" },
+                    { name: "Côte d'Ivoire", flag: "🇨🇮", dial_code: "+225" },
+                    { name: "Sénégal", flag: "🇸🇳", dial_code: "+221" },
+                    { name: "Canada", flag: "🇨🇦", dial_code: "+1" },
+                    { name: "États-Unis", flag: "🇺🇸", dial_code: "+1" }
+                ];
+                
+                fallbackCountries.forEach(country => {
+                    const countryOption = document.createElement('option');
+                    countryOption.value = country.name;
+                    countryOption.textContent = `${country.flag} ${country.name}`;
+                    countrySelect.appendChild(countryOption);
+                    
+                    const dialOption = document.createElement('option');
+                    dialOption.value = country.dial_code;
+                    dialOption.textContent = `${country.flag} ${country.dial_code}`;
+                    dialOption.dataset.country = country.name;
+                    dialCodeSelect.appendChild(dialOption);
+                });
+                
+                countrySelect.value = "<%= current_user.country || 'Bénin' %>";
+                dialCodeSelect.value = "+229";
+            });
+    }
+    
+    // Fonction pour mettre à jour le champ téléphone complet
+    function updatePhoneFull() {
+        const dialCode = document.getElementById('dialCodeEdit').value;
+        const phoneNumber = document.getElementById('phoneNumberEdit').value;
+        const phoneFull = document.getElementById('phoneFullEdit');
+        
+        if (phoneNumber) {
+            phoneFull.value = `${dialCode}${phoneNumber}`;
+        } else {
+            phoneFull.value = '';
+        }
+    }
+    
+    // Initialiser les sélecteurs de pays au chargement de la page
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCountries();
+        
+        // Activer les onglets
+        const triggerTabList = [].slice.call(document.querySelectorAll('#profileTabs button'));
+        triggerTabList.forEach(function (triggerEl) {
+            const tabTrigger = new bootstrap.Tab(triggerEl);
+            triggerEl.addEventListener('click', function (event) {
+                event.preventDefault();
+                tabTrigger.show();
+            });
+        });
+        
+        // Gestion de la visibilité des mots de passe
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const target = this.getAttribute('data-target');
+                const input = document.getElementById(`user_${target}`);
+                const icon = this.querySelector('i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+        
+        // Gérer la soumission du formulaire
+        document.querySelector('form').addEventListener('submit', function(e) {
+            // Assurer que le numéro de téléphone complet est bien défini
+            updatePhoneFull();
+            
+            // Valider la correspondance des mots de passe
+            const password = document.getElementById('user_password');
+            const confirmPassword = document.getElementById('user_password_confirmation');
+            
+            if (password.value && password.value !== confirmPassword.value) {
+                e.preventDefault();
+                alert('Les mots de passe ne correspondent pas.');
+                confirmPassword.focus();
+            }
+        });
+    });
+</script>

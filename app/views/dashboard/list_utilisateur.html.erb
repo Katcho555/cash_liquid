@@ -50,7 +50,7 @@
                                     <th>Statut</th>
                                     <% if current_user.admin? %>
                                     <th>Balance</th>
-                                    <th>Filleuls directs</th>
+                                    <th>Filleuls actifs</th>
                                     <th>Filleuls totaux</th>
                                     <th>Détails</th>
                                     <%end%>
@@ -284,7 +284,7 @@
                             <div class="referral-card">
                                 <p class="mb-3">Partagez ce code avec vos contacts pour gagner des récompenses à chaque nouvelle inscription</p>
                                 <div class="referral-code" id="referralCode"><%= root_url %>inscription?ref=<%= current_user.referral_code %></div>
-                                <p>Pour chaque filleul qui s'inscrit avec votre code, vous gagnez <span class="fw-bold">10%</span> de ses transactions</p>
+                                <p>Pour chaque filleul qui s'inscrit avec votre code, vous gagnez <span class="fw-bold"><%=@prime%>%</span> de son premier achat</p>
                                 
                                 <div class="social-share">
                                     <button class="btn" title="Copier le code" id="copyBtn">

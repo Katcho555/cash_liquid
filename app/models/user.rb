@@ -17,19 +17,62 @@ class User < ApplicationRecord
   before_create :generate_referral_code
   has_many :reward_claims, dependent: :destroy
 
+  has_many :user_bonus_campaigns, dependent: :destroy
+  has_many :bonus_campaigns, through: :user_bonus_campaigns
+
+  # Nombre de filleuls actifs
+  def filleuls_actifs_count
+    filleuls.where(compte_status: true).count
+  end
+
+  # 🎯 Inscrire l'utilisateur aux missions disponibles
+  def enroll_bonus_campaigns!
+    BonusCampaign.active_now.each do |campaign|
+      user_bonus_campaigns.find_or_create_by!(
+        bonus_campaign: campaign
+      ) do |uc|
+        uc.progress = 0
+        uc.status = "in_progress"
+        uc.locked = false
+      end
+    end
+  end
+
+  # 🔄 Mettre à jour la progression
+  def update_bonus_campaigns_progress!
+    user_bonus_campaigns.where(status: "in_progress").each do |uc|
+
+      # 🔐 Si mission désactivée mais verrouillée → on continue
+      next if !uc.bonus_campaign.active && !uc.locked
+
+      progress = filleuls_actifs_count
+      uc.update!(progress: progress)
+
+      if progress >= uc.bonus_campaign.threshold
+        ActiveRecord::Base.transaction do
+          increment!(:balance, uc.bonus_campaign.reward_amount)
+          uc.update!(status: "rewarded")
+        end
+      end
+
+      # Verrouiller dès qu'il commence
+      uc.update!(locked: true) if progress > 0 && !uc.locked
+    end
+  end
+
 
   # Exemple pour obtenir tous les descendants récursivement
-  def all_filleuls(level = nil)
-    results = []
-    current_level = filleuls
-    i = 1
-    while current_level.any? && (level.nil? || i <= level)
-      results << { niveau: i, utilisateurs: current_level }
-      current_level = User.where(parrain_id: current_level.pluck(:id))
-      i += 1
-    end
-    results
-  end
+  # def all_filleuls(level = nil)
+  #   results = []
+  #   current_level = filleuls
+  #   i = 1
+  #   while current_level.any? && (level.nil? || i <= level)
+  #     results << { niveau: i, utilisateurs: current_level }
+  #     current_level = User.where(parrain_id: current_level.pluck(:id))
+  #     i += 1
+  #   end
+  #   results
+  # end
 
  
 
@@ -124,13 +167,13 @@ class User < ApplicationRecord
     total_balance_brute + total_frais_systeme
   end
 
-def all_filleuls_recursifs(visited = Set.new)
-  return [] if visited.include?(self)
+# def all_filleuls_recursifs(visited = Set.new)
+#   return [] if visited.include?(self)
 
-  visited.add(self)
-  descendants = filleuls + filleuls.flat_map { |f| f.all_filleuls_recursifs(visited) }
-  (descendants - [self]).uniq
-end
+#   visited.add(self)
+#   descendants = filleuls + filleuls.flat_map { |f| f.all_filleuls_recursifs(visited) }
+#   (descendants - [self]).uniq
+# end
 
 
 def total_filleuls_recursifs
@@ -138,19 +181,19 @@ def total_filleuls_recursifs
 end
 
 # Retourne les filleuls par niveau : {1 => [...], 2 => [...], 3 => [...]}
-def filleuls_par_niveau(max_levels = 10)
-  niveaux = {}
-  current_level = filleuls.to_a
-  niveau = 1
+# def filleuls_par_niveau(max_levels = 10)
+#   niveaux = {}
+#   current_level = filleuls.to_a
+#   niveau = 1
 
-  while current_level.any? && niveau <= max_levels
-    niveaux[niveau] = current_level
-    current_level = current_level.flat_map(&:filleuls).uniq
-    niveau += 1
-  end
+#   while current_level.any? && niveau <= max_levels
+#     niveaux[niveau] = current_level
+#     current_level = current_level.flat_map(&:filleuls).uniq
+#     niveau += 1
+#   end
 
-  niveaux
-end
+#   niveaux
+# end
 
 
 # app/models/user.rb

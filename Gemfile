@@ -52,6 +52,8 @@ gem 'pg'
 gem 'dotenv-rails'
 gem 'httparty'
 gem 'kaminari'
+gem 'cloudinary'
+gem 'carrierwave'
 
 
 # Use Sass to process CSS

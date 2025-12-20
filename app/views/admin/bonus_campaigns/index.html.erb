@@ -1,0 +1,151 @@
+
+<!-- ===== DASHBOARD USER – COMPLET ===== -->
+<div class="ux-dashboard">
+  <!-- Sidebar -->
+  
+
+     <%if current_user.admin?%>
+        <%= render partial: "layouts/sidebar/admin" %>
+    <%else%>
+        <%= render partial: "layouts/sidebar/utilisateur" %>
+    <%end%>
+
+    <!-- Main -->
+        <main class="ux-main">
+
+            <%= render partial: "layouts/card_entete"%>
+
+            <!-- Contenu -->
+            <div class="ux-content p-3 p-lg-4">
+              <!-- Contenu --> 
+    
+              <div class="container my-4">
+
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <div>
+                    <h4 class="mb-0">🎯 Missions & Paliers de Parrainage</h4>
+                    <small class="text-muted">
+                      Gérez les bonus accessibles aux utilisateurs
+                    </small>
+                  </div>
+
+                  <%= link_to new_admin_bonus_campaign_path,
+                      class: "btn btn-primary d-flex align-items-center gap-2" do %>
+                    <i class="bi bi-plus-circle"></i>
+                    Nouvelle mission
+                  <% end %>
+                </div>
+
+                <!-- Table -->
+                <div class="card shadow-sm">
+                  <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Mission</th>
+                          <th>Objectif</th>
+                          <th>Récompense</th>
+                          <th>Période</th>
+                          <th>Statut</th>
+                          <th class="text-end">Actions</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <% if @campaigns.any? %>
+                          <% @campaigns.each do |c| %>
+                            <tr>
+                              <!-- Nom -->
+                              <td>
+                                <strong><%= c.name%></strong><br>
+                                <small class="text-muted"><%= truncate(c.description, length: 50) %></small>
+                              </td>
+
+                              <!-- Objectif -->
+                              <td>
+                                <span class="badge bg-info">
+                                  <%= c.threshold %> filleuls
+                                </span>
+                              </td>
+
+                              <!-- Bonus -->
+                              <td>
+                                <strong>
+                                  <%= number_with_delimiter(c.reward_amount) %> FCFA
+                                </strong>
+                                <br>
+                                <small class="text-muted">
+                                  <%= c.reward_type == "cash" ? "Cash" : "Crédit" %>
+                                </small>
+                              </td>
+
+                              <!-- Période -->
+                              <td>
+                                <%= c.start_at ? c.start_at.strftime("%d/%m/%Y") : "—" %><br>
+                                <small class="text-muted">
+                                  → <%= c.end_at ? c.end_at.strftime("%d/%m/%Y") : "Illimitée" %>
+                                </small>
+                              </td>
+
+                              <!-- Statut -->
+                              <td>
+                                <% if c.active %>
+                                  <span class="badge bg-success">Active</span>
+                                <% else %>
+                                  <span class="badge bg-secondary">Inactive</span>
+                                <% end %>
+                              </td>
+
+                              <!-- Actions -->
+                              <td class="text-end">
+                                <div class="btn-group btn-group-sm">
+
+                                  <%= link_to edit_admin_bonus_campaign_path(c),
+                                      class: "btn btn-outline-primary",
+                                      title: "Modifier" do %>
+                                    <i class="bi bi-pencil"></i>
+                                  <% end %>
+
+                                  <% if c.active %>
+                                    <%= button_to desactivate_admin_bonus_campaign_path(c),
+                                        method: :patch,
+                                        class: "btn btn-outline-warning",
+                                        data: { confirm: "Désactiver cette mission ?" },
+                                        title: "Désactiver" do %>
+                                      <i class="bi bi-pause-circle"></i>
+                                    <% end %>
+                                  <% else %>
+                                    <%= button_to activate_admin_bonus_campaign_path(c),
+                                        method: :patch,
+                                        class: "btn btn-outline-success",
+                                        title: "Activer" do %>
+                                      <i class="bi bi-play-circle"></i>
+                                    <% end %>
+                                  <% end %>
+
+                                </div>
+                              </td>
+                            </tr>
+                          <% end %>
+                        <% else %>
+                          <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                              Aucune mission créée pour le moment
+                            </td>
+                          </tr>
+                        <% end %>
+                      </tbody>
+
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+
+              <!--FIN  Contenu -->
+            </div>
+        </main>
+    </div>
+
+  <%#= javascript_include_tag 'dashboard' %>
