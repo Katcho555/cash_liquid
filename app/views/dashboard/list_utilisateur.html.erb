@@ -330,109 +330,119 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle table-borderless table-striped " id="usersTable">
-                            <thead class="bg-primary text-white rounded-top">
-                            <tr>
-                                <th>Utilisateur</th>
-                                <th>Email</th>
-                                <th>Parrain</th>
-                                <th>Statut</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            <% @users.each do |user| %>
-                                <% total_filleuls = user.filleuls.count %>
-                                <% active_filleuls = user.filleuls.where(compte_status: true).count %>
-                                <% total_recursifs = user.total_filleuls_recursifs %>
-
-                                <% filleuls_directs = user.filleuls %>
-                                <% filleuls_actifs = filleuls_directs.where(compte_status: true) %>
-
-
-                                <tr class="border-bottom">
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
-                                            <%= user.prenom[0].upcase %>
-                                        </div>
-                                        <div>
-                                            <strong class="text-dark">
-                                            <%= link_to arbre_user_path(user), class: "text-dark", data: { turbo: false } do %>
-                                                    <%= user.nom_complet %>
-                                                <% end %>
-
-                                                </strong><br>
-                                            <small class="text-muted">ID: <%= user.id %></small>
-                                        </div>
-                                        </div>
-                                    </td>
-
-                                    <td class="text-muted"><%= user.email %></td>
-                                    <td>
-                                        <% if user.parrain %>
-                                        <span class="badge bg-light text-dark border">
-                                            <i class="bi bi-person-check-fill text-success me-1"></i>
-                                            <%= user.parrain.nom_complet %>
-                                        </span>
-                                        <% else %>
-                                        <em class="text-secondary">Aucun</em>
-                                        <% end %>
-                                    </td>
-
-                                    <td>
-                                        <% if user.compte_status %>
-                                        <span class="badge bg-success bg-opacity-75">Actif</span>
-                                        <% else %>
-                                        <span class="badge bg-secondary bg-opacity-75">Inactif</span>
-                                        <% end %>
-                                    </td>
+                        <%if current_user.filleuls.any?%>
+                            <table class="table table-hover align-middle table-borderless table-striped " id="usersTable">
+                                <thead class="bg-primary text-white rounded-top">
+                                <tr>
+                                    <th>Utilisateur</th>
+                                    <th>Email</th>
+                                    <th>Parrain</th>
+                                    <th>Statut</th>
                                 </tr>
+                                </thead>
 
-                                <div class="modal fade" id="filleulsModal-<%= user.id %>" tabindex="-1">
-                                    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                                        <div class="modal-content">
+                                <tbody>
+                                <% current_user.filleuls.each do |user| %>
+                                    <% total_filleuls = user.filleuls.count %>
+                                    <% active_filleuls = user.filleuls.where(compte_status: true).count %>
+                                    <% total_recursifs = user.total_filleuls_recursifs %>
 
-                                        <!-- HEADER -->
-                                        <div class="modal-header bg-primary text-white">
-                                            <div>
-                                            <h5 class="modal-title mb-1">
-                                                Filleuls directs
-                                            </h5>
-                                            <small>
-                                                Parrain : <strong><%= user.nom_complet %></strong>
-                                            </small>
-                                            </div>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                                        </div>
+                                    <% filleuls_directs = user.filleuls %>
+                                    <% filleuls_actifs = filleuls_directs.where(compte_status: true) %>
 
-                                        <!-- STATS -->
-                                        <div class="px-4 py-3 border-bottom bg-light d-flex justify-content-between">
-                                            <div>
-                                            <span class="fw-semibold">Total :</span>
-                                            <span class="badge bg-dark"><%= filleuls_directs.count %></span>
+
+                                    <tr class="border-bottom">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
+                                                <%= user.prenom[0].upcase %>
                                             </div>
                                             <div>
-                                            <span class="fw-semibold">Actifs :</span>
-                                            <span class="badge bg-success"><%= filleuls_directs.where(compte_status: true).count %></span>
-                                            </div>
-                                            <div>
-                                            <span class="fw-semibold">Inactifs :</span>
-                                            <span class="badge bg-secondary"><%= filleuls_directs.where(compte_status: false).count %></span>
-                                            </div>
-                                        </div>
+                                                <strong class="text-dark">
+                                                <%= link_to arbre_user_path(user), class: "text-dark", data: { turbo: false } do %>
+                                                        <%= user.nom_complet %>
+                                                    <% end %>
 
+                                                    </strong><br>
+                                                <small class="text-muted">ID: <%= user.id %></small>
+                                            </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="text-muted"><%= user.email %></td>
+                                        <td>
+                                            <% if user.parrain %>
+                                            <span class="badge bg-light text-dark border">
+                                                <i class="bi bi-person-check-fill text-success me-1"></i>
+                                                <%= user.parrain.nom_complet %>
+                                            </span>
+                                            <% else %>
+                                            <em class="text-secondary">Aucun</em>
+                                            <% end %>
+                                        </td>
+
+                                        <td>
+                                            <% if user.compte_status %>
+                                            <span class="badge bg-success bg-opacity-75">Actif</span>
+                                            <% else %>
+                                            <span class="badge bg-secondary bg-opacity-75">Inactif</span>
+                                            <% end %>
+                                        </td>
+                                    </tr>
+
+                                    <div class="modal fade" id="filleulsModal-<%= user.id %>" tabindex="-1">
+                                        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="modal-content">
+
+                                            <!-- HEADER -->
+                                            <div class="modal-header bg-primary text-white">
+                                                <div>
+                                                <h5 class="modal-title mb-1">
+                                                    Filleuls directs
+                                                </h5>
+                                                <small>
+                                                    Parrain : <strong><%= user.nom_complet %></strong>
+                                                </small>
+                                                </div>
+                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <!-- STATS -->
+                                            <div class="px-4 py-3 border-bottom bg-light d-flex justify-content-between">
+                                                <div>
+                                                <span class="fw-semibold">Total :</span>
+                                                <span class="badge bg-dark"><%= filleuls_directs.count %></span>
+                                                </div>
+                                                <div>
+                                                <span class="fw-semibold">Actifs :</span>
+                                                <span class="badge bg-success"><%= filleuls_directs.where(compte_status: true).count %></span>
+                                                </div>
+                                                <div>
+                                                <span class="fw-semibold">Inactifs :</span>
+                                                <span class="badge bg-secondary"><%= filleuls_directs.where(compte_status: false).count %></span>
+                                                </div>
+                                            </div>
+
+                                            </div>
                                         </div>
                                     </div>
+
+
+                                <% end %>
+                                </tbody>
+                            </table>
+                        
+                            <%if current_user.admin?%>
+                                <div class="d-flex justify-content-center mt-3">
+                                    <%= paginate @users %>
                                 </div>
-
-
-                            <% end %>
-                            </tbody>
-                        </table>
-                        <%if current_user.admin?%>
-                            <div class="d-flex justify-content-center mt-3">
-                                <%= paginate @users %>
+                            <%end%>
+                        <%else%>
+                             <div class="alert alert-light text-center py-5">
+                                <i class="bi bi-emoji-neutral fs-1 text-muted"></i>
+                                <p class="mt-3 mb-0 text-muted">
+                                    Pas de réseau pour le moment
+                                </p>
                             </div>
                         <%end%>
                     </div>

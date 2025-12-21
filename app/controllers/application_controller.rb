@@ -1,33 +1,9 @@
 class ApplicationController < ActionController::Base
     before_action :configure_permitted_parameters, if: :devise_controller?
- def distribuer_gains(user)
-    # Prime d'inscription
-    #user.increment!(:balance, 600)
-    
-  prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_i
-  user.increment!(:balance, prime)
 
-    # 🔹 Chargement dynamique depuis la base de données
-  gain_generations = GenerationCommission.order(:niveau).pluck(:niveau, :commission).to_h
-
-    parrain = user.parrain
-    generation = 1
-
-    while parrain && generation <= 10
-      gain = gain_generations[generation]
-      parrain.update!(balance: (parrain.balance || 0) + gain.to_f)
-      parrain = parrain.parrain
-      generation += 1
-    end
-  end
 
 
   def balance_admin
-
-    if user_signed_in? 
-      @generations = current_user.filleuls_par_generation(2)
-      @generation_count = current_user.filleuls_par_generation.count
-    end
     # Total des souscriptions payées (entrées d’argent)
     @total_montant = Subscription.where(status: "payé").sum(:amount)
 
@@ -58,6 +34,20 @@ class ApplicationController < ActionController::Base
         devise_parameter_sanitizer.permit(:account_update, keys: [:nom, :prenom, :telephone, :phone, :country, :city, :profession])
         devise_parameter_sanitizer.permit(:sign_up, keys: [:nom, :prenom, :telephone, :phone, :country, :city, :profession])
     end
+    private
+
+     # Créditer tous les dividendes dus pour l'utilisateur connecté
+      def credit_user_dividends
+        return unless current_user
+
+        total_credits = 0
+        current_user.subscriptions.where(status: "payé").each do |sub|
+          total_credits += sub.credit_all_due_dividends!
+        end
+
+        # Optionnel : stocker le total pour afficher un flash si nécessaire
+        flash[:notice] = "Dividendes crédités : #{total_credits} FCFA" if total_credits > 0
+      end
 
 
 end

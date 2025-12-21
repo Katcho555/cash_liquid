@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_12_20_002405) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_21_020115) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -165,6 +165,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_20_002405) do
     t.boolean "locked", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "started_at"
     t.index ["bonus_campaign_id"], name: "index_user_bonus_campaigns_on_bonus_campaign_id"
     t.index ["user_id", "bonus_campaign_id"], name: "index_user_bonus_campaigns_on_user_id_and_bonus_campaign_id", unique: true
     t.index ["user_id"], name: "index_user_bonus_campaigns_on_user_id"

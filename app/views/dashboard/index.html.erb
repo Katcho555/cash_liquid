@@ -163,8 +163,9 @@
             </div>
             <div class="col-6 col-md-3 mb-3">
                 <div class="card nav-card nav-card-service">
-                    <button class="nav-card-btn">
-                        <i class="bi bi-headset"></i> Contact
+                    <button class="nav-card-btn" data-bs-toggle="modal" data-bs-target="#contactModal">
+                      <i class="bi bi-headset"></i>
+                      <span>Contact</span>
                     </button>
                 </div>
             </div>
@@ -274,8 +275,11 @@
 
               <% if mission.locked %>
                  <% if mission.ready_to_claim? %>
-                  <%= button_to "Obtenir ma récompense", claim_reward_bonus_mission_path(mission),
-                        method: :post, class: "btn btn-success mt-2" %>
+                  <%= button_to "Obtenir ma récompense",
+                    claim_reward_bonus_mission_path(mission),
+                    method: :post,
+                    class: "btn btn-success mt-2",
+                    data: { turbo: false } %>
                 <% elsif mission.rewarded? %>
                   <span class="badge bg-primary mt-2">Récompense obtenue 🎉</span>
                 <% else %>
@@ -343,19 +347,30 @@
 
           <!-- CGU -->
           <div class="tab-pane fade show active" id="tab-cgu">
-            <h6> Découvrez l'excellence pétrolière américaine ! </h6>
+          <h6> Ce que vous devez savoir sur CASH LIQUID : Votre Partenaire Pétrolier</h6>
+          <p> <strong>Une nouvelle ère dans un monde en mutation : l'excellence au service de l'investissement.</strong></p>
+            <p>
+            Depuis sa création en 1920 par la société Humble Oil, la raffinerie de Baytown s'est imposée comme un leader de l'innovation pétrolière. Dès 1949, elle a instauré un système numérique international pionnier, conçu pour démocratiser l'accès au marché de l'or noir. L'objectif était clair : permettre à tout investisseur, quelle que soit sa situation géographique ou la complexité du marché, de s'imposer face à la concurrence.
+            </p>
+            <h6>L'Alliance Stratégique : Cash-Liquid & Baytown</h6>
+            <p>
+            C’est dans cette vision qu’est née CASH LIQUID, la branche commerciale et le partenaire privilégié de la raffinerie de Baytown. Plus qu'une simple plateforme, CASH LIQUID agit comme un pont stratégique qui :
+            </p>
+            <ul>
+            <li> Brave les barrières logistiques et sécurise vos placements.</li> 
 
-              <p> Je suis ravi de vous inviter à investir en toute securité dans le pétrole. CASH LIQUID est une branche chargée de la gestion des investissements pétroliers de la raffinerie de Baytown, l'une des plus grandes et des plus modernes raffineries pétrolières des États-Unis, située au cœur du Texas.</p>  
+            <li>Brise les frontières en éliminant l'obligation de déplacement physique.</li> 
 
-               <h6>À propos de la raffinerie de Baytown</h6>
+            <li>Digitalise l'accès à un investissement concret et historique.</li> 
+            </ul>
 
-              La raffinerie de Baytown est l'une des plus grandes raffineries d'ExxonMobil, avec une capacité de production de 564 440 barils par jour. Elle est située sur la rivière San Jacinto, à proximité de la ville de Houston, et couvre une superficie de plus de 4 000 hectares.</p>
-
-              <h6>Ce que vous découvriez savoir sur CASH LIQUID </h6>
-
-             <p> Une nouvelle ère dans un nouveau monde c'est simplement l'idéal. Depuis sa création en 1920 par la société Humble Oil, la raffinerie de Baytown ne cesse d'innover dans le domaine pétrolier. Elle à depuis 1949 installé un système numérique international permettant à toute personne désireuse d'investir dans le pétrole d'avoir facilement accès face à la concurrence et vu la peine des habitants de certains États relativement à leurs emplacements. Ainsi , est née ''CASH LIQUID '' cette branche de la raffinerie de Baytown qui vient braver la peur, briser les frontières, faire disparaitre l'obligation du voyage avant d'avoir accès à un investissement sûr. 
-              Aujourd'hui, depuis chez vous investissez et gagner à travers CASH LIQUID dans le pétrole de la raffinerie américaine Baytown avec une vraie prise en charge par un service décentralisé et bien assuré. Avec des contrats différents à durée déterminée faites l'expérience la explosante de votre vie dans le pétrole américain.</p>
-
+            <h6>Une Opportunité Commerciale Sans Précédent</h6>
+            <p>
+            Aujourd'hui, grâce au partenariat avec CASH LIQUID, vous devenez un acteur du marché pétrolier américain depuis chez vous. Vous bénéficiez d'une prise en charge totale par un service décentralisé, hautement sécurisé et directement lié aux activités de la raffinerie de Baytown.
+            </p>
+            <p> <strong>
+            À travers des contrats commerciaux à durée déterminée et adaptés à vos objectifs, faites l'expérience de la puissance du pétrole américain. CASH LIQUID n'est pas seulement un intermédiaire, c'est votre allié pour une croissance explosive.
+            </strong></p>
           </div>
 
           <!-- Confidentialité -->
@@ -399,6 +414,44 @@
         </button>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      
+      <div class="modal-header bg-primary text-white rounded-top-4">
+        <h5 class="modal-title">
+          <i class="bi bi-headset me-2"></i> Service Client
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center p-4">
+
+        <!-- Téléphone -->
+        <div class="contact-card mb-3">
+          <i class="bi bi-telephone-fill text-primary fs-3 mb-2"></i>
+          <p class="mb-1 fw-semibold">Chargé de la clientèle</p>
+          <a href="tel:+14382286344" class="fs-5 fw-bold text-dark text-decoration-none">
+            +1 (438) 228-6344
+          </a>
+        </div>
+
+        <!-- WhatsApp -->
+        <div class="contact-card">
+          <i class="bi bi-whatsapp text-success fs-3 mb-2"></i>
+          <p class="mb-1 fw-semibold">Groupe WhatsApp officiel</p>
+          <a href="https://chat.whatsapp.com/FQjCZO67F98DEVTe8DWlhn"
+             target="_blank"
+             class="btn btn-success w-100 rounded-pill mt-2">
+            <i class="bi bi-whatsapp me-2"></i> Rejoindre le groupe
+          </a>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>

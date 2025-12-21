@@ -1,117 +1,91 @@
 <div class="dash-admin">
   <%=render "layouts/back"%>
+  
   <div class="container py-4">
-    <h2 class="mb-4 fw-bold">Mes investissements</h2>
+    <h2 class="mb-4 fw-bold text-primary">Mes investissements</h2>
 
-    <div class="row g-4">
+      <div class="row g-4">
+        <% @subscriptions.each do |sub| %>
+          <div class="col-md-6 col-lg-4">
+            <div class="card shadow border-0 rounded-4 h-100 position-relative overflow-hidden">
+              <div class="card-body">
 
-      <% @subscriptions.each do |sub| %>
-        <div class="col-md-6 col-lg-4">
-          <div class="card shadow-lg border-0 rounded-4 h-100">
+                <h5 class="card-title fw-bold text-primary"><%= sub.product.name %></h5>
+                <hr>
 
-            <div class="card-body">
+                <p><strong>Montant investi :</strong> 
+                  <span class="fs-5 fw-semibold text-dark"><%= number_with_delimiter(sub.amount) %> FCFA</span>
+                </p>
 
-              <!-- Titre du pack -->
-              <h5 class="card-title fw-bold text-primary">
-                <%= sub.product.name %>
-              </h5>
+                <p><strong>Revenu journalier :</strong> 
+                  <span class="text-success fw-bold">+<%= number_with_delimiter(sub.product.daily_revenue) %> FCFA / jour</span>
+                </p>
 
-              <hr>
+                <p><strong>Total gagné :</strong> 
+                  <span class="text-info fw-bold"><%= number_with_delimiter(sub.total_earned) %> FCFA</span>
+                </p>
 
-              <!-- Infos principales -->
-              <p class="mb-2">
-                <strong>Montant investi :</strong><br>
-                <span class="fs-5 fw-semibold text-dark">
-                  <%= number_with_delimiter(sub.amount) %> FCFA
-                </span>
-              </p>
-
-              <p class="mb-2">
-                <strong>Revenu journalier :</strong><br>
-                <span class="text-success fw-bold fs-6">
-                  +<%= number_with_delimiter(sub.product.daily_revenue) %> FCFA / jour
-                </span>
-              </p>
-
-              <p class="mb-2">
-                <strong>Total gagné :</strong><br>
-                <span class="text-info fw-bold fs-6">
-                  <%= number_with_delimiter(sub.total_earned) %> FCFA
-                </span>
-              </p>
-
-              <p class="mb-2">
-                <strong>Progression :</strong><br>
-                Jour <%= sub.contract_day %> / <%= sub.product.contract_days %>
-
-                <!-- Barre de progression -->
-                <div class="progress mt-1">
-                  <div class="progress-bar bg-success"
-                      role="progressbar"
-                      style="width: <%= (sub.contract_day * 100 / sub.product.contract_days) %>%">
+                <p><strong>Progression :</strong> Jour <%= sub.contract_day %> / <%= sub.product.contract_days %>
+                  <div class="progress mt-1" style="height: 10px;">
+                    <div class="progress-bar bg-success" role="progressbar" 
+                        style="width: <%= (sub.contract_day * 100 / sub.product.contract_days) %>%;">
+                    </div>
                   </div>
-                </div>
-              </p>
+                </p>
 
-              <p class="mb-3">
-                <strong>Statut :</strong>
-                <span class="badge 
-                  <%= sub.status_label == 'En cours' ? 'bg-success' :
-                    sub.status_label == 'En attente' ? 'bg-warning text-dark' :
-                    'bg-secondary' %>">
-                  <%= sub.status_label %>
-                </span>
-              </p>
+                <p><strong>Statut :</strong>
+                  <span class="badge 
+                        <%= sub.status_label == 'En cours' ? 'bg-success' :
+                            sub.status_label == 'En attente' ? 'bg-warning text-dark' :
+                            'bg-secondary' %>">
+                    <%= sub.status_label %>
+                  </span>
+                </p>
 
-              <!-- Dividende dispo -->
-              <div id="daily-credit-<%= sub.id %>"
-                  class="alert alert-info py-2"
-                  style="<%= sub.dividend_today? ? '' : 'display:none;' %>">
-                💰 Dividende disponible : 
-                <strong><%= number_with_delimiter(sub.product.daily_revenue) %> FCFA</strong>
+                <% if sub.respond_to?(:dividend_due?) && sub.dividend_due? %>
+                  <div class="alert alert-info py-2 mt-2 position-absolute top-0 end-0 me-3 mt-3 shadow-sm">
+                    💰 Dividende disponible : <strong><%= number_with_delimiter(sub.product.daily_revenue) %> FCFA</strong>
+                  </div>
+                <% end %>
+
               </div>
-
             </div>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
 
-    </div>
-
-    <!-- Balance utilisateur -->
-    <div class="text-center mt-5">
-      <h3 class="fw-bold">
-        Balance : 
-        <span id="user-balance" class="text-success">
-          <%= number_with_delimiter(current_user.balance) %>
-        </span> FCFA
-      </h3>
-    </div>
-
+      <div class="text-center mt-5">
+        <h3 class="fw-bold">
+          Balance : <span class="text-success"><%= number_with_delimiter(current_user.balance) %></span> FCFA
+        </h3>
+      </div>
   </div>
+
+
 
   <%= render partial: "layouts/footer_admin"%>
 </div>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  fetch("/subscriptions/credit_daily", {
-    method: "POST",
-    headers: {
-      "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
-      "Content-Type": "application/json"
-    }
-  })
-  .then(res => res.json())
-  .then(data => {
-    // Update balance
-    document.querySelector("#user-balance").textContent =
-        data.balance.toLocaleString();
 
-    // Show dividend alerts
-    data.credits.forEach(c => {
-      const box = document.querySelector(`#daily-credit-${c.id}`);
-      if (box) box.style.display = "block";
-    });
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    fetch("/subscriptions/credit_dividends", {
+      method: "POST",
+      headers: {
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
+        "Accept": "application/json"
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (!data) return;
+
+      // Mise à jour balance
+      const balanceEl = document.querySelector("#user-balance");
+      if (balanceEl) balanceEl.textContent = data.balance.toLocaleString();
+
+      // Ici tu peux éventuellement montrer un toast ou alerte pour les crédits
+    })
+    .catch(err => console.error("Credit error:", err));
+
   });
-});
 </script>

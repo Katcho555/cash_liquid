@@ -856,8 +856,10 @@
                                             <div class="col-md-6">
                                                 <label class="form-label fw-bold">Téléphone</label>
                                                 <div class="phone-input-group">
-                                                    <select id="dialCodeEdit" class="dial-code-select">
-                                                        <!-- Les options seront ajoutées dynamiquement -->
+                                                    <select
+                                                      id="dialCodeEdit"
+                                                      class="dial-code-select"
+                                                      data-selected="<%= @user.phone&.slice(/^\+\d+/) %>">
                                                     </select>
                                                     <%= f.text_field :phone, 
                                                         class: "form-control-profile phone-input", 
@@ -869,14 +871,18 @@
 
                                             <!-- Champ pays avec sélecteur -->
                                             <div class="col-md-3">
-                                                <label class="form-label fw-bold">Pays</label>
-                                                <div class="country-select-wrapper input-width">
-                                                    <%= f.select :country, [], {}, 
-                                                        class: "form-control-profile w-100", 
-                                                        id: "countrySelectEdit" %>
-                                                    <i class="fas fa-chevron-down"></i>
-                                                </div>
+                                              <label class="form-label fw-bold">Pays</label>
+
+                                              <div class="country-select-wrapper input-width">
+                                                <%= f.select :country, [],
+                                                  {},
+                                                  class: "form-control-profile w-100",
+                                                  id: "countrySelectEdit",
+                                                  data: { selected: @user.country } %>
+                                                <i class="fas fa-chevron-down"></i>
+                                              </div>
                                             </div>
+
 
                                             <div class="col-md-3">
                                                 <label class="form-label fw-bold">Ville</label>

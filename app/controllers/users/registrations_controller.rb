@@ -29,6 +29,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
           user.save(validate: false)
           Rails.logger.info "Parrain final attribué : #{parrain_initial.id}"
 
+          parrain_initial.enroll_bonus_campaigns!
+
           # --- Mise à jour automatique des missions du parrain ---
           parrain_initial.user_bonus_campaigns
             .joins(:bonus_campaign)
@@ -36,14 +38,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
             .each do |mission|
 
               # Incrémente la progression de 1 pour ce filleul
-              new_progress = parrain_initial.filleuls.count
+              start_date = mission.started_at || mission.created_at
+
+              new_progress = parrain_initial.filleuls
+                .where('users.created_at >= ?', start_date)
+                .count
+
+
               mission.update(progress: new_progress)
 
               # Débloque la mission si ce n'était pas le cas
               mission.update(locked: true) unless mission.locked?
 
               # Vérifie si l'objectif est atteint
-              if mission.progress >= mission.bonus_campaign.threshold
+              if mission.progress >= mission.bonus_campaign.threshold && mission.status == "in_progress"
                 mission.update(status: "ready_to_claim")
                 # Crédite le solde du parrain
                 #parrain_initial.increment!(:balance, mission.bonus_campaign.reward_amount)

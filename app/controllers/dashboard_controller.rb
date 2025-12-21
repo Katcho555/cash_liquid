@@ -2,150 +2,141 @@ class DashboardController < ApplicationController
     before_action :authenticate_user!
     before_action :balance_admin
     before_action :verify_admin, only: [:update_balance]
-    def index     
-        @generations = current_user.filleuls_par_generation(2)
-        @generation_count = current_user.filleuls_par_generation.count
+    before_action :credit_user_dividends, only: [:index]
 
-    # Crée automatiquement les missions actives pour l'utilisateur s'il n'en a pas encore
-    BonusCampaign.active_now.each do |campaign|
-      current_user.user_bonus_campaigns.find_or_create_by(bonus_campaign: campaign) do |ubc|
-        ubc.progress = 0
-        ubc.status = "in_progress"
-        ubc.locked = false  # Nouvelle mission
-      end
-    end
+    def index 
 
-    # Récupère les missions assignées à l'utilisateur
-    @bonus_missions = current_user.user_bonus_campaigns
-                                  .includes(:bonus_campaign)
-                                  .where(status: ["in_progress", "new", "ready_to_claim"])
-  end
-
-  # Appelé lorsque l'utilisateur fait un progrès, par exemple parrainage
-  def progress
-    user_bonus = current_user.user_bonus_campaigns.find(params[:id])
-    user_bonus.increment!(:progress, params[:amount].to_i)
-
-    # Débloquer la mission si elle était verrouillée
-    user_bonus.update(locked: true) unless user_bonus.locked?
-
-    # Vérifier si l'objectif est atteint
-    if user_bonus.progress >= user_bonus.bonus_campaign.threshold
-      user_bonus.update(status: "ready_to_claim")
-      # Ici, tu peux également créditer la récompense sur le solde de l'utilisateur
-    end
-
-    head :ok
-  end
-
-    def admin 
-        @prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_f || 0
-        @generations = User.all
-        if current_user.utilisateur?
-         @total_balance = current_user.balance
+        # Crée automatiquement les missions actives pour l'utilisateur s'il n'en a pas encore
+        BonusCampaign.active_now.each do |campaign|
+        current_user.user_bonus_campaigns.find_or_create_by(bonus_campaign: campaign) do |ubc|
+            ubc.progress = 0
+            ubc.status = "in_progress"
+            ubc.locked = false  # Nouvelle mission
+            ubc.started_at = Time.current
         end
-        @total_utilisateur_nombre = User.count
-        @total_utilisateur_liste = User.limit(15)
-
-        @retrait_sum = Retrait.where(statut: "Validé").sum(:montant)
-    end
-
-    def list_utilisateur
-        @prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_f || 0
-        if current_user.admin?
-            @users = User.includes(:parrain, :filleuls).order(:id)
-            @users = @users.page(params[:page]).per(10)
-        else
-             @users = [current_user]
         end
+
+        # Récupère les missions assignées à l'utilisateur
+        @bonus_missions = current_user.user_bonus_campaigns
+                                    .includes(:bonus_campaign)
+                                    .where(status: ["in_progress", "ready_to_claim"])
     end
 
-    def update_balance
-        user = User.find(params[:id])
-        admin_password = params[:admin_password]
-        new_balance = params[:balance].to_f
+    # Appelé lorsque l'utilisateur fait un progrès, par exemple parrainage
+    def progress
+        user_bonus = current_user.user_bonus_campaigns.find(params[:id])
+        user_bonus.increment!(:progress, params[:amount].to_i)
 
-        # Vérifie que le mot de passe admin est correct
-        if current_user.valid_password?(admin_password)
-            user.update(balance: new_balance)
-            render json: { success: true, balance: new_balance }
-        else
-            render json: { success: false, message: "Mot de passe administrateur incorrect" }, status: :unauthorized
+        # Débloquer la mission si elle était verrouillée
+        user_bonus.update(locked: true) unless user_bonus.locked?
+
+        # Vérifier si l'objectif est atteint
+        if user_bonus.progress >= user_bonus.bonus_campaign.threshold
+        user_bonus.update(status: "ready_to_claim")
+        # Ici, tu peux également créditer la récompense sur le solde de l'utilisateur
         end
+
+        head :ok
     end
+
+def admin 
+    @prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_f || 0
+    @generations = User.all
+    if current_user.utilisateur?
+        @total_balance = current_user.balance
+    end
+    @total_utilisateur_nombre = User.count
+    @total_utilisateur_liste = User.limit(15)
+
+    @retrait_sum = Retrait.where(statut: "Validé").sum(:montant)
+end
+
+def list_utilisateur
+    @prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_f || 0
+    if current_user.admin?
+        @users = User.includes(:parrain, :filleuls).order(:id)
+        @users = @users.page(params[:page]).per(10)
+    else
+            @users = [current_user]
+    end
+end
+
+def update_balance
+    user = User.find(params[:id])
+    admin_password = params[:admin_password]
+    new_balance = params[:balance].to_f
+
+    # Vérifie que le mot de passe admin est correct
+    if current_user.valid_password?(admin_password)
+        user.update(balance: new_balance)
+        render json: { success: true, balance: new_balance }
+    else
+        render json: { success: false, message: "Mot de passe administrateur incorrect" }, status: :unauthorized
+    end
+end
+
+
+def souscription_list
+    @subscriptions = Subscription.includes(:user).order(created_at: :desc).page(params[:page]).per(10)
+end
+
+
+
+
+def force_validate
+    unless current_user&.role == "admin"
+        redirect_to dashboard_index_path, alert: "Accès refusé 🚫"
+        return
+    end
+
+    @subscription = Subscription.find(params[:id])
+    admin_password = params[:admin_password]
+
+    unless current_user.valid_password?(admin_password)
+        redirect_to dashboard_souscription_list_path, alert: "❌ Mot de passe administrateur incorrect."
+        return
+    end
+
+    if @subscription.status == "payé"
+        redirect_to dashboard_souscription_list_path, alert: "⚠️ Paiement déjà validé."
+        return
+    end
+
+    ActiveRecord::Base.transaction do
+        @subscription.update!(
+        status: "payé",
+        paid_at: Time.current,
+        payment_method: "Validation admin"
+        )
+
+        user = @subscription.user
+        user.generate_referral_code if user.referral_code.blank?
+
+        # 🔥 récompense parrain (même logique que paiement auto)
+        user.reward_parrain_on_first_payment!(@subscription.amount)
+
+        user.update!(
+        compte_status: true,
+        vip_status: "open"
+        )
+    end
+
+    redirect_to dashboard_souscription_list_path, notice: "✅ Validation manuelle effectuée avec succès."
+end
+
+
+def delete_subscription
+    @subscription = Subscription.find(params[:id])
     
-
-    def souscription_list
-        @subscriptions = Subscription.includes(:user).order(created_at: :desc).page(params[:page]).per(10)
+    unless current_user&.role == "admin"
+        redirect_to dashboard_index_path, alert: "Accès refusé 🚫"
+        return
     end
 
-
-
-
-    def force_validate
-        unless current_user&.role == "admin"
-            redirect_to dashboard_index_path, alert: "Accès refusé 🚫"
-            return
-        end
-
-        @subscription = Subscription.find(params[:id])
-        admin_password = params[:admin_password]
-
-        if current_user.valid_password?(admin_password)
-            ActiveRecord::Base.transaction do
-            # ✅ Vérifie si le paiement a déjà été traité
-            if @subscription.status == "payé"
-                Rails.logger.info "⚠️ Paiement déjà traité pour la souscription #{@subscription.id}"
-                redirect_to dashboard_souscription_list_path and return
-            end
-            
-            @subscription.update!(
-                status: "payé",
-                paid_at: Time.current,
-                payment_method: current_user.nom_complet
-            )
-
-            user = @subscription.user
-            user.generate_referral_code if user.referral_code.blank?
-
-            # 🔹 Étape 1 : Trouver le bon parrain avant d’activer le compte
-            parrain_actuel = user.parrain
-            if parrain_actuel.nil? || !parrain_actuel.parrain_disponible?(3)
-                parrain_initial = parrain_actuel || User.racine_parrain
-                nouveau_parrain = parrain_initial.premier_parrain_disponible(3)
-                user.update(parrain: nouveau_parrain) if nouveau_parrain
-            end
-
-            # 🔹 Éviter une boucle : ne jamais être son propre parrain
-            user.update(parrain: nil) if user.parrain_id == user.id
-
-            # 🔹 Étape 2 : Activer le compte une fois le parrain fixé
-            user.update(compte_status: true, vip_status: "open")
-
-            # 🔹 Étape 3 : Distribuer les gains
-            distribuer_gains(user)
-            end
-
-            flash[:success] = "✅ Validation manuelle effectuée avec succès."
-        else
-            flash[:error] = "❌ Mot de passe administrateur incorrect."
-        end
-
-        redirect_to dashboard_souscription_list_path
-    end
-
-    def delete_subscription
-        @subscription = Subscription.find(params[:id])
-        
-        unless current_user&.role == "admin"
-            redirect_to dashboard_index_path, alert: "Accès refusé 🚫"
-            return
-        end
-
-        @subscription.destroy
-        flash[:success] = "Souscription supprimée avec succès ✅"
-        redirect_to dashboard_souscription_list_path
-    end
+    @subscription.destroy
+    flash[:success] = "Souscription supprimée avec succès ✅"
+    redirect_to dashboard_souscription_list_path
+end
 
 
 

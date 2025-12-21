@@ -2,43 +2,59 @@ class Subscription < ApplicationRecord
   belongs_to :user
   belongs_to :product
 
-  # Jour du contrat basé sur paid_at
-  def contract_day
-    return 0 if paid_at.nil?
-    [(Date.today - paid_at.to_date).to_i, product.contract_days].min
+  # Jours écoulés depuis le paiement (tranches de 24h)
+  def elapsed_days
+    return 0 unless paid_at
+    ((Time.current.to_date - paid_at.to_date).to_i)
   end
 
-  # Statut lisible
-  def status_label
-    return "En attente" if status == "en_attente"
-    return "Contrat terminé" if contract_day >= product.contract_days
-    "En cours"
+  # Jours déjà crédités
+  def credited_days
+    return 0 unless last_credit_at
+    [(last_credit_at.to_date - paid_at.to_date).to_i, product.contract_days].min
   end
 
-  # Peut recevoir un dividende aujourd’hui ?
-  def dividend_today?
-    return false unless status == "payé"
-    return false if paid_at.nil?
-    return false if contract_day <= 0
-    return false if contract_day >= product.contract_days
-
-    last_credit_at.nil? || last_credit_at.to_date < Date.today
+  # Nombre total de jours payables (respect du contrat)
+  def payable_days
+    [elapsed_days, product.contract_days].min
   end
 
-  # Total gagné basé sur last_credit_at
-  def total_earned
-    return 0 if paid_at.nil?
+  # Nombre de jours à rattraper
+  def due_days
+    [payable_days - credited_days, 0].max
+  end
 
-    paid_days = if last_credit_at
-      (last_credit_at.to_date - paid_at.to_date).to_i
-    else
-      0
+  # Vérifie si un dividende peut être crédité
+  def dividend_due?
+    status == "payé" && due_days > 0
+  end
+
+  # Crédit tous les dividendes dus
+  def credit_all_due_dividends!
+    return 0 unless dividend_due?
+
+    total_amount = due_days * product.daily_revenue
+
+    ActiveRecord::Base.transaction do
+      user.increment!(:balance, total_amount)
+      # on marque comme crédité jusqu'à aujourd'hui ou max contract_days
+      update!(last_credit_at: paid_at.to_date + payable_days.days)
     end
 
-    [paid_days, product.contract_days].min * product.daily_revenue
+    total_amount
   end
 
-  def credited_today?
-    last_credit_at&.to_date == Date.today
+  def total_earned
+    credited_days * product.daily_revenue
+  end
+
+  def contract_day
+    payable_days
+  end
+
+  def status_label
+    return "En attente" if status == "en_attente"
+    return "Contrat terminé" if credited_days >= product.contract_days
+    "En cours"
   end
 end

@@ -1,5 +1,7 @@
 class SubscriptionsController < ApplicationController
     before_action :authenticate_user!
+    before_action :credit_user_dividends, only: [:my_subscriptions]
+
 
   def index
     @taux_dollar = Parametre.find_by(cle: 'taux_dollar')&.valeur.to_i
@@ -65,144 +67,69 @@ end
 
   # Callback Moneroo
   def callback
-  payment_id = params[:paymentId] || params[:reference] || params[:id]
-  payment_status = params[:paymentStatus]
+    payment_id = params[:paymentId] || params[:reference] || params[:id]
+    payment_status = params[:paymentStatus]
 
-  # Vérifier via l’API Moneroo pour être sûr que la transaction est bien validée
-  service = MonerooService.new
-  verification = service.verify_payment(payment_id)
+    # Vérifier via l’API Moneroo pour être sûr que la transaction est bien validée
+    service = MonerooService.new
+    verification = service.verify_payment(payment_id)
 
-  Rails.logger.info "=== MONEROO CALLBACK ==="
-  Rails.logger.info verification.inspect
-  Rails.logger.info "========================"
+    Rails.logger.info "=== MONEROO CALLBACK ==="
+    Rails.logger.info verification.inspect
+    Rails.logger.info "========================"
 
-  # Extraire les infos principales
-  api_status = verification.dig("data", "status")
-  metadata = verification.dig("data", "metadata") || {}
+    # Extraire les infos principales
+    api_status = verification.dig("data", "status")
+    metadata = verification.dig("data", "metadata") || {}
 
-  # Trouver la souscription liée
-  @souscription = Subscription.find_by(id: metadata["subscription_id"])
+    # Trouver la souscription liée
+    @souscription = Subscription.find_by(id: metadata["subscription_id"])
 
-  unless @souscription
-    flash[:error] = "Souscription introuvable."
-    redirect_to failed_subscriptions_path and return
-  end
-
-  # ✅ Vérifie si le paiement a déjà été traité
-  if @souscription.status == "payé"
-    Rails.logger.info "⚠️ Paiement déjà traité pour la souscription #{@souscription.id}"
-    redirect_to dashboard_index_path and return
-  end
-
-  # Considère le paiement réussi si :
-  # - le statut API est "success" ou
-  # - le paramètre URL est "success"
-#  if api_status == "success" || payment_status == "success"
-#   @souscription.update(
-#     status: "payé",
-#     payment_method: "moneroo",
-#     reference: payment_id,
-#     paid_at: Time.current
-#   )
-
-#   @user = @souscription.user
-#   @user.generate_referral_code if @user.referral_code.blank?
-#   prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_f || 0
-
-#   # Parrainage : X% sur le premier paiement seulement
-#   if @user.parrain && !@souscription.parrain_reward_given
-#     reward_amount = (@souscription.amount * prime / 100).to_i
-#     if reward_amount > 0
-#       @user.parrain.increment!(:balance, reward_amount)
-#       @souscription.update!(parrain_reward_given: true)
-#     end
-#     # Marquer que la récompense a été donnée pour cette souscription
-#     @souscription.update(parrain_reward_given: true)
-#   end
-
-#   @user.update(compte_status: true, vip_status: "open")
-
-#   flash[:success] = "Souscription réussie !"
-#   redirect_to my_subscriptions_subscriptions_path
-# else
-#   @souscription.update(status: "en_attente")
-#   flash[:error] = "Le paiement a échoué."
-#   redirect_to failed_subscriptions_path
-# end
-
-if api_status == "success" || payment_status == "success"
-
-  @souscription.update!(
-    status: "payé",
-    payment_method: "moneroo",
-    reference: payment_id,
-    paid_at: Time.current
-  )
-
-  @user = @souscription.user
-  @user.generate_referral_code if @user.referral_code.blank?
-
-  prime = Parametre.find_by(cle: 'prime_parrainage')&.valeur.to_f || 0
-
-  # 🔥 Parrainage : PREMIER paiement UNIQUEMENT
-  if @user.parrain.present? && !@user.parrain_rewarded?
-
-    reward_amount = (@souscription.amount * prime / 100).to_i
-
-    if reward_amount.positive?
-      @user.parrain.increment!(:balance, reward_amount)
-      @user.update!(parrain_rewarded: true)
+    unless @souscription
+      flash[:error] = "Souscription introuvable."
+      redirect_to failed_subscriptions_path and return
     end
-  end
 
-  @user.update!(
+    # ✅ Vérifie si le paiement a déjà été traité
+    if @souscription.status == "payé"
+      Rails.logger.info "⚠️ Paiement déjà traité pour la souscription #{@souscription.id}"
+      redirect_to dashboard_index_path and return
+    end
+
+
+
+  if api_status == "success" || payment_status == "success"
+
+    @souscription.update!(
+      status: "payé",
+      payment_method: "moneroo",
+      reference: payment_id,
+      paid_at: Time.current
+    )
+
+    @user = @souscription.user
+    @user.generate_referral_code if @user.referral_code.blank?
+
+
+    # 🔥 récompense parrain (si premier paiement)
+    @user.reward_parrain_on_first_payment!(@souscription.amount)
+
+    @user.update_columns(
     compte_status: true,
-    vip_status: "open"
-  )
+    vip_status: "open",
+    updated_at: Time.current
+    )
 
-  flash[:success] = "Souscription réussie !"
-  redirect_to my_subscriptions_subscriptions_path
+    flash[:success] = "Souscription réussie !"
+    redirect_to my_subscriptions_subscriptions_path
 
-else
-  @souscription.update(status: "en_attente")
-  flash[:error] = "Le paiement a échoué."
-  redirect_to failed_subscriptions_path
-end
-
-
-
-
-end
-
-def credit_daily
-  credits = []
-
-  current_user.subscriptions.where(status: "payé").each do |sub|
-    next unless sub.dividend_today?
-
-    # Verser le dividende
-    current_user.balance += sub.product.daily_revenue
-    sub.update(last_credit_at: Time.current)
-
-    credits << {
-      id: sub.id,
-      product_name: sub.product.name,
-      earned: sub.product.daily_revenue
-    }
+  else
+    @souscription.update(status: "en_attente")
+    flash[:error] = "Le paiement a échoué."
+    redirect_to failed_subscriptions_path
   end
 
-  current_user.save
-
-  render json: {
-    balance: current_user.balance,
-    credits: credits
-  }
 end
-
-def my_subscriptions
-  @subscriptions = current_user.subscriptions.includes(:product)
-end
-
 
 
   # Pages de résultat
@@ -212,5 +139,38 @@ end
   def failed
   end
 
+  
+ def my_subscriptions
+    # Crédit automatique à l'accès pour rattrapage
+    @credits = credit_all_due_for(current_user)
+    @subscriptions = current_user.subscriptions.includes(:product)
+  end
 
+  def credit_dividends
+    credits = credit_all_due_for(current_user)
+
+    respond_to do |format|
+      format.html do
+        flash[:notice] = "Dividendes crédités : #{credits} FCFA"
+        redirect_to my_subscriptions_subscriptions_path
+      end
+      format.json do
+        render json: {
+          balance: current_user.balance,
+          credits: current_user.subscriptions.map { |sub| {id: sub.id, amount: sub.product.daily_revenue} if sub.dividend_due? }.compact
+        }
+      end
+    end
+  end
+
+
+  private
+
+  def credit_all_due_for(user)
+    total = 0
+    user.subscriptions.where(status: "payé").each do |sub|
+      total += sub.credit_all_due_dividends!
+    end
+    total
+  end
 end

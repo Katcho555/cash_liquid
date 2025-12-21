@@ -2,6 +2,9 @@
 class BonusMissionsController < ApplicationController
   before_action :authenticate_user!
 
+  def index
+  end
+
   def claim_reward
     mission = current_user.user_bonus_campaigns.find(params[:id])
 

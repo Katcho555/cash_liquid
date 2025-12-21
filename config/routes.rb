@@ -16,7 +16,26 @@ Rails.application.routes.draw do
         patch :desactivate  # pour désactiver une mission
       end
     end
+    resources :subscriptions, only: [:index] do
+      post 'credit_dividend', on: :member
+      post 'credit_all_pending', on: :collection
+    end
+    resources :users do
+      member do
+        patch :block
+        patch :unblock
+      end
+    end
+    resources :spin_configurations
+    resource :spin_setting, only: [:show, :edit, :update]
+    resources :spin_logs, only: [:index, :show]
+    resources :reward_claims, only: [:index]
+    get '/', to: 'dashboard#index', as: :dashboard
+    get 'bonus', to: 'bonus#index', as: :bonus_root
   end
+
+
+
   resource :parametrage
 
    # Backend interne
@@ -75,20 +94,7 @@ end
   resource :spin, only: [:show]
 
 
-  namespace :admin do
-    resources :users do
-      member do
-        patch :block
-        patch :unblock
-      end
-    end
-    resources :spin_configurations
-    resource :spin_setting, only: [:show, :edit, :update]
-    resources :spin_logs, only: [:index, :show]
-    resources :reward_claims, only: [:index]
-    get '/', to: 'dashboard#index', as: :dashboard
-    get 'bonus', to: 'bonus#index', as: :bonus_root
-  end
+  
 
 
   get 'bonus_recompenses/index'
@@ -123,7 +129,7 @@ delete '/dashboard/delete_subscription/:id', to: 'dashboard#delete_subscription'
       get :success
       get :failed
       get :my_subscriptions
-      post :credit_daily
+      post :credit_dividends
     end
   end
 

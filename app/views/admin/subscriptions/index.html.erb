@@ -1,0 +1,89 @@
+<!-- ===== DASHBOARD USER – COMPLET ===== -->
+<div class="ux-dashboard">
+  <!-- Sidebar -->
+  
+
+     <%if current_user.admin?%>
+        <%= render partial: "layouts/sidebar/admin" %>
+    <%else%>
+        <%= render partial: "layouts/sidebar/utilisateur" %>
+    <%end%>
+
+    <!-- Main -->
+        <main class="ux-main">
+
+            <%= render partial: "layouts/card_entete"%>
+
+            <!-- Contenu -->
+            <div class="ux-content p-3 p-lg-4">
+
+                    <div class="container py-4">
+                        <h2 class="mb-4 fw-bold text-primary">Suivi des souscriptions</h2>
+
+                        <%= button_to "Créditer tous les dividendes non crédités", credit_all_pending_admin_subscriptions_path, method: :post, class: "btn btn-danger mb-4" %>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                <th>User</th>
+                                <th>Produit</th>
+                                <th>Investi</th>
+                                <th>Revenu/jour</th>
+                                <th>Total gagné</th>
+                                <th>Progression</th>
+                                <th>Statut</th>
+                                <th>Dividende dispo</th>
+                                <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% @subscriptions.each do |sub| %>
+                                <tr>
+                                    <td><%= sub.user.nom %></td>
+                                    <td><%= sub.product.name %></td>
+                                    <td><%= number_with_delimiter(sub.amount) %> FCFA</td>
+                                    <td><%= number_with_delimiter(sub.product.daily_revenue) %> FCFA</td>
+                                    <td><%= number_with_delimiter(sub.total_earned) %> FCFA</td>
+                                    <td>
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                            style="width: <%= (sub.contract_day * 100 / sub.product.contract_days) %>%;">
+                                        </div>
+                                    </div>
+                                    <small>Jour <%= sub.contract_day %> / <%= sub.product.contract_days %></small>
+                                    </td>
+                                    <td>
+                                    <span class="badge 
+                                            <%= sub.status_label == 'En cours' ? 'bg-success' :
+                                                sub.status_label == 'En attente' ? 'bg-warning text-dark' :
+                                                'bg-secondary' %>">
+                                        <%= sub.status_label %>
+                                    </span>
+                                    </td>
+                                    <td>
+                                    <% if sub.dividend_due? %>
+                                        <span class="badge bg-info text-dark">Oui</span>
+                                    <% else %>
+                                        <span class="badge bg-secondary">Non</span>
+                                    <% end %>
+                                    </td>
+                                    <td>
+                                    <% if sub.dividend_due? %>
+                                        <%= button_to "Créditer", credit_dividend_admin_subscription_path(sub), method: :post, class: "btn btn-sm btn-success" %>
+                                    <% else %>
+                                        <button class="btn btn-sm btn-secondary" disabled>Crédité</button>
+                                    <% end %>
+                                    </td>
+                                </tr>
+                                <% end %>
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+  <!--FIN  Contenu -->
+                </div>
+            </main>
+        </div>
+

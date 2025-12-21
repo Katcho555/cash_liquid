@@ -1,10 +1,40 @@
 [
   { "name": "Bénin", "code": "BJ", "dial_code": "+229", "flag": "🇧🇯" },
   { "name": "Togo", "code": "TG", "dial_code": "+228", "flag": "🇹🇬" },
+  { "name": "Niger", "code": "NE", "dial_code": "+227", "flag": "🇳🇪" },
+  { "name": "Mali", "code": "ML", "dial_code": "+223", "flag": "🇲🇱" },
+  { "name": "Burkina Faso", "code": "BF", "dial_code": "+226", "flag": "🇧🇫" },
   { "name": "Côte d'Ivoire", "code": "CI", "dial_code": "+225", "flag": "🇨🇮" },
   { "name": "Sénégal", "code": "SN", "dial_code": "+221", "flag": "🇸🇳" },
   { "name": "Nigeria", "code": "NG", "dial_code": "+234", "flag": "🇳🇬" },
+  { "name": "Ghana", "code": "GH", "dial_code": "+233", "flag": "🇬🇭" },
+  { "name": "Guinée", "code": "GN", "dial_code": "+224", "flag": "🇬🇳" },
+
+  { "name": "Cameroun", "code": "CM", "dial_code": "+237", "flag": "🇨🇲" },
+  { "name": "Congo (Brazzaville)", "code": "CG", "dial_code": "+242", "flag": "🇨🇬" },
+  { "name": "République Démocratique du Congo", "code": "CD", "dial_code": "+243", "flag": "🇨🇩" },
+  { "name": "Gabon", "code": "GA", "dial_code": "+241", "flag": "🇬🇦" },
+  { "name": "Tchad", "code": "TD", "dial_code": "+235", "flag": "🇹🇩" },
+
+  { "name": "Maroc", "code": "MA", "dial_code": "+212", "flag": "🇲🇦" },
+  { "name": "Algérie", "code": "DZ", "dial_code": "+213", "flag": "🇩🇿" },
+  { "name": "Tunisie", "code": "TN", "dial_code": "+216", "flag": "🇹🇳" },
+  { "name": "Afrique du Sud", "code": "ZA", "dial_code": "+27", "flag": "🇿🇦" },
+  { "name": "Égypte", "code": "EG", "dial_code": "+20", "flag": "🇪🇬" },
+
   { "name": "France", "code": "FR", "dial_code": "+33", "flag": "🇫🇷" },
+  { "name": "Belgique", "code": "BE", "dial_code": "+32", "flag": "🇧🇪" },
+  { "name": "Suisse", "code": "CH", "dial_code": "+41", "flag": "🇨🇭" },
   { "name": "Canada", "code": "CA", "dial_code": "+1", "flag": "🇨🇦" },
-  { "name": "États-Unis", "code": "US", "dial_code": "+1", "flag": "🇺🇸" }
+  { "name": "États-Unis", "code": "US", "dial_code": "+1", "flag": "🇺🇸" },
+
+  { "name": "Royaume-Uni", "code": "GB", "dial_code": "+44", "flag": "🇬🇧" },
+  { "name": "Allemagne", "code": "DE", "dial_code": "+49", "flag": "🇩🇪" },
+  { "name": "Italie", "code": "IT", "dial_code": "+39", "flag": "🇮🇹" },
+  { "name": "Espagne", "code": "ES", "dial_code": "+34", "flag": "🇪🇸" },
+
+  { "name": "Brésil", "code": "BR", "dial_code": "+55", "flag": "🇧🇷" },
+  { "name": "Inde", "code": "IN", "dial_code": "+91", "flag": "🇮🇳" },
+  { "name": "Chine", "code": "CN", "dial_code": "+86", "flag": "🇨🇳" },
+  { "name": "Émirats Arabes Unis", "code": "AE", "dial_code": "+971", "flag": "🇦🇪" }
 ]

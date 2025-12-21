@@ -63,7 +63,7 @@
                             <dd class="col-sm-9"><%= @user.email %></dd>
 
                             <dt class="col-sm-3 fw-bold">Téléphone :</dt>
-                            <dd class="col-sm-9"><%= @user.telephone.presence || "Non renseigné" %></dd>
+                            <dd class="col-sm-9"><%= @user.phone.presence || "Non renseigné" %></dd>
 
                             <dt class="col-sm-3 fw-bold">Rôle :</dt>
                             <dd class="col-sm-9">
@@ -112,8 +112,8 @@
                             </div>
 
                             <div class="mb-3">
-                              <%= f.label :telephone, class: "form-label fw-bold" %>
-                              <%= f.text_field :telephone, class: "form-control", placeholder: "Numéro de téléphone" %>
+                              <%= f.label :phone, class: "form-label fw-bold" %>
+                              <%= f.text_field :phone, class: "form-control", placeholder: "Numéro de téléphone" %>
                             </div>
 
                             <div class="mb-3">
