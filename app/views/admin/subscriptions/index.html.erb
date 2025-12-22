@@ -18,7 +18,7 @@
             <div class="ux-content p-3 p-lg-4">
 
                     <div class="container py-4">
-                        <h2 class="mb-4 fw-bold text-primary">Suivi des souscriptions</h2>
+                        <h2 class="mb-4 fw-bold text-primary">Suivi des souscriptions <%=Time.current.to_date%> </h2>
 
                         <%= button_to "Créditer tous les dividendes non crédités", credit_all_pending_admin_subscriptions_path, method: :post, class: "btn btn-danger mb-4" %>
 

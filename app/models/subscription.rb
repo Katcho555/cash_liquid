@@ -5,13 +5,16 @@ class Subscription < ApplicationRecord
   # Jours écoulés depuis le paiement (tranches de 24h)
   def elapsed_days
     return 0 unless paid_at
-    ((Time.current.to_date - paid_at.to_date).to_i)
+    ((Time.current - paid_at) / 1.day).floor
   end
+  
+  
 
   # Jours déjà crédités
   def credited_days
     return 0 unless last_credit_at
-    [(last_credit_at.to_date - paid_at.to_date).to_i, product.contract_days].min
+    [(last_credit_at - paid_at) / 1.day, product.contract_days].min.to_i
+
   end
 
   # Nombre total de jours payables (respect du contrat)
@@ -38,7 +41,8 @@ class Subscription < ApplicationRecord
     ActiveRecord::Base.transaction do
       user.increment!(:balance, total_amount)
       # on marque comme crédité jusqu'à aujourd'hui ou max contract_days
-      update!(last_credit_at: paid_at.to_date + payable_days.days)
+      update!(last_credit_at: paid_at + payable_days.days)
+
     end
 
     total_amount
