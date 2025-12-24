@@ -141,10 +141,15 @@ end
 
   
  def my_subscriptions
-    # Crédit automatique à l'accès pour rattrapage
-    @credits = credit_all_due_for(current_user)
-    @subscriptions = current_user.subscriptions.includes(:product)
-  end
+  @credits = credit_all_due_for(current_user)
+
+  @subscriptions = current_user
+    .subscriptions
+    .where.not(product_id: nil)
+    .includes(:product)
+end
+
+
 
   def credit_dividends
     credits = credit_all_due_for(current_user)
@@ -168,7 +173,7 @@ end
 
   def credit_all_due_for(user)
     total = 0
-    user.subscriptions.where(status: "payé").each do |sub|
+    user.subscriptions.where.not(product_id: nil).find_each do |sub|
       total += sub.credit_all_due_dividends!
     end
     total
