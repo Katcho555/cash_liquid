@@ -1,24 +1,25 @@
 class Subscription < ApplicationRecord
   belongs_to :user
-  belongs_to :product
+  belongs_to :product, optional: true
 
-  # Jours écoulés depuis le paiement (tranches de 24h)
+  # Jours écoulés depuis le paiement (tranches exactes de 24h)
   def elapsed_days
     return 0 unless paid_at
     ((Time.current - paid_at) / 1.day).floor
   end
-  
-  
 
   # Jours déjà crédités
   def credited_days
-    return 0 unless last_credit_at
-    [(last_credit_at - paid_at) / 1.day, product.contract_days].min.to_i
-
+    return 0 unless last_credit_at && product
+    [
+      ((last_credit_at - paid_at) / 1.day).floor,
+      product.contract_days
+    ].min
   end
 
-  # Nombre total de jours payables (respect du contrat)
+  # Nombre total de jours payables
   def payable_days
+    return 0 unless product
     [elapsed_days, product.contract_days].min
   end
 
@@ -29,6 +30,7 @@ class Subscription < ApplicationRecord
 
   # Vérifie si un dividende peut être crédité
   def dividend_due?
+    return false unless product
     status == "payé" && due_days > 0
   end
 
@@ -40,15 +42,14 @@ class Subscription < ApplicationRecord
 
     ActiveRecord::Base.transaction do
       user.increment!(:balance, total_amount)
-      # on marque comme crédité jusqu'à aujourd'hui ou max contract_days
       update!(last_credit_at: paid_at + payable_days.days)
-
     end
 
     total_amount
   end
 
   def total_earned
+    return 0 unless product
     credited_days * product.daily_revenue
   end
 
@@ -58,7 +59,7 @@ class Subscription < ApplicationRecord
 
   def status_label
     return "En attente" if status == "en_attente"
-    return "Contrat terminé" if credited_days >= product.contract_days
+    return "Contrat terminé" if product && credited_days >= product.contract_days
     "En cours"
   end
 end
